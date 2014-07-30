@@ -6,11 +6,11 @@ html, body {
 
 }
 
-#sock-text{
+#videoContainer{
     width: 80%;
     height: 80%;
 }
-#sock-text * {
+#videoContainer * {
     display: inline-block;
     vertical-align: middle;
 }
@@ -19,10 +19,3 @@ img {
     border: 0;
 }
 
-
-#video1 {
-    margin:0 auto;
-    width:600px;
-    height:283px;
-    display:block;
-}

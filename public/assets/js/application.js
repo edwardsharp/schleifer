@@ -1,10 +1,12 @@
 var scheme   = "ws://";
 var uri      = scheme + window.document.location.host + "/";
 var ws       = new WebSocket(uri);
+var videoContainer = document.getElementById("videoContainer");
+
 ws.onmessage = function(message) {
   var data = JSON.parse(message.data);
 //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
-  showVideoByID(videoContainer , data.videoid);
+  showVideoByID(videoContainer, data.videoid);
 };
 
 $("#input-form").on("submit", function(event) {
@@ -70,7 +72,7 @@ function showVideoByID (domElement, videoID) {
 }
 // end of "mini library"
 
-var videoContainer = document.getElementById("video1");
+
 showVideoByID(videoContainer , "NoDTqebi860");
 // when video ends
 function onPlayerStateChange(event) {        
