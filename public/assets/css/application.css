@@ -1,5 +1,22 @@
 html, body {margin: 0; padding: 0;}
 
+#sock-text{
+    width: auto;
+    border: none;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+#sock-text * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 img {
     border: 0;
+}
+
+#sock-text {
+  overflow: auto;
+  height: 500px;
 }
