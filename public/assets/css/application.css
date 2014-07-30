@@ -2,6 +2,7 @@ html, body {margin: 0; padding: 0;}
 
 #sock-text{
     width: auto;
+    height: auto;
     border: none;
     overflow-x: scroll;
     overflow-y: hidden;
@@ -18,5 +19,5 @@ img {
 
 #sock-text {
   overflow: auto;
-  height: 500px;
+  height: auto;
 }
