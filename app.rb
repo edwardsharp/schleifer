@@ -1,6 +1,6 @@
 require 'sinatra/base'
 
-module SockDemo
+module Schleifer
   class App < Sinatra::Base
     get "/" do
       erb :"index.html"

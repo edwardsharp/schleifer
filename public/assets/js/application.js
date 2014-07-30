@@ -19,24 +19,24 @@ $("#input-form").on("submit", function(event) {
   //note the double bang to coerce a boolean, then invert. clever.
   if(!!$.trim($("#input-videoid").val()).length){
     //ws.send(JSON.stringify({ handle: handle, text: text }));
-    ws.send(JSON.stringify({ videoid: videoid, chan: chan }));
+    ws.send(JSON.stringify({ chan: chan, videoid: videoid }));
     $("#input-videoid")[0].value = "";
   }
 });
 
-$("#dropdown").on("change", function(event) {
-  //event.preventDefault();
-  console.log($("dropdown")[0].value);
-  //var videoid   = $("#input-videoid")[0].value;
-  //
+// $("#dropdown").on("change", function(event) {
+//   //event.preventDefault();
+//   console.log($("dropdown")[0].value);
+//   //var videoid   = $("#input-videoid")[0].value;
+//   //
 
-  //note the double bang to coerce a boolean, then invert. clever.
-  // if(!!$.trim($("#input-videoid").val()).length){
-  //   //ws.send(JSON.stringify({ handle: handle, text: text }));
-  //   ws.send(JSON.stringify({ videoid: videoid, chan: chan }));
-  //   $("#input-videoid")[0].value = "";
-  // }
-});
+//   //note the double bang to coerce a boolean, then invert. clever.
+//   // if(!!$.trim($("#input-videoid").val()).length){
+//   //   //ws.send(JSON.stringify({ handle: handle, text: text }));
+//   //   ws.send(JSON.stringify({ videoid: videoid, chan: chan }));
+//   //   $("#input-videoid")[0].value = "";
+//   // }
+// });
 
 // "mini library" starts here
 var youTubeAPILoaded = false;

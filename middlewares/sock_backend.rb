@@ -2,10 +2,9 @@ require 'faye/websocket'
 require 'thread'
 require 'redis'
 
-module SockDemo
+module Schleifer
   class SockBackend
     KEEPALIVE_TIME = 15 # in seconds
-    //#TODO: build UI for this!
     CHANNEL        = "schleifer-sockz"
 
     def initialize(app)

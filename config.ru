@@ -3,6 +3,6 @@ require './middlewares/sock_backend'
 
 $stdout.sync = true
 
-use SockDemo::SockBackend
+use Schleifer::SockBackend
 
-run SockDemo::App
+run Schleifer::App
