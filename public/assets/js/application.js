@@ -8,6 +8,8 @@ ws.onmessage = function(message) {
   var data = JSON.parse(message.data);
   //set channel-dropdown-menu li w/ data
 //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
+  $("#currActive > .badge").html(data.clients);
+  
   showVideoByID(videoContainer, data.videoid);
 };
 

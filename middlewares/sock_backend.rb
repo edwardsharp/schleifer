@@ -17,6 +17,11 @@ module Schleifer
         redis_sub.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
             puts "on.message msg: #{msg}"
+            begin
+              msg["clients"]=@clients.count
+            rescue 
+              p "CANNOT SET CLIENT COUNT!"
+            end
             @clients.each {|ws| ws.send(msg) }
           end
         end
@@ -33,6 +38,11 @@ module Schleifer
 
         ws.on :message do |event|
           p [:message, event.data]
+          begin
+            event.data["clients"]=@clients.count
+          rescue 
+            p "CANNOT SET CLIENT COUNT!"
+          end
           @redis.publish(CHANNEL, event.data)
         end
 
