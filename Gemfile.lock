@@ -24,6 +24,7 @@ GEM
     thor (0.19.1)
     tilt (1.4.1)
     websocket-driver (0.3.0)
+    youtube_search (0.1.9)
 
 PLATFORMS
   ruby
@@ -34,3 +35,4 @@ DEPENDENCIES
   puma
   redis
   sinatra
+  youtube_search

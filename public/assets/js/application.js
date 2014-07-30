@@ -5,7 +5,7 @@ ws.onmessage = function(message) {
   var data = JSON.parse(message.data);
   $("#sock-text").append("<div class='col-md-6'><div class='panel panel-default'><div class='panel-heading'>" + data.handle + "</div><div class='panel-body'>" + data.text + "</div></div></div>");
   $("#sock-text").stop().animate({
-    scrollTop: $('#sock-text')[0].scrollHeight
+    scrollLeft: $('#sock-text')[0].scrollWidth
   }, 800);
 };
 

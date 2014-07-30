@@ -8,3 +8,5 @@ gem "puma"
 gem "redis"
 
 gem "foreman", :group => :development
+
+gem "youtube_search"

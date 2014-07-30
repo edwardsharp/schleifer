@@ -2,6 +2,14 @@ require 'faye/websocket'
 require 'thread'
 require 'redis'
 
+require 'logger'
+
+enable :logging
+
+before do
+  logger.level = Logger::DEBUG
+end
+
 module SockDemo
   class SockBackend
     KEEPALIVE_TIME = 15 # in seconds
@@ -16,6 +24,7 @@ module SockDemo
         redis_sub = Redis.new(host: uri.host, port: uri.port, password: uri.password)
         redis_sub.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
+            logger.debug "on.message: #{msg}"
             @clients.each {|ws| ws.send(msg) }
           end
         end
