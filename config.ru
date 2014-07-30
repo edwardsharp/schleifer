@@ -1,6 +1,6 @@
 require './app'
-require './middlewares/chat_backend'
+require './middlewares/sock_backend'
 
-use ChatDemo::ChatBackend
+use SockDemo::SockBackend
 
-run ChatDemo::App
+run SockDemo::App
