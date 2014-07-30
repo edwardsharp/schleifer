@@ -1,6 +1,28 @@
-html, body {margin: 0; padding: 0;}
+html, body {
+	margin: 0; 
+	padding: 0;
+  width:100%;
+  height:100%;
+
+}
+
+#sock-text{
+    width: 80%;
+    height: 80%;
+}
+#sock-text * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+img {
+    border: 0;
+}
 
 
-.clr {
-	clear: both;
+#video1 {
+    margin:0 auto;
+    width:600px;
+    height:283px;
+    display:block;
 }
