@@ -4,8 +4,7 @@ html, body {margin: 0; padding: 0;}
     width: auto;
     height: auto;
     border: none;
-    overflow-x: scroll;
-    overflow-y: hidden;
+
     white-space: nowrap;
 }
 #sock-text * {
