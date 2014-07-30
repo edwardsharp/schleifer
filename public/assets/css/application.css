@@ -1,23 +1,5 @@
 html, body {margin: 0; padding: 0;}
 
-.horiz{
-    width: auto;
-
-    border: none;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    white-space: nowrap;
-}
-.horiz * {
-    display: inline-block;
-    vertical-align: middle;
-}
-
 img {
     border: 0;
-}
-
-.horiz {
-  overflow: auto;
-
 }
