@@ -44,8 +44,7 @@ function showVideoByID (domElement, videoID) {
     loadYouTubeAPI(function () {
         if (!domElement.player) {
             domElement.player = new YT.Player(domElement, {
-                height      : '283',
-                width       : '600',
+     
                 videoId     : videoID,
                 playerVars: {
                     'rel'       : 0,

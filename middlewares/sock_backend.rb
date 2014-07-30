@@ -5,6 +5,7 @@ require 'redis'
 module SockDemo
   class SockBackend
     KEEPALIVE_TIME = 15 # in seconds
+    //#TODO: build UI for this!
     CHANNEL        = "sock-demo"
 
     def initialize(app)
