@@ -6,7 +6,7 @@ module SockDemo
   class SockBackend
     KEEPALIVE_TIME = 15 # in seconds
     //#TODO: build UI for this!
-    CHANNEL        = "sock-demo"
+    CHANNEL        = "schleifer-sockz"
 
     def initialize(app)
       @app     = app

@@ -32,6 +32,20 @@
         <!-- collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
+          <ul class="nav navbar-nav">
+            <li id="currActive"><%= @clients ? @clients.count : "0" %></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">#lobby <span class="caret"></span></a>
+              <ul id="channel-dropdown-menu" class="dropdown-menu" role="menu">
+                <li><a href="#lobby">#lobby</a></li>
+
+                <li class="divider"></li>
+                
+              </ul>
+            </li>
+          </ul>
+
+
           <form id="input-form" class="navbar-form navbar-left" role="search">
             <div class="form-group">
               <input id="input-videoid" type="text" class="form-control" placeholder="NoDTqebi860" autofocus />

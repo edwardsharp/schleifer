@@ -2,9 +2,11 @@ var scheme   = "ws://";
 var uri      = scheme + window.document.location.host + "/";
 var ws       = new WebSocket(uri);
 var videoContainer = document.getElementById("videoContainer");
+var chan = "lobby";
 
 ws.onmessage = function(message) {
   var data = JSON.parse(message.data);
+  //set channel-dropdown-menu li w/ data
 //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
   showVideoByID(videoContainer, data.videoid);
 };
@@ -12,14 +14,29 @@ ws.onmessage = function(message) {
 $("#input-form").on("submit", function(event) {
   event.preventDefault();
   var videoid   = $("#input-videoid")[0].value;
+  //
+
   //note the double bang to coerce a boolean, then invert. clever.
   if(!!$.trim($("#input-videoid").val()).length){
     //ws.send(JSON.stringify({ handle: handle, text: text }));
-    ws.send(JSON.stringify({ videoid: videoid }));
+    ws.send(JSON.stringify({ videoid: videoid, chan: chan }));
     $("#input-videoid")[0].value = "";
   }
 });
 
+$("#dropdown").on("change", function(event) {
+  //event.preventDefault();
+  console.log($("dropdown")[0].value);
+  //var videoid   = $("#input-videoid")[0].value;
+  //
+
+  //note the double bang to coerce a boolean, then invert. clever.
+  // if(!!$.trim($("#input-videoid").val()).length){
+  //   //ws.send(JSON.stringify({ handle: handle, text: text }));
+  //   ws.send(JSON.stringify({ videoid: videoid, chan: chan }));
+  //   $("#input-videoid")[0].value = "";
+  // }
+});
 
 // "mini library" starts here
 var youTubeAPILoaded = false;
