@@ -53,7 +53,7 @@ function showVideoByID (domElement, videoID) {
                     'playlist'  : videoID,
                     controls    : 0,
                     showinfo    : 0 ,
-                 modestbranding : 1,
+                    modestbranding : 1,
                     wmode       : "opaque"
                 },
                 events: {
