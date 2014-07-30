@@ -1,14 +1,14 @@
 html, body {margin: 0; padding: 0;}
 
-#sock-text{
+.horiz{
     width: auto;
-    height:210px;
+
     border: none;
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
 }
-#sock-text * {
+.horiz * {
     display: inline-block;
     vertical-align: middle;
 }
@@ -17,7 +17,7 @@ img {
     border: 0;
 }
 
-#sock-text {
+.horiz {
   overflow: auto;
-  height: 500px;
+
 }
