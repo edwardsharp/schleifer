@@ -33,6 +33,15 @@ module Schleifer
           p [:open, ws.object_id]
           @clients << ws
 
+          begin
+            mClients = {}
+            mClients["clients"] = @clients.count
+            p [:message, mClients]
+            @redis.publish(CHANNEL, mClients)
+          rescue
+            p "RESCUE CLIENT COUNT"
+          end
+
         end
 
         ws.on :message do |event|
