@@ -6,8 +6,7 @@ require 'json'
 module Schleifer
   class SockBackend
     KEEPALIVE_TIME = 15 # in seconds
-    CHANNEL        = "schleifer-sockz"
-    #CCHAN = "lobby0"
+    CHANNEL        = "lobby0"
 
     def initialize(app)
       @app     = app
@@ -52,6 +51,18 @@ module Schleifer
 
         ws.on :close do |event|
           p [:close, ws.object_id, event.code, event.reason]
+
+          begin
+            if(@clients.count > 0)
+              mClients = {}
+              mClients["clients"] = (@clients.count-1).to_s
+              p [:message, mClients]
+              @redis.publish(CHANNEL, mClients.to_json)
+            end
+          rescue
+            p "RESCUE CLIENT CLOSE COUNT"
+          end
+
           @clients.delete(ws)
           ws = nil
         end
