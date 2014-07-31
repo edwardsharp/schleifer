@@ -24,7 +24,7 @@ ws.onmessage = function(message) {
     console.log("data.clients,YO:"+data.clients);
   }
 
-  if(data.videoid.length < 10){
+  if(data.videoid.length < 25){
     showVideoByID(videoContainer, data.videoid);
   }
   
