@@ -16,7 +16,7 @@ ws.onmessage = function(message) {
 $("#input-form").on("submit", function(event) {
   event.preventDefault();
   var videoid   = $("#input-videoid")[0].value;
-  //
+  chan = $("#input-channel")[0].value;
 
   //note the double bang to coerce a boolean, then invert. clever.
   if(!!$.trim($("#input-videoid").val()).length){

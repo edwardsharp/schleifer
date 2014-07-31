@@ -18,13 +18,7 @@ module Schleifer
         redis_sub.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
             puts "on.message msg: #{msg}"
-            begin
-              par = JSON.parse(msg)
-              par["clients"]=@clients.count
-              msg = par.to_s
-            rescue 
-              p "CANNOT SET CLIENT COUNT!"
-            end
+           
             @clients.each {|ws| ws.send(msg) }
           end
         end
@@ -37,21 +31,34 @@ module Schleifer
         ws.on :open do |event|
           p [:open, ws.object_id]
           @clients << ws
+
+          begin
+            count = {}
+            count["count"] = @clients.count
+            @clients.each {|ws| ws.send(count) }
+          rescue
+            puts "RESCUTE OPEN COUNT SEND!"
+          end
+
         end
 
         ws.on :message do |event|
           p [:message, event.data]
-          begin
-            event.data["clients"]=@clients.count
-          rescue 
-            p "CANNOT SET CLIENT COUNT FOR EVENT DATA!"
-          end
+          
           @redis.publish(CHANNEL, event.data)
         end
 
         ws.on :close do |event|
           p [:close, ws.object_id, event.code, event.reason]
           @clients.delete(ws)
+
+          begin
+            count = {}
+            count["count"] = @clients.count
+            @clients.each {|ws| ws.send(count) }
+          rescue
+            puts "RESCUTE CLOSE COUNT SEND!!"
+          end
           ws = nil
         end
 
