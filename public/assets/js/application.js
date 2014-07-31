@@ -6,7 +6,14 @@ var chan = "lobby";
 var clients = 0;
 
 ws.onmessage = function(message) {
-  var data = JSON.parse(message.data);
+  var data;
+  try{
+    data = JSON.parse(message.data);
+  }catch(e){
+    console.log("CAUGHT ERROR" + e);
+  }
+
+  
   console.log("message,YO:"+message);
 
   //set channel-dropdown-menu li w/ data
@@ -14,7 +21,7 @@ ws.onmessage = function(message) {
   $("#currActive > .badge").html(data.clients);
 
   console.log("data.clients,YO:"+data.clients);
-  
+
   showVideoByID(videoContainer, data.videoid);
 };
 
