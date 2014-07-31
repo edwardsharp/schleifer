@@ -6,7 +6,8 @@ require 'json'
 module Schleifer
   class SockBackend
     KEEPALIVE_TIME = 15 # in seconds
-    CHANNEL        = "lobby0"
+    CHANNEL        = "burgers-in-atlanta"
+    LOCALCHANNEL = "lobby0"
 
     def initialize(app)
       @app     = app
@@ -18,7 +19,13 @@ module Schleifer
         redis_sub.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
             puts "on.message msg: #{msg}"
-           
+            
+            begin
+              p "CHANNEL #{msg["channel"]}"
+            rescue
+              p "CANT READ CHANNEL"
+            end
+            
             @clients.each {|ws| ws.send(msg) }
 
           end
@@ -41,6 +48,8 @@ module Schleifer
           rescue
             p "RESCUE CLIENT COUNT"
           end
+
+          //LOCALCHANNEL
 
         end
 

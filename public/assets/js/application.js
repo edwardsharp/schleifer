@@ -2,7 +2,7 @@ var scheme   = "ws://";
 var uri      = scheme + window.document.location.host + "/";
 var ws       = new WebSocket(uri);
 var videoContainer = document.getElementById("videoContainer");
-var chan = "lobby0";
+var channel = "lobby0";
 var clients = 0;
 var videoid = "NoDTqebi860";
 
@@ -34,12 +34,12 @@ ws.onmessage = function(message) {
 $("#input-form").on("submit", function(event) {
   event.preventDefault();
   videoid   = $("#input-videoid")[0].value;
-  chan = $("#input-channel")[0].value;
+  channel = $("#input-channel")[0].value;
 
   //note the double bang to coerce a boolean, then invert. clever.
   if(!!$.trim($("#input-videoid").val()).length){
     //ws.send(JSON.stringify({ handle: handle, text: text }));
-    ws.send(JSON.stringify({ chan: chan, videoid: videoid, clients: clients }));
+    ws.send(JSON.stringify({ channel: channel, videoid: videoid, clients: clients }));
     $("#input-videoid")[0].value = "";
   }
 });
@@ -53,7 +53,7 @@ $("#input-form").on("submit", function(event) {
 //   //note the double bang to coerce a boolean, then invert. clever.
 //   // if(!!$.trim($("#input-videoid").val()).length){
 //   //   //ws.send(JSON.stringify({ handle: handle, text: text }));
-//   //   ws.send(JSON.stringify({ videoid: videoid, chan: chan }));
+//   //   ws.send(JSON.stringify({ videoid: videoid, channel: channel }));
 //   //   $("#input-videoid")[0].value = "";
 //   // }
 // });
