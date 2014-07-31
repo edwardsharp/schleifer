@@ -8,7 +8,7 @@ module Schleifer
     KEEPALIVE_TIME = 15 # in seconds
     CHANNEL        = "burgers-in-atlanta"
     LOCALCHANNEL = "lobby0"
-    LOCALVIDEOID = "NoDTqebi860"
+    localvideoid = "NoDTqebi860"
 
     def initialize(app)
       @app     = app
@@ -22,14 +22,21 @@ module Schleifer
             puts "on.message msg: #{msg}"
             
             begin
+              mVidId = JSON.parse(msg)["videoid"]
 
-              p "VIDEOID #{JSON.parse(msg)["videoid"]}"
-              #LOCALVIDEOID = msg["videoid"]
+              if(!mVidId.blank?)
+                p "VIDEOID #{mVidId}"
+                localvideoid = mVidId
+              end
+
+              
+
+              #localvideoid = msg["videoid"]
               # if(msg["videoid"].empty?)
-              #   msg["videoid"] = LOCALVIDEOID
+              #   msg["videoid"] = localvideoid
               # end
             rescue
-              p "CANT READ VIDEOID"
+              p "CANT READ VIDEOID OR SET LOCALCHANNEL"
             end
 
             @clients.each {|ws| ws.send(msg) }
