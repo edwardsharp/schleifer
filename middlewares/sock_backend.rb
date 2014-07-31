@@ -35,9 +35,9 @@ module Schleifer
 
           begin
             mClients = {}
-            mClients["clients"] = @clients.count
+            mClients["clients"] = @clients.count.to_s
             p [:message, mClients]
-            @redis.publish(CHANNEL, mClients)
+            @redis.publish(CHANNEL, mClients.to_json)
           rescue
             p "RESCUE CLIENT COUNT"
           end
