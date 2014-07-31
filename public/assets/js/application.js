@@ -120,8 +120,8 @@ showVideoByID(videoContainer , "NoDTqebi860");
 // when video ends
 function onPlayerStateChange(event) {        
     if(event.data === 0) {    
-      console.log("WOULD PLAY...");        
-        //event.target.playVideo();
+      console.log("WOULD PLAY... WS SENDING!!!");        
+      ws.send(JSON.stringify({ channel: channel, videoid: videoid}));   
     }
 }
     
