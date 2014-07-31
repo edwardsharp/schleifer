@@ -21,14 +21,14 @@ module Schleifer
           on.message do |channel, msg|
             puts "on.message msg: #{msg}"
             
-            begin
-              p "CHANNEL #{msg["channel"]}"
-              if(msg["channel"].empty?)
-                msg["channel"] = LOCALCHANNEL
-              end
-            rescue
-              p "CANT READ CHANNEL"
-            end
+            # begin
+            #   p "VIDEOID #{msg["videoid"]}"
+            #   if(msg["videoid"].empty?)
+            #     msg["videoid"] = LOCALVIDEOID
+            #   end
+            # rescue
+            #   p "CANT READ VIDEOID"
+            # end
 
             @clients.each {|ws| ws.send(msg) }
 
