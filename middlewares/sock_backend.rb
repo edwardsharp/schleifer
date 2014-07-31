@@ -21,23 +21,7 @@ module Schleifer
           on.message do |channel, msg|
             puts "on.message msg: #{msg}"
             
-            begin
-              mVidId = JSON.parse(msg)["videoid"]
 
-              if(!mVidId.blank?)
-                p "VIDEOID #{mVidId}"
-                localvideoid = mVidId
-              end
-
-              
-
-              #localvideoid = msg["videoid"]
-              # if(msg["videoid"].empty?)
-              #   msg["videoid"] = localvideoid
-              # end
-            rescue
-              p "CANT READ VIDEOID OR SET LOCALCHANNEL"
-            end
 
             @clients.each {|ws| ws.send(msg) }
 
