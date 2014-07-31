@@ -8,7 +8,8 @@ module Schleifer
     KEEPALIVE_TIME = 15 # in seconds
     CHANNEL        = "burgers-in-atlanta"
     LOCALCHANNEL = "lobby0"
-
+    LOCALVIDEOID = "NoDTqebi860"
+    
     def initialize(app)
       @app     = app
       @clients = []
@@ -25,7 +26,7 @@ module Schleifer
             rescue
               p "CANT READ CHANNEL"
             end
-            
+
             @clients.each {|ws| ws.send(msg) }
 
           end
