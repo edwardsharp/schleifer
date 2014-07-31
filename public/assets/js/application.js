@@ -7,12 +7,14 @@ var clients = 0;
 
 ws.onmessage = function(message) {
   var data = JSON.parse(message.data);
-  console.log("DATA,YO:"+data);
+  console.log("message,YO:"+message);
 
   //set channel-dropdown-menu li w/ data
 //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
   $("#currActive > .badge").html(data.clients);
 
+  console.log("data.clients,YO:"+data.clients);
+  
   showVideoByID(videoContainer, data.videoid);
 };
 
