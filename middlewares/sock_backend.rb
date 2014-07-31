@@ -23,6 +23,9 @@ module Schleifer
             
             begin
               p "CHANNEL #{msg["channel"]}"
+              if(msg["channel"].empty?)
+                msg["channel"] = LOCALCHANNEL
+              end
             rescue
               p "CANT READ CHANNEL"
             end
@@ -83,7 +86,7 @@ module Schleifer
       else
         @app.call(env)
         
-        
+
 
       end
     end
