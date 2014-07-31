@@ -84,7 +84,7 @@ function showVideoByID (domElement, videoID) {
             domElement.player.loadVideoById(videoID);
         }
         //nowPlaying = player;
-        currentPopup[0].previousLanguage = language
+       // currentPopup[0].previousLanguage = language
     });
 
 }
