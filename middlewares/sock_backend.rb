@@ -20,6 +20,7 @@ module Schleifer
             puts "on.message msg: #{msg}"
            
             @clients.each {|ws| ws.send(msg) }
+
           end
         end
       end
@@ -32,33 +33,25 @@ module Schleifer
           p [:open, ws.object_id]
           @clients << ws
 
-          begin
-            count = {}
-            count["count"] = @clients.count
-            @clients.each {|ws| ws.send(count) }
-          rescue
-            puts "RESCUTE OPEN COUNT SEND!"
-          end
-
         end
 
         ws.on :message do |event|
           p [:message, event.data]
           
+          begin
+            ccount = {}
+            ccount["count"] = @clients.count
+            @redis.publish(CHANNEL, ccount) }
+          rescue
+            puts "RESCUTE CCOUNT SEND!"
+          end
+
           @redis.publish(CHANNEL, event.data)
         end
 
         ws.on :close do |event|
           p [:close, ws.object_id, event.code, event.reason]
           @clients.delete(ws)
-
-          begin
-            count = {}
-            count["count"] = @clients.count
-            @clients.each {|ws| ws.send(count) }
-          rescue
-            puts "RESCUTE CLOSE COUNT SEND!!"
-          end
           ws = nil
         end
 
