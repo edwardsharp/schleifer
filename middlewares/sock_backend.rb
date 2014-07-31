@@ -37,15 +37,6 @@ module Schleifer
 
         ws.on :message do |event|
           p [:message, event.data]
-          
-          begin
-            ccount = {}
-            ccount["count"] = @clients.count
-            @redis.publish(CHANNEL, ccount) }
-          rescue
-            puts "RESCUTE CCOUNT SEND!"
-          end
-
           @redis.publish(CHANNEL, event.data)
         end
 
