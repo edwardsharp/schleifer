@@ -23,7 +23,7 @@ module Schleifer
             
             begin
               p "VIDEOID #{msg["videoid"]}"
-              LOCALVIDEOID = msg["videoid"]
+              #LOCALVIDEOID = msg["videoid"]
               # if(msg["videoid"].empty?)
               #   msg["videoid"] = LOCALVIDEOID
               # end
