@@ -96,8 +96,9 @@ function showVideoByID (domElement, videoID) {
 showVideoByID(videoContainer , "NoDTqebi860");
 // when video ends
 function onPlayerStateChange(event) {        
-    if(event.data === 0) {            
-        event.target.playVideo();
+    if(event.data === 0) {    
+      console.log("WOULD PLAY...");        
+        //event.target.playVideo();
     }
 }
     
