@@ -52,13 +52,6 @@ module Schleifer
 
         ws.on :message do |event|
           p [:message, event.data]
-          if(event.data[:videoid])
-            
-            p "!! event.data videoid: #{event.data[:videoid]}"
-          end
-          
-          #PARZZZ
-
           @redis.publish(CHANNEL, event.data)
         end
 
