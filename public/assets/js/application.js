@@ -2,8 +2,9 @@ var scheme   = "ws://";
 var uri      = scheme + window.document.location.host + "/";
 var ws       = new WebSocket(uri);
 var videoContainer = document.getElementById("videoContainer");
-var chan = "lobby";
+var chan = "lobby0";
 var clients = 0;
+var videoid = "NoDTqebi860";
 
 ws.onmessage = function(message) {
   var data;
@@ -32,7 +33,7 @@ ws.onmessage = function(message) {
 
 $("#input-form").on("submit", function(event) {
   event.preventDefault();
-  var videoid   = $("#input-videoid")[0].value;
+  videoid   = $("#input-videoid")[0].value;
   chan = $("#input-channel")[0].value;
 
   //note the double bang to coerce a boolean, then invert. clever.

@@ -7,6 +7,7 @@ module Schleifer
   class SockBackend
     KEEPALIVE_TIME = 15 # in seconds
     CHANNEL        = "schleifer-sockz"
+    #CCHAN = "lobby0"
 
     def initialize(app)
       @app     = app
