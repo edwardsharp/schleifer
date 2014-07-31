@@ -15,7 +15,7 @@ ws.onmessage = function(message) {
   }
 
   
-  console.log("message,YO:"+message);
+  //console.log("message,YO:"+message);
 
   //set channel-dropdown-menu li w/ data
 //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
@@ -27,6 +27,12 @@ ws.onmessage = function(message) {
 
   if(data.videoid.length < 25){
     showVideoByID(videoContainer, data.videoid);
+    console.log("data.videoid,YO:"+data.videoid);
+  }
+
+  if(data.channel.length > 0 && data.channel.length < 25){
+    //$("#currActive > .badge").html(data.clients);
+    console.log("data.channel,YO:"+data.channel);
   }
   
 };
