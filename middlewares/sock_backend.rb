@@ -22,7 +22,8 @@ module Schleifer
             puts "on.message msg: #{msg}"
             
             begin
-              p "VIDEOID #{msg["videoid"]}"
+
+              p "VIDEOID #{JSON.parse(msg)["videoid"]}"
               #LOCALVIDEOID = msg["videoid"]
               # if(msg["videoid"].empty?)
               #   msg["videoid"] = LOCALVIDEOID
