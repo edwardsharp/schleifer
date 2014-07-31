@@ -1,6 +1,7 @@
 require 'faye/websocket'
 require 'thread'
 require 'redis'
+require 'json'
 
 module Schleifer
   class SockBackend
@@ -18,7 +19,9 @@ module Schleifer
           on.message do |channel, msg|
             puts "on.message msg: #{msg}"
             begin
-              msg["clients"]=@clients.count
+              par = JSON.parse(msg)
+              par["clients"]=@clients.count
+              msg = par.to_s
             rescue 
               p "CANNOT SET CLIENT COUNT!"
             end
@@ -41,7 +44,7 @@ module Schleifer
           begin
             event.data["clients"]=@clients.count
           rescue 
-            p "CANNOT SET CLIENT COUNT!"
+            p "CANNOT SET CLIENT COUNT FOR EVENT DATA!"
           end
           @redis.publish(CHANNEL, event.data)
         end
