@@ -9,7 +9,7 @@ ws.onmessage = function(message) {
   //set channel-dropdown-menu li w/ data
 //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
   $("#currActive > .badge").html(data.clients);
-  
+
   showVideoByID(videoContainer, data.videoid);
 };
 
@@ -83,7 +83,7 @@ function showVideoByID (domElement, videoID) {
             //player.loadVideoById({videoId:String, startSeconds:Number, endSeconds:Number, suggestedQuality:String}):Void
             domElement.player.loadVideoById(videoID);
         }
-        nowPlaying = player;
+        //nowPlaying = player;
         currentPopup[0].previousLanguage = language
     });
 
