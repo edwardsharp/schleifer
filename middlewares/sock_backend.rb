@@ -9,7 +9,7 @@ module Schleifer
     CHANNEL        = "burgers-in-atlanta"
     LOCALCHANNEL = "lobby0"
     LOCALVIDEOID = "NoDTqebi860"
-    
+
     def initialize(app)
       @app     = app
       @clients = []
@@ -50,7 +50,7 @@ module Schleifer
             p "RESCUE CLIENT COUNT"
           end
 
-          //LOCALCHANNEL
+          #LOCALCHANNEL
 
         end
 
