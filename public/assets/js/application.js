@@ -3,6 +3,7 @@ var uri      = scheme + window.document.location.host + "/";
 var ws       = new WebSocket(uri);
 var videoContainer = document.getElementById("videoContainer");
 var chan = "lobby";
+var clients = 0;
 
 ws.onmessage = function(message) {
   var data = JSON.parse(message.data);
@@ -21,7 +22,7 @@ $("#input-form").on("submit", function(event) {
   //note the double bang to coerce a boolean, then invert. clever.
   if(!!$.trim($("#input-videoid").val()).length){
     //ws.send(JSON.stringify({ handle: handle, text: text }));
-    ws.send(JSON.stringify({ chan: chan, videoid: videoid }));
+    ws.send(JSON.stringify({ chan: chan, videoid: videoid, clients: clients }));
     $("#input-videoid")[0].value = "";
   }
 });
