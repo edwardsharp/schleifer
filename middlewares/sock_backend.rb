@@ -83,18 +83,7 @@ module Schleifer
       else
         @app.call(env)
         
-        begin
-          if(@clients.count > 0)
-            mPing = {}
-            mPing["clients"] = (@clients.count-1).to_s
-            mPing["videoid"] = LOCALVIDEOID
-            mPing["channel"] = LOCALCHANNEL
-            p [:message, mPing]
-            @redis.publish(CHANNEL, mPing.to_json)
-          end
-        rescue
-          p "RESCUE CLIENT PING!!"
-        end
+        
 
       end
     end
