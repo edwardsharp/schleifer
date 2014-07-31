@@ -68,14 +68,14 @@ function showVideoByID (domElement, videoID) {
      
                 videoId     : videoID,
                 playerVars: {
-                    'rel'       : 0,
-                    'autoplay'  : 1,
-                    'loop'      : 1,
-                    'playlist'  : videoID,
-                    controls    : 0,
-                    showinfo    : 0 ,
-                    modestbranding : 1,
-                    wmode       : "opaque"
+                    'rel'           : 0,
+                    'autoplay'      : 1,
+                    'loop'          : 1,
+                    'playlist'      : videoID,
+                    'controls'      : 0,
+                    'showinfo'      : 0 ,
+                    'modestbranding'  : 1,
+                    'wmode'          : "opaque"
                 },
                 events: {
                   'onStateChange': onPlayerStateChange
