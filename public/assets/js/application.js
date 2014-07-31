@@ -31,7 +31,7 @@ ws.onmessage = function(message) {
   }
 
   if(data.channel.length > 0 && data.channel.length < 25){
-    //$("#currActive > .badge").html(data.clients);
+    $("#input-channel").val(data.chennel);
     console.log("data.channel,YO:"+data.channel);
   }
   
