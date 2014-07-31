@@ -26,6 +26,7 @@ ws.onmessage = function(message) {
   }
 
   if(data.videoid.length < 25){
+    $("#input-videoid").val(data.videoid);
     showVideoByID(videoContainer, data.videoid);
     console.log("data.videoid,YO:"+data.videoid);
   }
@@ -46,7 +47,7 @@ $("#input-form").on("submit", function(event) {
   if(!!$.trim($("#input-videoid").val()).length){
     //ws.send(JSON.stringify({ handle: handle, text: text }));
     ws.send(JSON.stringify({ channel: channel, videoid: videoid, clients: clients }));
-    $("#input-videoid")[0].value = "";
+    //$("#input-videoid")[0].value = "";
   }
 });
 
