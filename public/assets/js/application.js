@@ -119,17 +119,29 @@ function showVideoByID (domElement, videoID) {
 
 function updateTimeTimeout() {
 
-  if (!sessionStorage['currentVideoTime']) {
-    //get time!?
-    sessionStorage['currentVideoTime'] = 0;
-  } else {
-    sessionStorage['currentVideoId']++;
-  }
+  // if (!sessionStorage['currentVideoTime']) {
+  //   //get time!?
+  //   sessionStorage['currentVideoTime'] = 0;
+  // } else {
+  //   sessionStorage['currentVideoId']++;
+  // }
 
-  document.querySelector('#videoListContent').innerHTML = 
-      '<p>' + sessionStorage.getItem('currentVideoId') + ' times</p>';
+  // document.querySelector('#videoListContent').innerHTML = 
+  //     '<p>' + sessionStorage.getItem('currentVideoId') + ' times</p>';
+  
+  var time = videoContainer.player.getCurrentTime();
+  
+  var hours = Math.floor(time / 3600);
+  time -= hours * 3600;
+  var minutes = Math.floor(time / 60);
+  time -= minutes * 60;
+  var seconds = parseInt(time % 60, 10);
+  var currTime = hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+  $("#currTime").html(currTime);
+  
 }
 
+var myTimer = setInterval(updateTimeTimeout, 1000);
 // end of "mini library"
 
 
