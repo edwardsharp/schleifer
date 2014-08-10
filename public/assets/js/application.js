@@ -136,7 +136,7 @@ function updateTimeTimeout() {
   var minutes = Math.floor(time / 60);
   time -= minutes * 60;
   var seconds = parseInt(time % 60, 10);
-  var currTime = (hours < 1 ? (hours + ':') : '') + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+  var currTime = (hours < 1 ? '' : (hours + ':')) + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
   $("#currTime").html(currTime);
   
 }
