@@ -154,7 +154,7 @@ function showVideoByID (domElement, videoID) {
 
 }
 
-function updateTimeTimeout() {
+function setTimeTimeout() {
 
   // if (!sessionStorage['currentVideoTime']) {
   //   //get time!?
@@ -180,7 +180,22 @@ function updateTimeTimeout() {
   ws.send(JSON.stringify({ channel: channel, videoid: videoid, clients: clients }));
 }
 
-var myTimer = setInterval(updateTimeTimeout, 1000);
+var myTimer = setInterval(setTimeTimeout, 1000);
+
+function stopTimeTimeout(){
+    if (myTimer != null){
+      clearInterval(myTimer);
+      myTimer = null;
+    }
+  
+}
+
+function startTimeTimeout(){
+    if (myTimer == null){
+      var myTimer = setInterval(setTimeTimeout, 1000);
+    }
+  
+}
 // end of "mini library"
 
 
@@ -190,6 +205,14 @@ function onPlayerStateChange(event) {
     if(event.data === 0) {    
       console.log("WOULD PLAY... WS SENDING!!!");        
       ws.send(JSON.stringify({ channel: channel, videoid: videoid}));   
+    }
+    if(event.data === 1) {    
+      console.log("NEED TO START INTERVAL!!!");        
+      
+    }
+    if(event.data === 2) {    
+      console.log("GONNA CANCEL INTERVAL!!!");        
+      
     }
 }
 
