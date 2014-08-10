@@ -158,10 +158,9 @@ function onPlayerStateChange(event) {
 
 $(".videoListItem").on("click", function(event) {
   event.preventDefault();
-  videoid   = $("#input-videoid")[0].value;
+  $("#input-videoid")[0].value = $(this).data('value');
   //channel = $("#input-channel")[0].value;
-  var value = $(this).data('value');
-  ws.send(JSON.stringify({ channel: channel, videoid: videoid, clients: clients }));
+  ws.send(JSON.stringify({ channel: channel, videoid: $(this).data('value'), clients: clients }));
   //showVideoByID(videoContainer , value);
 });
 
