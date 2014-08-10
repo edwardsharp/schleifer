@@ -109,7 +109,7 @@ function showVideoByID (domElement, videoID) {
             });
         } else {
             //player.loadVideoById({videoId:String, startSeconds:Number, endSeconds:Number, suggestedQuality:String}):Void
-            domElement.player.showVideoByID(videoID);
+            domElement.player.loadVideoById(videoID);
         }
         //nowPlaying = player;
        // currentPopup[0].previousLanguage = language
