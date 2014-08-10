@@ -201,7 +201,7 @@ function stopTimeTimeout(){
 
 function startTimeTimeout(){
   console.log("GONNA startTimeTimeout, myTimer:"+myTimer);
-  myTimer = setInterval(setTimeTimeout, 1000);
+  var myTimer = setInterval(setTimeTimeout, 1000);
 }
 // end of "mini library"
 
@@ -232,7 +232,7 @@ $(".videoListItem").click( function(event) {
       console.log("GOT onPlayerStateChange event.data:"+event.data);  
       //TODO: CANCEL INTERVAL IF VIDEO IS PAUSED!   
       if(event.data === 0) {            
-          event.target.playVideo();
+        event.target.playVideo();
       }
       if(event.data === 1) {  
         startTimeTimeout() ;       
