@@ -14,7 +14,7 @@ ws.onmessage = function(message) {
   try{
     data = JSON.parse(message.data);
 
-  console.log("message,YO:"+message);
+  console.log("message,YO:"+message.data);
 
   //set channel-dropdown-menu li w/ data
 //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
@@ -26,6 +26,7 @@ ws.onmessage = function(message) {
 
     if(data.videoid && data.videoid.length < 13){
       //CHECK IF VIDEO IS ALREADY PLAING!
+      console.log("GOT data.videoid:"+data.videoid + "GONNA CHECK IF EXISTZ!");
       if(videoid != data.videoid){
         videoid = data.videoid;
         showVideoByID(videoContainer, data.videoid);
@@ -67,7 +68,7 @@ $("#input-form").on("submit", function(event) {
   //note the double bang to coerce a boolean, then invert. clever.
   if(!!$.trim($("#input-videoid").val()).length){
     //ws.send(JSON.stringify({ handle: handle, text: text }));
-    ws.send(JSON.stringify({ channel: channel, videoid: videoid, clients: clients}));
+    ws.send(JSON.stringify({ channel: channel, videoid: videoid}));
     //$("#input-videoid")[0].value = "";
     // showVideoByID(videoContainer, videoid);
   }
