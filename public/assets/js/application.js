@@ -14,7 +14,7 @@ ws.onmessage = function(message) {
   try{
     data = JSON.parse(message.data);
 
-  //console.log("message,YO:"+message);
+  console.log("message,YO:"+message);
 
   //set channel-dropdown-menu li w/ data
 //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
@@ -24,7 +24,7 @@ ws.onmessage = function(message) {
       console.log("data.clients,YO:"+data.clients);
     }
 
-    if(data.videoid && data.videoid.length < 25){
+    if(data.videoid && data.videoid.length < 13){
       //CHECK IF VIDEO IS ALREADY PLAING!
       if(videoid != data.videoid){
         videoid = data.videoid;
