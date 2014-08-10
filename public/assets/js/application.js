@@ -46,7 +46,7 @@ ws.onmessage = function(message) {
 
     }
 
-    if(data.currTime && data.currTime.length > 0 && data.currTime.length < 25){
+    if(data.currTime && data.currTime.length){
       //$("#input-channel").val(data.chennel);
       console.log("data.currTime, YO!!:"+data.currTime);
 
