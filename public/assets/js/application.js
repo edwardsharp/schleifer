@@ -64,14 +64,15 @@ $("#input-form").on("submit", function(event) {
   videoid   = $("#input-videoid")[0].value;
   //channel = $("#input-channel")[0].value;
 
-  showVideoByID(videoContainer, videoid);
-
   //note the double bang to coerce a boolean, then invert. clever.
   if(!!$.trim($("#input-videoid").val()).length){
     //ws.send(JSON.stringify({ handle: handle, text: text }));
     ws.send(JSON.stringify({ channel: channel, videoid: videoid}));
     //$("#input-videoid")[0].value = "";
+    showVideoByID(videoContainer, videoid);
   }
+
+  
 });
 
 // $("#dropdown").on("change", function(event) {
