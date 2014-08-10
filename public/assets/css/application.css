@@ -79,7 +79,7 @@ img {
 
 .videoListItem .desc {
   color: #21A1D2;
-  font-size: 6px;
+  font-size: 9px;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space: nowrap; 
