@@ -85,9 +85,9 @@ function loadYouTubeAPI (callBack) {
 }
 
 function showVideoByID (domElement, videoID) {
-
+    videoid = videoID;
     //push thumb
-    $("#videoL").append('<img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" class="navbar-image" border="0" />');
+    //$("#videoL").append('<img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" class="navbar-image" border="0" />');
     loadYouTubeAPI(function () {
         if (!domElement.player) {
             domElement.player = new YT.Player(domElement, {
