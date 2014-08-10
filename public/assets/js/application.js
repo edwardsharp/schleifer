@@ -41,7 +41,7 @@ ws.onmessage = function(message) {
 $("#input-form").on("submit", function(event) {
   event.preventDefault();
   videoid   = $("#input-videoid")[0].value;
-  channel = $("#input-channel")[0].value;
+  //channel = $("#input-channel")[0].value;
 
   //note the double bang to coerce a boolean, then invert. clever.
   if(!!$.trim($("#input-videoid").val()).length){
@@ -147,7 +147,7 @@ function onPlayerStateChange(event) {
 $(".videoListItem").on("click", function(event) {
   event.preventDefault();
   videoid   = $("#input-videoid")[0].value;
-  channel = $("#input-channel")[0].value;
+  //channel = $("#input-channel")[0].value;
   var value = $(this).data('value');
   showVideoByID(videoContainer , value);
 });
