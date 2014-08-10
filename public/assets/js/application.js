@@ -161,7 +161,8 @@ $(".videoListItem").on("click", function(event) {
   videoid   = $("#input-videoid")[0].value;
   //channel = $("#input-channel")[0].value;
   var value = $(this).data('value');
-  showVideoByID(videoContainer , value);
+  ws.send(JSON.stringify({ channel: channel, videoid: videoid, clients: clients }));
+  //showVideoByID(videoContainer , value);
 });
 
         
