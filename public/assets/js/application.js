@@ -187,7 +187,7 @@ function onPlayerStateChange(event) {
 
 
 
-$(".videoListItem").on("click", function(event) {
+$(".videoListItem").click( function(event) {
   event.preventDefault();
   $("#input-videoid")[0].value = $(this).data('value');
   //channel = $("#input-channel")[0].value;
