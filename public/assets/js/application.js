@@ -208,12 +208,7 @@ function onPlayerStateChange(event) {
       console.log("WOULD PLAY... WS SENDING!!!");        
       ws.send(JSON.stringify({ channel: channel, videoid: videoid}));   
     }
-    if(event.data === 1) {  
-      startTimeTimeout() ;       
-    }
-    if(event.data === 2) {    
-      stopTimeTimeout();
-    }
+    
 }
 
 
@@ -231,9 +226,15 @@ $(".videoListItem").click( function(event) {
     function onPlayerStateChange(event) { 
       console.log("GOT onPlayerStateChange event.data:"+event.data);  
       //TODO: CANCEL INTERVAL IF VIDEO IS PAUSED!   
-        if(event.data === 0) {            
-            event.target.playVideo();
-        }
+      if(event.data === 0) {            
+          event.target.playVideo();
+      }
+      if(event.data === 1) {  
+        startTimeTimeout() ;       
+      }
+      if(event.data === 2) {    
+        stopTimeTimeout();
+      }
     }
 
 
