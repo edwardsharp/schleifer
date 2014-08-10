@@ -51,9 +51,9 @@ img {
 .videoListContainer {
   width: 92%;
   overflow: hidden;
-  margin-top: 20px;
+  margin-top: 0px;
   margin-left:4%;
-  padding-bottom: 20px;
+  padding-bottom: 0px;
 }
 
 .videoList {
@@ -65,29 +65,29 @@ img {
 
 .videoListItem {
   display: block;
-  width: 148px;
-  height: 148px;
+  width: 50px;
+  height: 50px;
   float: left;
   margin: 0;
-  padding: 10px;
+  padding: 2px;
 }
 
 .videoListThumb {
   /*position: relative;*/
   overflow:hidden;
-  height: 84px;
+  height: 66px;
 }
 
 .videoListThumb img {
   width: 100%;
   position: relative;
-  top: -13px;
+  top: -3px;
 }
 
 .videoListItem .desc {
   color: #21A1D2;
-  font-size: 15px;
-  margin-top:5px;
+  font-size: 10px;
+  margin-top:0px;
 }
 
 .videoListItem:hover {
@@ -104,9 +104,9 @@ img {
   color: #fff;
   position: absolute;
   background: #777;
-  padding: 15px;
-  left: -25px;
-  top: -130px;
+  padding: 2px;
+  left: -5px;
+  top: -13px;
   z-index: 99;
   cursor: pointer;
 }
@@ -115,9 +115,9 @@ img {
   color: #fff;
   position: absolute;
   background: #777;
-  padding: 15px;
-  right: -25px;
-  top: -130px;
+  padding: 2px;
+  right: -5px;
+  top: -13px;
   z-index:100;
   cursor: pointer;
 }
