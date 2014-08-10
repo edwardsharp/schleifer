@@ -104,11 +104,16 @@ function showVideoByID (domElement, videoID) {
       ');
 
     var myID = '#' + videoID;
-    if ( $( myID ).length ) {
-      console.log("IT ALREADY EXISTZ!"); 
-    }else{
-      mElem.appendTo(".videoList");
+    try {
+      if ( $( myID ).length ) {
+        console.log("IT ALREADY EXISTZ!"); 
+      }else{
+        mElem.appendTo(".videoList");
+      }
+    }catch {
+      console.log("CAUGHT LENGTH ERROR!!!"); 
     }
+    
 
     //push thumb
     //$("#videoL").append('<img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" class="navbar-image" border="0" />');
