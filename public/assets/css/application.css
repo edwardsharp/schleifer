@@ -49,12 +49,12 @@ img {
 
 /*  video playlist */
 .videoListContainer {
-  width: 92%;
-  overflow: hidden;
+
+  overflow: scroll;
 }
 
 .videoList {
-  width: 1344px;
+
 
 }
 
