@@ -183,6 +183,7 @@ function setTimeTimeout() {
 var myTimer = setInterval(setTimeTimeout, 1000);
 
 function stopTimeTimeout(){
+  console.log("GONNA stopTimeTimeout, myTimer:"+myTimer);
     if (myTimer != null){
       clearInterval(myTimer);
       myTimer = null;
@@ -191,6 +192,7 @@ function stopTimeTimeout(){
 }
 
 function startTimeTimeout(){
+  console.log("GONNA startTimeTimeout, myTimer:"+myTimer);
     if (myTimer == null){
       var myTimer = setInterval(setTimeTimeout, 1000);
     }
@@ -206,13 +208,11 @@ function onPlayerStateChange(event) {
       console.log("WOULD PLAY... WS SENDING!!!");        
       ws.send(JSON.stringify({ channel: channel, videoid: videoid}));   
     }
-    if(event.data === 1) {    
-      console.log("NEED TO START INTERVAL!!!");        
-      
+    if(event.data === 1) {  
+      startTimeTimeout() ;       
     }
     if(event.data === 2) {    
-      console.log("GONNA CANCEL INTERVAL!!!");        
-      
+      stopTimeTimeout();
     }
 }
 
