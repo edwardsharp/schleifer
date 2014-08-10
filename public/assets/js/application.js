@@ -11,31 +11,31 @@ ws.onmessage = function(message) {
   var data;
   try{
     data = JSON.parse(message.data);
-  }catch(e){
-    console.log("CAUGHT ERROR" + e);
-  }
 
-  
   //console.log("message,YO:"+message);
 
   //set channel-dropdown-menu li w/ data
 //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
   
-  if(data.clients > 0){
-    $("#currActive > .badge").html(data.clients);
-    console.log("data.clients,YO:"+data.clients);
-  }
+    if(data.clients > 0){
+      $("#currActive > .badge").html(data.clients);
+      console.log("data.clients,YO:"+data.clients);
+    }
 
-  if(data.videoid.length < 25){
-    showVideoByID(videoContainer, data.videoid);
-    console.log("data.videoid,YO:"+data.videoid);
-  }
+    if(data.videoid.length < 25){
+      showVideoByID(videoContainer, data.videoid);
+      console.log("data.videoid,YO:"+data.videoid);
+    }
 
-  if(data.channel.length > 0 && data.channel.length < 25){
-    //$("#input-channel").val(data.chennel);
-    console.log("data.channel,YO:"+data.channel);
-  }
+    if(data.channel.length > 0 && data.channel.length < 25){
+      //$("#input-channel").val(data.chennel);
+      console.log("data.channel,YO:"+data.channel);
+    }
+  }catch(e){
+    
+    console.log("CAUGHT ERROR" + e);
   
+  }
 };
 
 $("#input-form").on("submit", function(event) {
