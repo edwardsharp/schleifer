@@ -36,12 +36,18 @@ ws.onmessage = function(message) {
 
     if(data.channel && data.channel.length > 0 && data.channel.length < 25){
       //$("#input-channel").val(data.chennel);
-      console.log("data.channel,YO:"+data.channel);
+      console.log("data.channel,YO!:"+data.channel);
     }
 
     if(data.playlist && data.playlist.length > 0 && data.playlist.length < 25){
       //$("#input-channel").val(data.chennel);
-      console.log("data.playlist,YO:"+data.playlist);
+      console.log("data.playlist,YO!:"+data.playlist);
+
+    }
+
+    if(data.currTime && data.currTime.length > 0 && data.currTime.length < 25){
+      //$("#input-channel").val(data.chennel);
+      console.log("data.currTime, YO!!:"+data.currTime);
 
     }
 
