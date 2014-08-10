@@ -5,7 +5,7 @@ var videoContainer = document.getElementById("videoContainer");
 var channel = "lobby0";
 var clients = 0;
 var videoid = "MwlU824cS4s";
-var videoList = [];
+var videoList = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
 
 ws.onmessage = function(message) {
   var data;
@@ -162,6 +162,7 @@ function updateTimeTimeout() {
   
   var time = videoContainer.player.getCurrentTime();
   
+  
   var hours = Math.floor(time / 3600);
   time -= hours * 3600;
   var minutes = Math.floor(time / 60);
@@ -170,6 +171,7 @@ function updateTimeTimeout() {
   var currTime = (hours < 1 ? '' : (hours + ':')) + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
   $("#currTime").html(currTime);
   
+  ws.send(JSON.stringify({ channel: channel, videoid: videoid, clients: clients }));
 }
 
 var myTimer = setInterval(updateTimeTimeout, 1000);
@@ -197,7 +199,9 @@ $(".videoListItem").click( function(event) {
 
         
     // when video ends
-    function onPlayerStateChange(event) {        
+    function onPlayerStateChange(event) { 
+      console.log("GOT onPlayerStateChange event.data:"+event.data);  
+      //TODO: CANCEL INTERVAL IF VIDEO IS PAUSED!   
         if(event.data === 0) {            
             event.target.playVideo();
         }

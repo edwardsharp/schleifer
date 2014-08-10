@@ -8,7 +8,9 @@ module Schleifer
     KEEPALIVE_TIME = 15 # in seconds
     CHANNEL        = "burgers-in-atlanta"
     LOCALCHANNEL = "lobby0"
- 
+    localvideolist = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
+    nowPlaying = "MwlU824cS4s"
+    currentTime = "0"
 
     def initialize(app)
       @app     = app
@@ -56,6 +58,8 @@ module Schleifer
           end
           #LOCALCHANNEL
 
+          #nowPlaying & currentTime
+
         end
 
         ws.on :message do |event|
@@ -64,7 +68,7 @@ module Schleifer
 
           begin #LOCALCHANNEL
             mPlaylist = {}
-            mPlaylist[LOCALCHANNEL] = event.data
+            mPlaylist[LOCALCHANNEL] = localvideolist
             @redis.set LOCALCHANNEL, mPlaylist
             @redis.publish(CHANNEL, mPlaylist)
           rescue
