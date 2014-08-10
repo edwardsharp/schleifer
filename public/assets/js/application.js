@@ -125,13 +125,14 @@ function showVideoByID (domElement, videoID) {
     //push onto the playlist stack
 
     var mElem = $('\
-        <div class="videoListItem" data-value="SNWVvZi3HX8"> \
+        <div class="videoListItem" id="SNWVvZi3HX8" data-value="SNWVvZi3HX8"> \
           <div class="videoListThumb"><img src="http://img.youtube.com/vi/SNWVvZi3HX8/0.jpg" title="Marvin Minsky on Consciousness"></div> \
           <div class="desc">Marvin Minsky on Consciousness</div> \
         </div> \
       ');
 
-    if($(mElem).length){
+    var myID = "#" + videoID;
+    if($(myID).length == 0){
       mElem.appendTo(".videoList");
     }
     
