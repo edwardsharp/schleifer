@@ -131,7 +131,7 @@ function showVideoByID (domElement, videoID) {
         </div> \
       ');
 
-    if(jQuery(mElem).length){
+    if($(mElem).length){
       mElem.appendTo(".videoList");
     }
     
