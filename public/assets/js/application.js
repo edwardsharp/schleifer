@@ -6,7 +6,7 @@ var channel = "lobby0";
 var clients = 0;
 var videoid = "MwlU824cS4s";
 var videoList = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
-var myTimer = null;
+var myTimer;
 var currTime = 0;
 
 ws.onmessage = function(message) {
@@ -194,14 +194,14 @@ function stopTimeTimeout(){
     if (myTimer){
       console.log("GONNA stopTimeTimeout, myTimer:"+myTimer);
       clearInterval(myTimer);
-      myTimer = null;
+      //myTimer = null;
     }
   
 }
 
 function startTimeTimeout(){
   console.log("GONNA startTimeTimeout, myTimer:"+myTimer);
-  var myTimer = setInterval(setTimeTimeout, 1000);
+  myTimer = setInterval(setTimeTimeout, 1000);
 }
 // end of "mini library"
 
