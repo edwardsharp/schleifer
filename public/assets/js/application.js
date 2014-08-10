@@ -69,7 +69,7 @@ $("#input-form").on("submit", function(event) {
     //ws.send(JSON.stringify({ handle: handle, text: text }));
     ws.send(JSON.stringify({ channel: channel, videoid: videoid}));
     //$("#input-videoid")[0].value = "";
-    showVideoByID(videoContainer, videoid);
+    // showVideoByID(videoContainer, videoid);
   }
 
   
