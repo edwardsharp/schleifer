@@ -32,7 +32,7 @@ ws.onmessage = function(message) {
       console.log("data.channel,YO:"+data.channel);
     }
   }catch(e){
-    
+
     console.log("CAUGHT ERROR" + e);
   
   }
@@ -116,6 +116,20 @@ function showVideoByID (domElement, videoID) {
     });
 
 }
+
+function updateTimeTimeout() {
+
+  if (!sessionStorage['currentVideoTime']) {
+    //get time!?
+    sessionStorage['currentVideoTime'] = 0;
+  } else {
+    sessionStorage['currentVideoId']++;
+  }
+
+  document.querySelector('#videoListContent').innerHTML = 
+      '<p>' + sessionStorage.getItem('currentVideoId') + ' times</p>';
+}
+
 // end of "mini library"
 
 

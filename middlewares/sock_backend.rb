@@ -8,7 +8,7 @@ module Schleifer
     KEEPALIVE_TIME = 15 # in seconds
     CHANNEL        = "burgers-in-atlanta"
     LOCALCHANNEL = "lobby0"
-    localvideoid = "NoDTqebi860"
+ 
 
     def initialize(app)
       @app     = app
@@ -46,13 +46,33 @@ module Schleifer
             p "RESCUE CLIENT COUNT"
           end
 
+          begin
+            mPlaylist = {}
+            #JSON.parse() needed?
+            mPlaylist[LOCALCHANNEL] = @redis.get LOCALCHANNEL
+            @redis.publish CHANNEL, mPlaylist.to_json
+          rescue
+            p "RESCUE REDIS GET WITH: #{LOCALCHANNEL} !"
+          end
           #LOCALCHANNEL
 
         end
 
         ws.on :message do |event|
           p [:message, event.data]
+
+
+          begin #LOCALCHANNEL
+            mPlaylist = {}
+            mPlaylist[LOCALCHANNEL] = event.data
+            @redis.set LOCALCHANNEL, mPlaylist
+            @redis.publish(CHANNEL, mPlaylist)
+          rescue
+            p "RESCUE REDIS SET & PUB TO #{LOCALCHANNEL} & #{CHANNEL} !!!"
+          end #LOCALCHANNEL
+
           @redis.publish(CHANNEL, event.data)
+
         end
 
         ws.on :close do |event|

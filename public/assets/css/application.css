@@ -44,3 +44,88 @@ img {
   width: 20px;
   display: inline;
 }
+
+
+
+/*  video playlist */
+.videoListContainer {
+  width: 92%;
+  overflow: hidden;
+  margin-top: 20px;
+  margin-left:4%;
+  padding-bottom: 20px;
+}
+
+.videoList {
+  width: 1344px;
+  position: relative;
+  top:0;
+  left: 0;
+}
+
+.videoListItem {
+  display: block;
+  width: 148px;
+  height: 148px;
+  float: left;
+  margin: 0;
+  padding: 10px;
+}
+
+.videoListThumb {
+  /*position: relative;*/
+  overflow:hidden;
+  height: 84px;
+}
+
+.videoListThumb img {
+  width: 100%;
+  position: relative;
+  top: -13px;
+}
+
+.videoListItem .desc {
+  color: #21A1D2;
+  font-size: 15px;
+  margin-top:5px;
+}
+
+.videoListItem:hover {
+  background: #eee;
+  cursor: pointer;
+}
+
+.videoListArrows {
+  position:relative;
+  width: 100%;
+}
+
+.videoListArrowLeft {
+  color: #fff;
+  position: absolute;
+  background: #777;
+  padding: 15px;
+  left: -25px;
+  top: -130px;
+  z-index: 99;
+  cursor: pointer;
+}
+
+.videoListArrowRight {
+  color: #fff;
+  position: absolute;
+  background: #777;
+  padding: 15px;
+  right: -25px;
+  top: -130px;
+  z-index:100;
+  cursor: pointer;
+}
+
+.videoListArrowLeft:hover {
+  background: #CC181E;
+}
+
+.videoListArrowRight:hover {
+  background: #CC181E;
+}
