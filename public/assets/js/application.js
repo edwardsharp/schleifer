@@ -4,7 +4,8 @@ var ws       = new WebSocket(uri);
 var videoContainer = document.getElementById("videoContainer");
 var channel = "lobby0";
 var clients = 0;
-var videoid = "NoDTqebi860";
+var videoid = "MwlU824cS4s";
+var videoList = [];
 
 ws.onmessage = function(message) {
   var data;
@@ -26,13 +27,12 @@ ws.onmessage = function(message) {
   }
 
   if(data.videoid.length < 25){
-    $("#input-videoid").val(data.videoid);
     showVideoByID(videoContainer, data.videoid);
     console.log("data.videoid,YO:"+data.videoid);
   }
 
   if(data.channel.length > 0 && data.channel.length < 25){
-    $("#input-channel").val(data.chennel);
+    //$("#input-channel").val(data.chennel);
     console.log("data.channel,YO:"+data.channel);
   }
   
@@ -85,6 +85,9 @@ function loadYouTubeAPI (callBack) {
 }
 
 function showVideoByID (domElement, videoID) {
+
+    //push thumb
+    $("#videoL").append('<img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" class="navbar-image" border="0" />');
     loadYouTubeAPI(function () {
         if (!domElement.player) {
             domElement.player = new YT.Player(domElement, {
@@ -116,7 +119,7 @@ function showVideoByID (domElement, videoID) {
 // end of "mini library"
 
 
-showVideoByID(videoContainer , "NoDTqebi860");
+showVideoByID(videoContainer , videoid);
 // when video ends
 function onPlayerStateChange(event) {        
     if(event.data === 0) {    
