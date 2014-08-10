@@ -18,12 +18,12 @@ ws.onmessage = function(message) {
   //set channel-dropdown-menu li w/ data
 //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
   
-    if(data.clients > 0){
+    if(data.clients && data.clients > 0){
       $("#currActive > .badge").html(data.clients);
       console.log("data.clients,YO:"+data.clients);
     }
 
-    if(data.videoid.length < 25){
+    if(data.videoid && data.videoid.length < 25){
       //CHECK IF VIDEO IS ALREADY PLAING!
       if(videoid != data.videoid){
         videoid = data.videoid;
@@ -34,12 +34,12 @@ ws.onmessage = function(message) {
       
     }
 
-    if(data.channel.length > 0 && data.channel.length < 25){
+    if(data.channel && data.channel.length > 0 && data.channel.length < 25){
       //$("#input-channel").val(data.chennel);
       console.log("data.channel,YO:"+data.channel);
     }
 
-    if(data.playlist.length > 0 && data.playlist.length < 25){
+    if(data.playlist && data.playlist.length > 0 && data.playlist.length < 25){
       //$("#input-channel").val(data.chennel);
       console.log("data.playlist,YO:"+data.playlist);
 
