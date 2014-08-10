@@ -23,8 +23,14 @@ ws.onmessage = function(message) {
     }
 
     if(data.videoid.length < 25){
-      showVideoByID(videoContainer, data.videoid);
-      console.log("data.videoid,YO:"+data.videoid);
+      //CHECK IF VIDEO IS ALREADY PLAING!
+      if(videoid != data.videoid){
+        videoid = data.videoid;
+        showVideoByID(videoContainer, data.videoid);
+        console.log("GOT A NEW data.videoid, YO!:"+data.videoid);
+      }
+      
+      
     }
 
     if(data.channel.length > 0 && data.channel.length < 25){
