@@ -173,16 +173,16 @@ function setTimeTimeout() {
   // document.querySelector('#videoListContent').innerHTML = 
   //     '<p>' + sessionStorage.getItem('currentVideoId') + ' times</p>';
   
-  var time = videoContainer.player.getCurrentTime();
+  var currTime = videoContainer.player.getCurrentTime();
   
   
-  var hours = Math.floor(time / 3600);
-  time -= hours * 3600;
-  var minutes = Math.floor(time / 60);
-  time -= minutes * 60;
-  var seconds = parseInt(time % 60, 10);
-  var currTime = (hours < 1 ? '' : (hours + ':')) + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
-  $("#currTime").html(currTime);
+  var hours = Math.floor(currTime / 3600);
+  currTime -= hours * 3600;
+  var minutes = Math.floor(currTime / 60);
+  currTime -= minutes * 60;
+  var seconds = parseInt(currTime % 60, 10);
+  var time = (hours < 1 ? '' : (hours + ':')) + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+  $("#currTime").html(time);
   
   ws.send(JSON.stringify({ currTime: currTime }));
 }
