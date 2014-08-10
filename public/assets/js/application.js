@@ -141,7 +141,24 @@ function onPlayerStateChange(event) {
       ws.send(JSON.stringify({ channel: channel, videoid: videoid}));   
     }
 }
-    
+
+
+
+$(".videoListItem").on("click", function(event) {
+  event.preventDefault();
+  videoid   = $("#input-videoid")[0].value;
+  channel = $("#input-channel")[0].value;
+  var value = $(this).data('value');
+  showVideoByID(videoContainer , value);
+});
+
+        
+    // when video ends
+    function onPlayerStateChange(event) {        
+        if(event.data === 0) {            
+            event.target.playVideo();
+        }
+    }
 
 
     
