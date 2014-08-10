@@ -65,7 +65,7 @@ $("#input-form").on("submit", function(event) {
   //channel = $("#input-channel")[0].value;
 
   showVideoByID(videoContainer, videoid);
-  
+
   //note the double bang to coerce a boolean, then invert. clever.
   if(!!$.trim($("#input-videoid").val()).length){
     //ws.send(JSON.stringify({ handle: handle, text: text }));
@@ -187,7 +187,8 @@ function setTimeTimeout() {
   time = (hours < 1 ? '' : (hours + ':')) + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
   $("#currTime").html(time);
   
-  ws.send(JSON.stringify({ currTime: currTime }));
+  //not just yet... work up to a time sync..
+  //ws.send(JSON.stringify({ currTime: currTime }));
 }
 
 myTimer = setInterval(setTimeTimeout, 1000);
