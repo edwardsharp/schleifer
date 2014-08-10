@@ -6,6 +6,7 @@ var channel = "lobby0";
 var clients = 0;
 var videoid = "MwlU824cS4s";
 var videoList = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
+var myTimer = null;
 
 ws.onmessage = function(message) {
   var data;
@@ -177,14 +178,14 @@ function setTimeTimeout() {
   var currTime = (hours < 1 ? '' : (hours + ':')) + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
   $("#currTime").html(currTime);
   
-  ws.send(JSON.stringify({ channel: channel, videoid: videoid, clients: clients }));
+  ws.send(JSON.stringify({ currTime: currTime }));
 }
 
-var myTimer = setInterval(setTimeTimeout, 1000);
+myTimer = setInterval(setTimeTimeout, 1000);
 
 function stopTimeTimeout(){
-  console.log("GONNA stopTimeTimeout, myTimer:"+myTimer);
-    if (myTimer != null){
+    if (myTimer){
+      console.log("GONNA stopTimeTimeout, myTimer:"+myTimer);
       clearInterval(myTimer);
       myTimer = null;
     }
@@ -193,10 +194,7 @@ function stopTimeTimeout(){
 
 function startTimeTimeout(){
   console.log("GONNA startTimeTimeout, myTimer:"+myTimer);
-    if (myTimer == null){
-      var myTimer = setInterval(setTimeTimeout, 1000);
-    }
-  
+  myTimer = setInterval(setTimeTimeout, 1000);
 }
 // end of "mini library"
 
