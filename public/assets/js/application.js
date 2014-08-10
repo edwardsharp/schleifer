@@ -93,6 +93,23 @@ function loadYouTubeAPI (callBack) {
 
 function showVideoByID (domElement, videoID) {
     videoid = videoID;
+
+    //push onto the playlist stack
+
+    var mElem = $('\
+        <div class="videoListItem" id="'+videoID+'" data-value="'+videoID+'"> \
+          <div class="videoListThumb"><img src="http://img.youtube.com/vi/'+videoID+'/0.jpg" title="'+videoID+'"></div> \
+          <div class="desc">'+videoID+'</div> \
+        </div> \
+      ');
+
+    var myID = '#' + videoID;
+    if ( $( myID ).length ) {
+      console.log("IT ALREADY EXISTZ!"); 
+    }else{
+      mElem.appendTo(".videoList");
+    }
+
     //push thumb
     //$("#videoL").append('<img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" class="navbar-image" border="0" />');
     loadYouTubeAPI(function () {
@@ -122,19 +139,6 @@ function showVideoByID (domElement, videoID) {
        // currentPopup[0].previousLanguage = language
     });
 
-    //push onto the playlist stack
-
-    var mElem = $('\
-        <div class="videoListItem" id="SNWVvZi3HX8" data-value="SNWVvZi3HX8"> \
-          <div class="videoListThumb"><img src="http://img.youtube.com/vi/SNWVvZi3HX8/0.jpg" title="Marvin Minsky on Consciousness"></div> \
-          <div class="desc">Marvin Minsky on Consciousness</div> \
-        </div> \
-      ');
-
-    var myID = "#" + videoID;
-    if($(myID).length == 0){
-      mElem.appendTo(".videoList");
-    }
     
 
 }
