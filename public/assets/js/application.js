@@ -197,8 +197,8 @@ myTimer = setInterval(setTimeTimeout, 1000);
 
 function stopTimeTimeout(){
     if (myTimer){
-      console.log("GONNA stopTimeTimeout, myTimer:"+myTimer);
-      clearInterval(myTimer);
+      console.log("SHOULD stopTimeTimeout, myTimer:"+myTimer);
+      //clearInterval(myTimer);
       //myTimer = null;
     }
   
