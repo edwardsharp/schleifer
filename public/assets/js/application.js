@@ -110,7 +110,7 @@ function showVideoByID (domElement, videoID) {
       }else{
         mElem.appendTo(".videoList");
       }
-    }catch {
+    }catch(e) {
       console.log("CAUGHT LENGTH ERROR!!!"); 
     }
     
