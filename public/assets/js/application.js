@@ -31,6 +31,13 @@ ws.onmessage = function(message) {
       //$("#input-channel").val(data.chennel);
       console.log("data.channel,YO:"+data.channel);
     }
+
+    if(data.playlist.length > 0 && data.playlist.length < 25){
+      //$("#input-channel").val(data.chennel);
+      console.log("data.playlist,YO:"+data.playlist);
+
+    }
+
   }catch(e){
 
     console.log("CAUGHT ERROR" + e);
@@ -114,6 +121,15 @@ function showVideoByID (domElement, videoID) {
         //nowPlaying = player;
        // currentPopup[0].previousLanguage = language
     });
+
+    //push onto the playlist stack
+
+    $('\
+    <div class="videoListItem" data-value="SNWVvZi3HX8"> \
+      <div class="videoListThumb"><img src="http://img.youtube.com/vi/SNWVvZi3HX8/0.jpg" title="Marvin Minsky on Consciousness"></div> \
+      <div class="desc">Marvin Minsky on Consciousness</div> \
+    </div> \
+    ').appendTo(".videoList");
 
 }
 
