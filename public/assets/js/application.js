@@ -67,7 +67,7 @@ $("#input-form").on("submit", function(event) {
   //note the double bang to coerce a boolean, then invert. clever.
   if(!!$.trim($("#input-videoid").val()).length){
     //ws.send(JSON.stringify({ handle: handle, text: text }));
-    ws.send(JSON.stringify({ channel: channel, videoid: videoid}));
+    ws.send(JSON.stringify({ channel: channel, videoid: videoid, clients: clients}));
     //$("#input-videoid")[0].value = "";
     // showVideoByID(videoContainer, videoid);
   }
