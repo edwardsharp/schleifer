@@ -14,7 +14,7 @@ ws.onmessage = function(message) {
   try{
     data = JSON.parse(message.data);
 
-  console.log("message,YO:"+message.data);
+  console.log("message data,YO:"+data);
 
   //set channel-dropdown-menu li w/ data
 //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
@@ -24,7 +24,7 @@ ws.onmessage = function(message) {
       console.log("data.clients,YO:"+data.clients);
     }
 
-    if(data.videoid && data.videoid.length < 13){
+    if(data.videoid && data.videoid.length < 25){
       //CHECK IF VIDEO IS ALREADY PLAING!
       console.log("GOT data.videoid:"+data.videoid + "GONNA CHECK IF EXISTZ!");
       if(videoid != data.videoid){
@@ -240,7 +240,7 @@ $(".videoListItem").click( function(event) {
         event.target.playVideo();
       }
       if(event.data === 1) {  
-        startTimeTimeout() ;       
+        startTimeTimeout();       
       }
       if(event.data === 2) {    
         stopTimeTimeout();
