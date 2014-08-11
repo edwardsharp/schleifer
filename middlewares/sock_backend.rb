@@ -48,14 +48,14 @@ module Schleifer
             p "RESCUE CLIENT COUNT"
           end
 
-          begin
-            mPlaylist = {}
-            #JSON.parse() needed?
-            mPlaylist[LOCALCHANNEL] = @redis.get LOCALCHANNEL
-            @redis.publish CHANNEL, mPlaylist.to_json
-          rescue
-            p "RESCUE REDIS GET WITH: #{LOCALCHANNEL} !"
-          end
+          # begin
+          #   mPlaylist = {}
+          #   #JSON.parse() needed?
+          #   mPlaylist[LOCALCHANNEL] = @redis.get LOCALCHANNEL
+          #   @redis.publish CHANNEL, mPlaylist.to_json
+          # rescue
+          #   p "RESCUE REDIS GET WITH: #{LOCALCHANNEL} !"
+          # end
           #LOCALCHANNEL
 
           #nowPlaying & currentTime
@@ -66,18 +66,18 @@ module Schleifer
           p [:message, event.data]
 
 
-          begin #LOCALCHANNEL
-            if(event.data["videoid"])
-              localvideolist.push(event.data.videoid) unless localvideolist.include?(event.data.videoid)
+          # begin #LOCALCHANNEL
+          #   if(event.data["videoid"])
+          #     localvideolist.push(event.data.videoid) unless localvideolist.include?(event.data.videoid)
               
-              @redis.set LOCALCHANNEL, localvideolist
-              # mPlaylist = {}
-              # mPlaylist[LOCALCHANNEL] = localvideolist
-              # @redis.publish(CHANNEL, mPlaylist)
-            end
-          rescue
-            p "RESCUE REDIS SET TO LOCALCHANNEL: #{LOCALCHANNEL} & localvideolist: #{localvideolist} !!!"
-          end #LOCALCHANNEL
+          #     @redis.set LOCALCHANNEL, localvideolist
+          #     # mPlaylist = {}
+          #     # mPlaylist[LOCALCHANNEL] = localvideolist
+          #     # @redis.publish(CHANNEL, mPlaylist)
+          #   end
+          # rescue
+          #   p "RESCUE REDIS SET TO LOCALCHANNEL: #{LOCALCHANNEL} & localvideolist: #{localvideolist} !!!"
+          # end #LOCALCHANNEL
 
           @redis.publish(CHANNEL, event.data)
 
