@@ -111,7 +111,8 @@ function loadYouTubeAPI (callBack) {
 
 function showVideoByID (domElement, videoID) {
     videoid = videoID;
-
+    
+    $("#input-videoid")[0].value = videoID;
     //push onto the playlist stack
 
     var mElem = $('\
