@@ -43,7 +43,7 @@ module Schleifer
         redis_sub.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
             puts "INIT!!! on.message msg: #{msg}"
-            unless msg = "videoid"
+            unless msg == "videoid"
               #hmm, does the default videoid need to be injected here? can be handled on client side easily enough...
               @clients.each {|ws| ws.send(msg) }
             end
