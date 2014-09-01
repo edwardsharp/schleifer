@@ -60,10 +60,8 @@ module Schleifer
         $nowPlaying = $DEFAULTNOWPLAYING
         @redis.set $NOWPLAYINGTAG, $DEFAULTNOWPLAYING
       end
-
-
-      p "GONNA RETURN getNowPlayingOrDefaultVideoID $nowPlaying: #{$nowPlaying}"
-      return $nowPlaying
+      p "getNowPlayingOrDefaultVideoID $nowPlaying: #{$nowPlaying}"
+     
     end
 
     def setNowPlaying(vidId)
@@ -87,7 +85,8 @@ module Schleifer
             mJSON["clients"] = $currentClientCount.to_s
             
             #inject the currently set video id. 
-            mJSON["videoid"] = getNowPlayingOrDefaultVideoID
+            getNowPlayingOrDefaultVideoID
+            mJSON["videoid"] = $nowPlaying
 
             #TODO: inject the list
             p [:message, mJSON]
