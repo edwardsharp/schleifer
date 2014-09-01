@@ -4,33 +4,58 @@ var ws       = new WebSocket(uri);
 var videoContainer = document.getElementById("videoContainer");
 var channel = "lobby0";
 var clients = 0;
-var videoid = "MwlU824cS4s";
-var videoList = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
+var videoid = "";
+var defaultVideoid = "MwlU824cS4s";
+var videoList = [];
+var defaultVideoList = 
+  [
+    "SNWVvZi3HX8"
+  , "s4ole_bRTdw"
+  , "_EjBtH2JFjw"
+  , "6ZG_GYNhgyI"
+  , "E5Fk32OwdbM"
+  , "KIIpRzUsIrU"
+  , "Gw0JKbnXeCM"
+  , "81SM6UFEMo4"
+  , "MwlU824cS4s"
+  ];
 var myTimer;
 var currTime = 0;
+var actionEnum = 
+  { 
+   0: "onSubmit"
+  ,1: "client_onPlayerStateChange_0" 
+  ,2: "client_videoListItem_click"
+  };
+var loggingEnabled = true;
 
+// #PRAGMA MARK - WebSocket delegatez 
 ws.onmessage = function(message) {
   var data;
   try{
     data = JSON.parse(message.data);
 
-  console.log("message data,YO:"+data);
+    logStuff("message data,YO:"+data);
 
   //set channel-dropdown-menu li w/ data
-//  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
+  //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
   
+    //increment the client count UI display (badge)
     if(data.clients && data.clients > 0){
       $("#currActive > .badge").html(data.clients);
-      console.log("data.clients,YO:"+data.clients);
+      logStuff("data.clients,YO:"+data.clients);
     }
 
+    //check if incoming message has a videoid parameter
     if(data.videoid && data.videoid.length < 25){
       //CHECK IF VIDEO IS ALREADY PLAING!
-      console.log("GOT data.videoid:"+data.videoid + "GONNA CHECK IF EXISTZ!");
+      logStuff("GOT data.videoid:"+data.videoid + "GONNA CHECK IF EXISTZ!");
+      //is this videoid already the one that is now scheduled to be playing?
       if(videoid != data.videoid){
+        //no? then update our reference. 
         videoid = data.videoid;
         showVideoByID(videoContainer, data.videoid);
-        console.log("GOT A NEW data.videoid, YO!:"+data.videoid);
+        logStuff("GOT A NEW data.videoid, YO!:"+data.videoid);
       }
       
       
@@ -38,28 +63,29 @@ ws.onmessage = function(message) {
 
     if(data.channel && data.channel.length > 0 && data.channel.length < 25){
       //$("#input-channel").val(data.chennel);
-      console.log("data.channel,YO!:"+data.channel);
+      logStuff("data.channel,YO!:"+data.channel);
     }
 
     if(data.playlist && data.playlist.length > 0 && data.playlist.length < 25){
       //$("#input-channel").val(data.chennel);
-      console.log("data.playlist,YO!:"+data.playlist);
+      logStuff("data.playlist,YO!:"+data.playlist);
 
     }
 
     if(data.currTime && data.currTime.length){
       //$("#input-channel").val(data.chennel);
-      console.log("data.currTime, YO!!:"+data.currTime);
+      logStuff("data.currTime, YO!!:"+data.currTime);
 
     }
 
   }catch(e){
 
-    console.log("CAUGHT ERROR" + e);
+    logStuff("CAUGHT ERROR" + e);
   
   }
 };
 
+//# PRAGMA MARK - form input actionz
 $("#input-form").on("submit", function(event) {
   event.preventDefault();
   videoid   = $("#input-videoid")[0].value;
@@ -68,7 +94,7 @@ $("#input-form").on("submit", function(event) {
   //note the double bang to coerce a boolean, then invert. clever.
   if(!!$.trim($("#input-videoid").val()).length){
     //ws.send(JSON.stringify({ handle: handle, text: text }));
-    ws.send(JSON.stringify({ channel: channel, videoid: videoid}));
+    ws.send(JSON.stringify({ channel: channel, videoid: videoid, action: actionEnum[0]}));
     //$("#input-videoid")[0].value = "";
     showVideoByID(videoContainer, videoid);
   }
@@ -78,7 +104,7 @@ $("#input-form").on("submit", function(event) {
 
 // $("#dropdown").on("change", function(event) {
 //   //event.preventDefault();
-//   console.log($("dropdown")[0].value);
+//   logStuff($("dropdown")[0].value);
 //   //var videoid   = $("#input-videoid")[0].value;
 //   //
 
@@ -90,7 +116,7 @@ $("#input-form").on("submit", function(event) {
 //   // }
 // });
 
-// "mini library" starts here
+//# PRAGMA MARK - YouTube "mini library" starts here
 var youTubeAPILoaded = false;
 
 function loadYouTubeAPI (callBack) {
@@ -110,27 +136,39 @@ function loadYouTubeAPI (callBack) {
 }
 
 function showVideoByID (domElement, videoID) {
-    videoid = videoID;
+    if(videoID != ""){
+      videoid = videoID;
+    }
+    else{
+      if(videoid==""){
+        //USING DEFAULT VIDEO ID. (nobody here?)
+        videoid=defaultVideoid
+      }
+    }
+
     
-    $("#input-videoid")[0].value = videoID;
+
+    $("#input-videoid")[0].value = videoid;
     //push onto the playlist stack
 
     var mElem = $('\
-        <div class="videoListItem" id="'+videoID+'" data-value="'+videoID+'"> \
-          <div class="videoListThumb"><img src="http://img.youtube.com/vi/'+videoID+'/0.jpg" title="'+videoID+'"></div> \
-          <div class="desc">'+videoID+'</div> \
+        <div class="videoListItem" id="'+videoid+'" data-value="'+videoid+'"> \
+          <div class="videoListThumb"><img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" title="'+videoid+'"></div> \
+          <div class="desc">'+videoid+'</div> \
         </div> \
       ');
 
-    var myID = '#' + videoID;
+    var myID = '#' + videoid;
     try {
       if ( $( myID ).length ) {
-        console.log("IT ALREADY EXISTZ!"); 
+        logStuff("IT ALREADY EXISTZ!"); 
       }else{
+        //these do not get .click .on or whatever handlerz!!! ahh! 
+        //TODO FIX!
         mElem.appendTo(".videoList");
       }
     }catch(e) {
-      console.log("CAUGHT LENGTH ERROR!!!"); 
+      logStuff("CAUGHT LENGTH ERROR!!!"); 
     }
     
 
@@ -140,12 +178,12 @@ function showVideoByID (domElement, videoID) {
         if (!domElement.player) {
             domElement.player = new YT.Player(domElement, {
      
-                videoId     : videoID,
+                videoId     : videoid,
                 playerVars: {
                     'rel'           : 0,
                     'autoplay'      : 1,
                     'loop'          : 1,
-                    'playlist'      : videoID,
+                    'playlist'      : videoid,
                     'controls'      : 0,
                     'showinfo'      : 0 ,
                     'modestbranding'  : 1,
@@ -157,7 +195,7 @@ function showVideoByID (domElement, videoID) {
             });
         } else {
             //player.loadVideoById({videoId:String, startSeconds:Number, endSeconds:Number, suggestedQuality:String}):Void
-            domElement.player.loadVideoById(videoID);
+            domElement.player.loadVideoById(videoid);
         }
         //nowPlaying = player;
        // currentPopup[0].previousLanguage = language
@@ -167,6 +205,7 @@ function showVideoByID (domElement, videoID) {
 
 }
 
+//time tracking stuff
 function setTimeTimeout() {
 
   // if (!sessionStorage['currentVideoTime']) {
@@ -198,7 +237,7 @@ myTimer = setInterval(setTimeTimeout, 1000);
 
 function stopTimeTimeout(){
     if (myTimer){
-      console.log("GONNA stopTimeTimeout, myTimer:"+myTimer);
+      logStuff("GONNA stopTimeTimeout, myTimer:"+myTimer);
       clearInterval(myTimer);
       //myTimer = null;
     }
@@ -206,47 +245,61 @@ function stopTimeTimeout(){
 }
 
 function startTimeTimeout(){
-  console.log("GONNA startTimeTimeout, myTimer:"+myTimer);
+  logStuff("GONNA startTimeTimeout, myTimer:"+myTimer);
   myTimer = setInterval(setTimeTimeout, 1000);
 }
 // end of "mini library"
 
+//INIT!!! 
 
-showVideoByID(videoContainer , videoid);
+showVideoByID(videoContainer, videoid)
+
+
+
 // when video ends
 function onPlayerStateChange(event) {        
     if(event.data === 0) {    
-      console.log("WOULD PLAY... WS SENDING!!!");        
-      ws.send(JSON.stringify({ channel: channel, videoid: videoid}));   
+      logStuff("WOULD PLAY... WS SENDING!!!");        
+      ws.send(JSON.stringify({ channel: channel, videoid: videoid, action: actionEnum[1]}));   
     }
     
 }
 
 
-
+//playlist click handlers 
 $(".videoListItem").click( function(event) {
   event.preventDefault();
   $("#input-videoid")[0].value = $(this).data('value');
   //channel = $("#input-channel")[0].value;
-  ws.send(JSON.stringify({ channel: channel, videoid: $(this).data('value')}));
+  ws.send(JSON.stringify({ channel: channel, videoid: $(this).data('value'), action: actionEnum[2] }));
   //showVideoByID(videoContainer , value);
 });
 
         
-    // when video ends
-    function onPlayerStateChange(event) { 
-      console.log("GOT onPlayerStateChange event.data:"+event.data);  
-      //TODO: CANCEL INTERVAL IF VIDEO IS PAUSED!   
-      if(event.data === 0) {            
-        event.target.playVideo();
-      }
-      if(event.data === 1) {  
-        startTimeTimeout();       
-      }
-      if(event.data === 2) {    
-        stopTimeTimeout();
-      }
+// when video ends
+function onPlayerStateChange(event) { 
+  logStuff("GOT onPlayerStateChange event.data:"+event.data);  
+  //TODO: CANCEL INTERVAL IF VIDEO IS PAUSED!   
+  if(event.data === 0) {            
+    event.target.playVideo();
+  }
+  if(event.data === 1) {  
+    startTimeTimeout();       
+  }
+  if(event.data === 2) {    
+    stopTimeTimeout();
+  }
+}
+
+function logStuff(what2log){
+  if(loggingEnabled){
+    try{
+      console.log(what2log);
+    }catch(Exception e){
+      //ahhh!
     }
+  }
+}
 
 
     
