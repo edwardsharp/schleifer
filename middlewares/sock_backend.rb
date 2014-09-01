@@ -120,20 +120,18 @@ module Schleifer
           if( mNowPlaying != $nowPlaying )
             #if it is not the same set it so it gets passed onto current & future clients
             setNowPlaying mNowPlaying
-            event.data["videoid"] = mNowPlaying
-            shouldPub = true
+            # event.data["videoid"] = mNowPlaying
+            @redis.publish(CHANNEL, mNowPlaying)
           end
 
 
           mClientCount = event.data["clients"]
           if( mClients != $currentClientCount )
             #some other client has con/dis-connected, publish the message to all
-            shouldPub = true
-          end
-
-          if shouldPub
             @redis.publish(CHANNEL, event.data)
           end
+
+     
 
         end
 
