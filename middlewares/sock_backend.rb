@@ -87,11 +87,12 @@ module Schleifer
             #inject the currently set video id. 
             getNowPlayingOrDefaultVideoID
             mJSON["videoid"] = $nowPlaying
-
             #TODO: inject the list
+            @redis.publish(CHANNEL, mJSON.to_json)
+            
+            puts "JUST @redis.publish'd!!!!!"
             p [:message, mJSON]
 
-            @redis.publish(CHANNEL, mJSON.to_json)
           rescue
             p "RESCUE CLIENT AND getNowPlayingOrDefaultVideoID COUNT!!"
           end
