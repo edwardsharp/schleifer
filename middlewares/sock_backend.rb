@@ -125,11 +125,11 @@ module Schleifer
           end
 
 
-          mClientCount = event.data["clients"]
-          if( mClients != $currentClientCount )
-            #some other client has con/dis-connected, publish the message to all
-            @redis.publish(CHANNEL, event.data)
-          end
+          # mClientCount = event.data["clients"]
+          # if( mClients != $currentClientCount )
+          #   #some other client has con/dis-connected, publish the message to all
+          #   @redis.publish(CHANNEL, event.data)
+          # end
 
      
 
