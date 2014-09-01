@@ -121,7 +121,12 @@ module Schleifer
           # check if the videoid in the message from the client is the same as the one in REDIS
           #TODO: use a standard enum of tagz for event data keyz... 
           
-          mNowPlaying = event.data["videoid"]
+          # try{
+
+          #   }catch(){
+              
+          #   }
+          mNowPlaying = JSON.parse(event.data["videoid"])
           p "GOT mNowPlaying:#{mNowPlaying}"
           if( mNowPlaying != $nowPlaying )
             #if it is not the same set it so it gets passed onto current & future clients
