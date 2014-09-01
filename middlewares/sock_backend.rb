@@ -58,6 +58,7 @@ module Schleifer
         $nowPlaying = DEFAULTNOWPLAYING
         @redis.set NOWPLAYINGTAG, DEFAULTNOWPLAYING
       end
+      p "GONNA RETURN getNowPlayingOrDefaultVideoID $nowPlaying: #{$nowPlaying}"
       return $nowPlaying
     end
 
