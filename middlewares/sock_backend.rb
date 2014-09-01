@@ -28,7 +28,12 @@ module Schleifer
       
       #TODO: handle init of localplaylist via redis?
       #@redis.set LOCALVIDEOLISTTAG, localvideolist
-      @redis.set NOWPLAYINGTAG, $nowPlaying
+
+      if @redis.get(NOWPLAYINGTAG).nil?
+        $nowPlaying = DEFAULTNOWPLAYING
+        @redis.set NOWPLAYINGTAG, DEFAULTNOWPLAYING
+      end
+      
 
       #TODO: multichannel
       Thread.new do
@@ -48,16 +53,11 @@ module Schleifer
 
     def getNowPlayingOrDefaultVideoID
       #@redis.set LOCALVIDEOLISTTAG, localvideolist
-      mNowPlaying = @redis.get(NOWPLAYINGTAG)
-      if mNowPlaying != $nowPlaying
-        if mNowPlaying != ""
-          #some other process must have set this...
-          $nowPlaying = mNowPlaying
-        else
-          $nowPlaying = DEFAULTNOWPLAYING
-        end
+      mNowPlaying = @redis.get NOWPLAYINGTAG
+      if mNowPlaying.nil?
+        $nowPlaying = DEFAULTNOWPLAYING
+        @redis.set NOWPLAYINGTAG, DEFAULTNOWPLAYING
       end
-      puts "getNowPlayingOrDefaultVideoID: #{$nowPlaying} "
       return $nowPlaying
     end
 
