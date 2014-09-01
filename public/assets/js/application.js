@@ -1,13 +1,10 @@
-var scheme   = "ws://";
-var uri      = scheme + window.document.location.host + "/";
-var ws       = new WebSocket(uri);
-var videoContainer = document.getElementById("videoContainer");
-var channel = "lobby0";
-var clients = 0;
-var videoid = "";
-var defaultVideoid = "MwlU824cS4s";
-var videoList = [];
-var defaultVideoList = 
+var scheme            = "ws://";
+var channel           = "lobby0";
+var clients           = 0;
+var videoid           = "";
+var defaultVideoid    = "MwlU824cS4s";
+var videoList         = [];
+var defaultVideoList  = 
   [
     "SNWVvZi3HX8"
   , "s4ole_bRTdw"
@@ -20,14 +17,14 @@ var defaultVideoList =
   , "MwlU824cS4s"
   ];
 var myTimer;
-var currTime = 0;
+var currTime          = 0;
 var actionEnum = 
   { 
    0: "onSubmit"
   ,1: "client_onPlayerStateChange_0" 
   ,2: "client_videoListItem_click"
   };
-var loggingEnabled = true;
+var loggingEnabled    = true;
 
 // #PRAGMA MARK - WebSocket delegatez 
 ws.onmessage = function(message) {
@@ -85,36 +82,7 @@ ws.onmessage = function(message) {
   }
 };
 
-//# PRAGMA MARK - form input actionz
-$("#input-form").on("submit", function(event) {
-  event.preventDefault();
-  videoid   = $("#input-videoid")[0].value;
-  //channel = $("#input-channel")[0].value;
 
-  //note the double bang to coerce a boolean, then invert. clever.
-  if(!!$.trim($("#input-videoid").val()).length){
-    //ws.send(JSON.stringify({ handle: handle, text: text }));
-    ws.send(JSON.stringify({ channel: channel, videoid: videoid, action: actionEnum[0]}));
-    //$("#input-videoid")[0].value = "";
-    showVideoByID(videoContainer, videoid);
-  }
-
-  
-});
-
-// $("#dropdown").on("change", function(event) {
-//   //event.preventDefault();
-//   logStuff($("dropdown")[0].value);
-//   //var videoid   = $("#input-videoid")[0].value;
-//   //
-
-//   //note the double bang to coerce a boolean, then invert. clever.
-//   // if(!!$.trim($("#input-videoid").val()).length){
-//   //   //ws.send(JSON.stringify({ handle: handle, text: text }));
-//   //   ws.send(JSON.stringify({ videoid: videoid, channel: channel }));
-//   //   $("#input-videoid")[0].value = "";
-//   // }
-// });
 
 //# PRAGMA MARK - YouTube "mini library" starts here
 var youTubeAPILoaded = false;
@@ -233,7 +201,7 @@ function setTimeTimeout() {
   //ws.send(JSON.stringify({ currTime: currTime }));
 }
 
-myTimer = setInterval(setTimeTimeout, 1000);
+
 
 function stopTimeTimeout(){
     if (myTimer){
@@ -250,9 +218,6 @@ function startTimeTimeout(){
 }
 // end of "mini library"
 
-//INIT!!! 
-
-showVideoByID(videoContainer, videoid)
 
 
 
@@ -301,5 +266,48 @@ function logStuff(what2log){
   }
 }
 
+
+$(function() {
+  // Handler for .ready() called.
+  //INIT!!! 
+
+  var ws       = new WebSocket(scheme + window.document.location.host + "/");
+  var videoContainer = document.getElementById("videoContainer");
+
+  showVideoByID(videoContainer, videoid)
+  myTimer = setInterval(setTimeTimeout, 1000);
+
+  //# PRAGMA MARK - form input actionz
+  $("#input-form").on("submit", function(event) {
+    event.preventDefault();
+    videoid   = $("#input-videoid")[0].value;
+    //channel = $("#input-channel")[0].value;
+
+    //note the double bang to coerce a boolean, then invert. clever.
+    if(!!$.trim($("#input-videoid").val()).length){
+      //ws.send(JSON.stringify({ handle: handle, text: text }));
+      ws.send(JSON.stringify({ channel: channel, videoid: videoid, action: actionEnum[0]}));
+      //$("#input-videoid")[0].value = "";
+      showVideoByID(videoContainer, videoid);
+    }
+
+    
+  });
+
+  // $("#dropdown").on("change", function(event) {
+  //   //event.preventDefault();
+  //   logStuff($("dropdown")[0].value);
+  //   //var videoid   = $("#input-videoid")[0].value;
+  //   //
+
+  //   //note the double bang to coerce a boolean, then invert. clever.
+  //   // if(!!$.trim($("#input-videoid").val()).length){
+  //   //   //ws.send(JSON.stringify({ handle: handle, text: text }));
+  //   //   ws.send(JSON.stringify({ videoid: videoid, channel: channel }));
+  //   //   $("#input-videoid")[0].value = "";
+  //   // }
+  // });
+
+});
 
     
