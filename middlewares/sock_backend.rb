@@ -134,30 +134,6 @@ module Schleifer
           if shouldPub
             @redis.publish(CHANNEL, event.data)
           end
-          
-          
-
-          # begin #LOCALCHANNEL
-          #   if(event.data["videoid"])
-          #     localvideolist.push(event.data.videoid) unless localvideolist.include?(event.data.videoid)
-              
-          #     @redis.set 
-          #     # mPlaylist = {}
-          #     # mPlaylist[LOCALCHANNEL] = localvideolist
-          #     # @redis.publish(CHANNEL, mPlaylist)
-          #   end
-          # rescue
-          #   p "RESCUE REDIS SET TO LOCALCHANNEL: #{LOCALCHANNEL} & localvideolist: #{localvideolist} !!!"
-          # end #LOCALCHANNEL
-
-          #@redis.set $LOCALVIDEOLISTTAG, localvideolist
-          #@redis.set $NOWPLAYINGTAG, nowPlaying
-
-
-          #COPY OF A COPY (of a copy)
-          # a_new_hash = my_hash.inject({}) { |h, (k, v)| h[k] = v.upcase; h }
-
-          
 
         end
 
