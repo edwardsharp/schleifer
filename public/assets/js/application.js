@@ -117,6 +117,8 @@ function showVideoByID (domElement, videoID) {
     }
     
 
+    myTimer = setInterval(setTimeTimeout, 1000);
+
     $("#input-videoid")[0].value = videoid;
     //push onto the playlist stack
 
@@ -186,8 +188,13 @@ function setTimeTimeout() {
 
   // document.querySelector('#videoListContent').innerHTML = 
   //     '<p>' + sessionStorage.getItem('currentVideoId') + ' times</p>';
+  try{
+    currTime = videoContainer.player.getCurrentTime();
+  }catch(onoz){
+    stopTimeTimeout();
+    return;
+  }
   
-  currTime = videoContainer.player.getCurrentTime();
   
   var time = currTime;
   var hours = Math.floor(time / 3600);
@@ -274,7 +281,7 @@ $(function() {
 
   //wait for the ws callback!
   //showVideoByID(videoContainer, defaultVideoid)
-  myTimer = setInterval(setTimeTimeout, 1000);
+
 
   //# PRAGMA MARK - form input actionz
   $("#input-form").on("submit", function(event) {
