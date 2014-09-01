@@ -49,15 +49,15 @@ module Schleifer
     def getNowPlayingOrDefaultVideoID
       #@redis.set LOCALVIDEOLISTTAG, localvideolist
       mNowPlaying = @redis.get(NOWPLAYINGTAG)
-      if mNowPlaying != ""
-        if mNowPlaying != $nowPlaying
+      if mNowPlaying != $nowPlaying
+        if mNowPlaying != ""
           #some other process must have set this...
           $nowPlaying = mNowPlaying
+        else
+          $nowPlaying = DEFAULTNOWPLAYING
         end
-      else
-        $nowPlaying = DEFAULTNOWPLAYING
       end
-      puts "getNowPlayingOrDefaultVideoID:  "
+      puts "getNowPlayingOrDefaultVideoID: #{$nowPlaying} "
       return $nowPlaying
     end
 
