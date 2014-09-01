@@ -107,16 +107,14 @@ function loadYouTubeAPI (callBack) {
 }
 
 function showVideoByID (domElement, videoID) {
-    if(videoID != ""){
-      videoid = videoID;
-    }
-    else{
-      if(videoid==""){
-        //USING DEFAULT VIDEO ID. (nobody here?)
-        videoid=defaultVideoid
-      }
+    if(videoID == ""){
+      videoID = defaultVideoid 
     }
 
+    if(videoid==""){
+      //USING DEFAULT VIDEO ID. (nobody here?)
+      videoid=defaultVideoid
+    }
     
 
     $("#input-videoid")[0].value = videoid;
