@@ -35,7 +35,8 @@ ws.onmessage = function(message) {
   try{
     data = JSON.parse(message.data);
 
-    logStuff("message data,YO:"+data);
+    logStuff("message data,YO:"+message.data);
+    logStuff("JSON stringify,YO:"+JSON.stringify(message.data));
 
   //set channel-dropdown-menu li w/ data
   //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
