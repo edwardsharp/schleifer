@@ -24,7 +24,7 @@ module Schleifer
       uri = URI.parse(ENV["REDISTOGO_URL"])
       @redis = Redis.new(host: uri.host, port: uri.port, password: uri.password)
       
-      @redis.set localvideolistTAG, localvideolist
+      #@redis.set localvideolistTAG, localvideolist
       @redis.set nowPlayingTAG, nowPlaying
 
       #TODO: multichannel
