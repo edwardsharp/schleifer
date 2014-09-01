@@ -8,17 +8,19 @@ $localvideolist       = []
 $nowPlaying           = ""
 $currentTime          = "0" 
 $currentClientCount   = 0
+$DEFAULTNOWPLAYING    = "SNWVvZi3HX8"
+$LOCALVIDEOLISTTAG    = "localvideolist"
+$NOWPLAYINGTAG        = "nowPlaying"
+$DEFAULTVIDEOLIST     = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
+
 
 module Schleifer
   class SockBackend
     KEEPALIVE_TIME    = 15 # in seconds
     CHANNEL           = "burgers-in-atlanta"
     LOCALCHANNEL      = "lobby0"
-    DEFAULTNOWPLAYING = "SNWVvZi3HX8"
-    LOCALVIDEOLISTTAG = "localvideolist"
-    NOWPLAYINGTAG     = "nowPlaying"
-    DEFAULTVIDEOLIST  = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
-
+    
+    
 
     def initialize(app)
       @app      = app
@@ -27,11 +29,11 @@ module Schleifer
       @redis    = Redis.new(host: uri.host, port: uri.port, password: uri.password)
       
       #TODO: handle init of localplaylist via redis?
-      #@redis.set LOCALVIDEOLISTTAG, localvideolist
+      #@redis.set $LOCALVIDEOLISTTAG, localvideolist
 
-      if @redis.get(NOWPLAYINGTAG).nil?
-        $nowPlaying = DEFAULTNOWPLAYING
-        @redis.set NOWPLAYINGTAG, DEFAULTNOWPLAYING
+      if @redis.get($NOWPLAYINGTAG).nil?
+        $nowPlaying = $DEFAULTNOWPLAYING
+        @redis.set $NOWPLAYINGTAG, $DEFAULTNOWPLAYING
       end
       
 
@@ -52,11 +54,11 @@ module Schleifer
     end
 
     def getNowPlayingOrDefaultVideoID
-      #@redis.set LOCALVIDEOLISTTAG, localvideolist
-      mNowPlaying = @redis.get NOWPLAYINGTAG
+      #@redis.set $LOCALVIDEOLISTTAG, localvideolist
+      mNowPlaying = @redis.get $NOWPLAYINGTAG
       if mNowPlaying.nil?
-        $nowPlaying = DEFAULTNOWPLAYING
-        @redis.set NOWPLAYINGTAG, DEFAULTNOWPLAYING
+        $nowPlaying = $DEFAULTNOWPLAYING
+        @redis.set $NOWPLAYINGTAG, $DEFAULTNOWPLAYING
       end
       p "GONNA RETURN getNowPlayingOrDefaultVideoID $nowPlaying: #{$nowPlaying}"
       return $nowPlaying
@@ -64,9 +66,9 @@ module Schleifer
 
     def setNowPlaying(vidId)
       if vidId == ""
-        vidId = DEFAULTNOWPLAYING
+        vidId = $DEFAULTNOWPLAYING
       end
-      @redis.set NOWPLAYINGTAG, vidId 
+      @redis.set $NOWPLAYINGTAG, vidId 
       $nowPlaying = vidId
     end
 
@@ -146,8 +148,8 @@ module Schleifer
           #   p "RESCUE REDIS SET TO LOCALCHANNEL: #{LOCALCHANNEL} & localvideolist: #{localvideolist} !!!"
           # end #LOCALCHANNEL
 
-          #@redis.set LOCALVIDEOLISTTAG, localvideolist
-          #@redis.set NOWPLAYINGTAG, nowPlaying
+          #@redis.set $LOCALVIDEOLISTTAG, localvideolist
+          #@redis.set $NOWPLAYINGTAG, nowPlaying
 
 
           #COPY OF A COPY (of a copy)
