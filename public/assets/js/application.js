@@ -274,7 +274,8 @@ $(function() {
   // Handler for .ready() called.
   //INIT!!! 
 
-  showVideoByID(videoContainer, videoid)
+  //wait for the ws callback!
+  //showVideoByID(videoContainer, defaultVideoid)
   myTimer = setInterval(setTimeTimeout, 1000);
 
   //# PRAGMA MARK - form input actionz
