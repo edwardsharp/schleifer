@@ -295,8 +295,8 @@ function logStuff(what2log){
   if(loggingEnabled){
     try{
       console.log(what2log);
-    }catch(Exception e){
-      //ahhh!
+    }catch(e){
+      //o noz!!
     }
   }
 }
