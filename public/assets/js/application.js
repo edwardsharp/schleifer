@@ -1,10 +1,13 @@
-var scheme            = "ws://";
-var channel           = "lobby0";
-var clients           = 0;
-var videoid           = "";
-var defaultVideoid    = "MwlU824cS4s";
-var videoList         = [];
-var defaultVideoList  = 
+var scheme   = "ws://";
+var uri      = scheme + window.document.location.host + "/";
+var ws       = new WebSocket(uri);
+var videoContainer = document.getElementById("videoContainer");
+var channel = "lobby0";
+var clients = 0;
+var videoid = "";
+var defaultVideoid = "MwlU824cS4s";
+var videoList = [];
+var defaultVideoList = 
   [
     "SNWVvZi3HX8"
   , "s4ole_bRTdw"
@@ -17,15 +20,70 @@ var defaultVideoList  =
   , "MwlU824cS4s"
   ];
 var myTimer;
-var currTime          = 0;
+var currTime = 0;
 var actionEnum = 
   { 
    0: "onSubmit"
   ,1: "client_onPlayerStateChange_0" 
   ,2: "client_videoListItem_click"
   };
-var loggingEnabled    = true;
+var loggingEnabled = true;
 
+// #PRAGMA MARK - WebSocket delegatez 
+ws.onmessage = function(message) {
+  var data;
+  try{
+    data = JSON.parse(message.data);
+
+    logStuff("message data,YO:"+data);
+
+  //set channel-dropdown-menu li w/ data
+  //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
+  
+    //increment the client count UI display (badge)
+    if(data.clients && data.clients > 0){
+      $("#currActive > .badge").html(data.clients);
+      logStuff("data.clients,YO:"+data.clients);
+    }
+
+    //check if incoming message has a videoid parameter
+    if(data.videoid && data.videoid.length < 25){
+      //CHECK IF VIDEO IS ALREADY PLAING!
+      logStuff("GOT data.videoid:"+data.videoid + "GONNA CHECK IF EXISTZ!");
+      //is this videoid already the one that is now scheduled to be playing?
+      if(videoid != data.videoid){
+        //no? then update our reference. 
+        videoid = data.videoid;
+        showVideoByID(videoContainer, data.videoid);
+        logStuff("GOT A NEW data.videoid, YO!:"+data.videoid);
+      }
+      
+      
+    }
+
+    if(data.channel && data.channel.length > 0 && data.channel.length < 25){
+      //$("#input-channel").val(data.chennel);
+      logStuff("data.channel,YO!:"+data.channel);
+    }
+
+    if(data.playlist && data.playlist.length > 0 && data.playlist.length < 25){
+      //$("#input-channel").val(data.chennel);
+      logStuff("data.playlist,YO!:"+data.playlist);
+
+    }
+
+    if(data.currTime && data.currTime.length){
+      //$("#input-channel").val(data.chennel);
+      logStuff("data.currTime, YO!!:"+data.currTime);
+
+    }
+
+  }catch(e){
+
+    logStuff("CAUGHT ERROR" + e);
+  
+  }
+};
 
 
 
@@ -215,68 +273,6 @@ function logStuff(what2log){
 $(function() {
   // Handler for .ready() called.
   //INIT!!! 
-
-  var ws       = new WebSocket(scheme + window.document.location.host + "/");
-  // #PRAGMA MARK - WebSocket delegatez 
-  ws.onmessage = function(message) {
-    var data;
-    try{
-      data = JSON.parse(message.data);
-
-      logStuff("message data,YO:"+data);
-
-    //set channel-dropdown-menu li w/ data
-    //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
-    
-      //increment the client count UI display (badge)
-      if(data.clients && data.clients > 0){
-        $("#currActive > .badge").html(data.clients);
-        logStuff("data.clients,YO:"+data.clients);
-      }
-
-      //check if incoming message has a videoid parameter
-      if(data.videoid && data.videoid.length < 25){
-        //CHECK IF VIDEO IS ALREADY PLAING!
-        logStuff("GOT data.videoid:"+data.videoid + "GONNA CHECK IF EXISTZ!");
-        //is this videoid already the one that is now scheduled to be playing?
-        if(videoid != data.videoid){
-          //no? then update our reference. 
-          videoid = data.videoid;
-          showVideoByID(videoContainer, data.videoid);
-          logStuff("GOT A NEW data.videoid, YO!:"+data.videoid);
-        }
-        
-        
-      }
-
-      if(data.channel && data.channel.length > 0 && data.channel.length < 25){
-        //$("#input-channel").val(data.chennel);
-        logStuff("data.channel,YO!:"+data.channel);
-      }
-
-      if(data.playlist && data.playlist.length > 0 && data.playlist.length < 25){
-        //$("#input-channel").val(data.chennel);
-        logStuff("data.playlist,YO!:"+data.playlist);
-
-      }
-
-      if(data.currTime && data.currTime.length){
-        //$("#input-channel").val(data.chennel);
-        logStuff("data.currTime, YO!!:"+data.currTime);
-
-      }
-
-    }catch(e){
-
-      logStuff("CAUGHT ERROR" + e);
-    
-    }
-  };
-
-
-
-  
-  var videoContainer = document.getElementById("videoContainer");
 
   showVideoByID(videoContainer, videoid)
   myTimer = setInterval(setTimeTimeout, 1000);
