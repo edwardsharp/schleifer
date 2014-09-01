@@ -3,29 +3,32 @@ require 'thread'
 require 'redis'
 require 'json'
 
+# globalz!
+$localvideolist       = []
+$nowPlaying           = ""
+$currentTime          = "0" 
+$currentClientCount   = 0
+
 module Schleifer
   class SockBackend
-    KEEPALIVE_TIME = 15 # in seconds
-    CHANNEL        = "burgers-in-atlanta"
-    LOCALCHANNEL = "lobby0"
-    localvideolistTAG = "localvideolist"
-    localvideolist = []
-    defaultVideolist = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
-    nowPlayingTAG = "nowPlaying"
-    nowPlaying = ""
-    defaultNowPlaying = "SNWVvZi3HX8"
-    currentTime = "0"
-    currentClientCount = 0
+    KEEPALIVE_TIME    = 15 # in seconds
+    CHANNEL           = "burgers-in-atlanta"
+    LOCALCHANNEL      = "lobby0"
+    DEFAULTNOWPLAYING = "SNWVvZi3HX8"
+    LOCALVIDEOLISTTAG = "localvideolist"
+    NOWPLAYINGTAG     = "nowPlaying"
+    DEFAULTVIDEOLIST  = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
 
 
     def initialize(app)
-      @app     = app
-      @clients = []
-      uri = URI.parse(ENV["REDISTOGO_URL"])
-      @redis = Redis.new(host: uri.host, port: uri.port, password: uri.password)
+      @app      = app
+      @clients  = []
+      uri       = URI.parse(ENV["REDISTOGO_URL"])
+      @redis    = Redis.new(host: uri.host, port: uri.port, password: uri.password)
       
-      #@redis.set localvideolistTAG, localvideolist
-      @redis.set nowPlayingTAG, nowPlaying
+      #TODO: handle init of localplaylist via redis?
+      #@redis.set LOCALVIDEOLISTTAG, localvideolist
+      @redis.set NOWPLAYINGTAG, $nowPlaying
 
       #TODO: multichannel
       Thread.new do
@@ -44,26 +47,26 @@ module Schleifer
     end
 
     def getNowPlayingOrDefaultVideoID
-      #@redis.set localvideolistTAG, localvideolist
-      _nowPlaying = @redis.get(nowPlayingTAG)
-      if _nowPlaying != ""
-        if _nowPlaying != nowPlaying
+      #@redis.set LOCALVIDEOLISTTAG, localvideolist
+      mNowPlaying = @redis.get(NOWPLAYINGTAG)
+      if mNowPlaying != ""
+        if mNowPlaying != $nowPlaying
           #some other process must have set this...
-          nowPlaying = _nowPlaying
+          $nowPlaying = mNowPlaying
         end
       else
-        nowPlaying = defaultNowPlaying
+        $nowPlaying = DEFAULTNOWPLAYING
       end
       puts "getNowPlayingOrDefaultVideoID:  "
-      return nowPlaying
+      return $nowPlaying
     end
 
-    def setAndReturnNowPlaying(vidId)
+    def setNowPlaying(vidId)
       if vidId == ""
-        vidId = defaultNowPlaying
+        vidId = DEFAULTNOWPLAYING
       end
-      nowPlaying = @redis.set(nowPlayingTAG, vidId)
-      return nowPlaying
+      @redis.set NOWPLAYINGTAG, vidId 
+      $nowPlaying = vidId
     end
 
     def call(env)
@@ -74,17 +77,17 @@ module Schleifer
           @clients << ws
 
           begin
-            currentClientCount = @clients.count
-            _mJSON = {}
-            _mJSON["clients"] = currentClientCount.to_s
+            $currentClientCount = @clients.count
+            mJSON = {}
+            mJSON["clients"] = $currentClientCount.to_s
             
             #inject the currently set video id. 
-            _mJSON["videoid"] = getNowPlayingOrDefaultVideoID
+            mJSON["videoid"] = getNowPlayingOrDefaultVideoID
 
             #TODO: inject the list
-            p [:message, _mJSON]
+            p [:message, mJSON]
 
-            @redis.publish(CHANNEL, _mJSON.to_json)
+            @redis.publish(CHANNEL, mJSON.to_json)
           rescue
             p "RESCUE CLIENT AND getNowPlayingOrDefaultVideoID COUNT!!"
           end
@@ -105,16 +108,29 @@ module Schleifer
 
         ws.on :message do |event|
           p [:message, event.data]
-          
+          shouldPub = false
           # check if the videoid in the message from the client is the same as the one in REDIS
           #TODO: use a standard enum of tagz for event data keyz... 
-          _nowPlaying = event.data["videoid"]
-          if( _nowPlaying != getNowPlayingOrDefaultVideoID )
+          mNowPlaying = event.data["videoid"]
+          if( mNowPlaying != getNowPlayingOrDefaultVideoID )
             #if it is not the same set it so it gets passed onto current & future clients
-            event.data["videoid"] = setAndReturnNowPlaying _nowPlaying
+            setNowPlaying mNowPlaying
+            event.data["videoid"] = mNowPlaying
+            shouldPub = true
           end
 
-          @redis.publish(CHANNEL, event.data)
+
+          mClientCount = event.data["clients"]
+          if( mClients != $currentClientCount )
+            #some other client has con/dis-connected, publish the message to all
+            shouldPub = true
+          end
+
+          if shouldPub
+            @redis.publish(CHANNEL, event.data)
+          end
+          
+          
 
           # begin #LOCALCHANNEL
           #   if(event.data["videoid"])
@@ -129,8 +145,8 @@ module Schleifer
           #   p "RESCUE REDIS SET TO LOCALCHANNEL: #{LOCALCHANNEL} & localvideolist: #{localvideolist} !!!"
           # end #LOCALCHANNEL
 
-          #@redis.set localvideolistTAG, localvideolist
-          #@redis.set nowPlayingTAG, nowPlaying
+          #@redis.set LOCALVIDEOLISTTAG, localvideolist
+          #@redis.set NOWPLAYINGTAG, nowPlaying
 
 
           #COPY OF A COPY (of a copy)
@@ -144,10 +160,10 @@ module Schleifer
           p [:close, ws.object_id, event.code, event.reason]
 
           begin
-            currentClientCount =  @clients.count
-            if(currentClientCount > 0)
+            $currentClientCount =  @clients.count
+            if($currentClientCount > 0)
               mClients = {}
-              mClients["clients"] = (currentClientCount-1).to_s
+              mClients["clients"] = ($currentClientCount-1).to_s
               #TODO: also send out an updated playlist without the users video ids??
 
               p [:message, mClients]
@@ -175,9 +191,9 @@ module Schleifer
     end
 
     def nobodySeemshere
-      nowPlaying = ""
-      localvideolist = []
-      currentClientCount = 0
+      $nowPlaying = ""
+      #$localvideolist = []
+      $currentClientCount = 0
     end
 
   end
