@@ -57,7 +57,9 @@ module Schleifer
             mJSON = {}
             mJSON["clients"] = @clients.count.to_s
             mJSON["videoid"] = @redis.get NOWPLAYINGTAG
-            mJSON["playlist"] = JSON.parse(@redis.get(VIDEOLISTTAG))
+            unless(@redis.get(VIDEOLISTTAG).empty?)
+              mJSON["playlist"] = JSON.parse(@redis.get(VIDEOLISTTAG))
+            end
             @redis.publish(CHANNEL, mJSON.to_json)
             p [:OPENmJSONafterPub, mJSON]
           rescue
