@@ -14,7 +14,7 @@ module Schleifer
     $DEFAULTNOWPLAYING    = "SNWVvZi3HX8"
     $LOCALVIDEOLISTTAG    = "localvideolist"
     $NOWPLAYINGTAG        = "nowPlaying"
-    $DEFAULTVIDEOLIST     = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
+    $DEFAULTVIDEOLIST     = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"]
 
     KEEPALIVE_TIME    = 15 # in seconds
     CHANNEL           = "burgers-in-atlanta"
