@@ -7,18 +7,7 @@ var clients = 0;
 var videoid = "";
 var defaultVideoid = "MwlU824cS4s";
 var videoList = [];
-var defaultVideoList = 
-  [
-    "SNWVvZi3HX8"
-  , "s4ole_bRTdw"
-  , "_EjBtH2JFjw"
-  , "6ZG_GYNhgyI"
-  , "E5Fk32OwdbM"
-  , "KIIpRzUsIrU"
-  , "Gw0JKbnXeCM"
-  , "81SM6UFEMo4"
-  , "MwlU824cS4s"
-  ];
+
 var myTimer;
 var currTime = 0;
 var actionEnum = 
@@ -78,6 +67,10 @@ ws.onmessage = function(message) {
     if(data.playlist && data.playlist.length > 0 && data.playlist.length < 25){
       //$("#input-channel").val(data.chennel);
       logStuff("data.playlist,YO!:"+data.playlist);
+      var vidId;
+      for(vidId in data.playlist){
+        appendToVideoList(vidId);
+      }
 
     }
 
@@ -131,25 +124,7 @@ function showVideoByID (domElement, videoID) {
     $("#input-videoid")[0].value = videoid;
     //push onto the playlist stack
 
-    var mElem = $('\
-        <div class="videoListItem" id="'+videoid+'" data-value="'+videoid+'"> \
-          <div class="videoListThumb"><img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" title="'+videoid+'"></div> \
-          <div class="desc">'+videoid+'</div> \
-        </div> \
-      ');
-
-    var myID = '#' + videoid;
-    try {
-      if ( $( myID ).length ) {
-        logStuff("IT ALREADY EXISTZ!"); 
-      }else{
-        //these do not get .click .on or whatever handlerz!!! ahh! 
-        //TODO FIX!
-        mElem.appendTo(".videoList");
-      }
-    }catch(e) {
-      logStuff("CAUGHT LENGTH ERROR!!!"); 
-    }
+    appendToVideoList(videoid);
     
 
     //push thumb
@@ -183,6 +158,28 @@ function showVideoByID (domElement, videoID) {
 
     
 
+}
+
+function appendToVideoList(videoid){
+  var mElem = $('\
+        <div class="videoListItem" id="'+videoid+'" data-value="'+videoid+'"> \
+          <div class="videoListThumb"><img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" title="'+videoid+'"></div> \
+          <div class="desc">'+videoid+'</div> \
+        </div> \
+      ');
+
+    var myID = '#' + videoid;
+    try {
+      if ( $( myID ).length ) {
+        logStuff("VIDEO ALREADY EXISTZ IN LIST!"); 
+      }else{
+        //these do not get .click .on or whatever handlerz!!! ahh! 
+        //TODO FIX!
+        mElem.appendTo(".videoList");
+      }
+    }catch(e) {
+      logStuff("CAUGHT LENGTH ERROR!!!"); 
+    }
 }
 
 //time tracking stuff

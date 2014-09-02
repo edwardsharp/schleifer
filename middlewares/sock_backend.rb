@@ -8,10 +8,11 @@ module Schleifer
     KEEPALIVE_TIME = 15 # in seconds
     CHANNEL        = "chimmy-jimmy"
     LOCALCHANNEL = "lobby0"
+
     LOCALVIDEOLIST = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
     NOWPLAYINGTAG = "nowPlaying"
-    
-    #LOCALVIDEOLISTTAG = "localVideoList" 
+
+    VIDEOLISTTAG = "videoList" 
     #CURRENTTIMETAG = "currentTime"
     #CLIENTCLOUNTTAG = "clientCount"
 
@@ -43,6 +44,7 @@ module Schleifer
             mJSON = {}
             mJSON["clients"] = @clients.count.to_s
             mJSON["videoid"] = @redis.get NOWPLAYINGTAG
+            mJSON["playlist"] = @redis.get VIDEOLISTTAG
             @redis.publish(CHANNEL, mJSON.to_json)
             p [:OPENmJSONafterPub, mJSON]
           rescue
@@ -58,6 +60,10 @@ module Schleifer
             mNowPlaying = JSON.parse(event.data)["videoid"]
             if mNowPlaying and mNowPlaying != ""
               @redis.set NOWPLAYINGTAG, mNowPlaying
+              mVideoList = @redis.get VIDEOLISTTAG
+              mVideoList << mNowPlaying
+              @redis.set VIDEOLISTTAG, mVideoList
+             
               p "GOT (AND @redis.set) VIDEOID: #{mNowPlaying}"
             end
           rescue 
