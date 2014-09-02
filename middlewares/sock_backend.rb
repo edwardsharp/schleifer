@@ -26,7 +26,7 @@ module Schleifer
           on.message do |channel, msg|
             puts "on.message msg: #{msg}"
 
-            @clients.each {|ws| ws.send(msg.to_json) }
+            @clients.each {|ws| ws.send(msg) }
 
             p "done sending to all clients msg:#{msg.to_json}"
           end
@@ -45,7 +45,7 @@ module Schleifer
             mJSON = {}
             mJSON["clients"] = @clients.count.to_s
             mJSON["videoid"] = @redis.get NOWPLAYINGTAG
-            @redis.publish(CHANNEL, mJSON)
+            @redis.publish(CHANNEL, mJSON.to_json)
             p [:OPENmJSONafterPub, mJSON]
           rescue
             p "RESCUE CLIENT COUNT PUBLISH!!"
@@ -85,7 +85,7 @@ module Schleifer
             if(@clients.count > 0)
               mJSON = {}
               mJSON["clients"] = (@clients.count-1).to_s
-              @redis.publish(CHANNEL, mJSON)
+              @redis.publish(CHANNEL, mJSON.to_json)
               p [:mJSONafterPub, mJSON]
             end
           rescue
