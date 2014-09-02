@@ -69,10 +69,7 @@ ws.onmessage = function(message) {
       logStuff("data.playlist,YO!:"+data.playlist);
       var vidId;
       for(vidId in data.playlist){
-        if(vidId.length > 2){
-          appendToVideoList(vidId);
-        }
-        
+        appendToVideoList(vidId);
       }
 
     }
