@@ -69,7 +69,7 @@ module Schleifer
      
     end
 
-    def parseAndsetNowPlaying(data)
+    def parseAndSetNowPlaying(data)
       p "parseAndsetNowPlaying GOT mNowPlaying:#{mNowPlaying}"
       if( JSON.parse(data)["videoid"] != $nowPlaying )
         #if it is not the same set it so it gets passed onto current & future clients
@@ -97,14 +97,14 @@ module Schleifer
             
             #inject the currently set video id. 
             # getNowPlayingOrDefaultVideoID
-            # mJSON["videoid"] = $nowPlaying
+            mJSON["videoid"] = $nowPlaying
 
 
             #TODO: inject the list
             @redis.publish(CHANNEL, mJSON.to_json)
             
             puts "JUST @redis.publish'd!!!!!"
-            p [:message, mJSON]
+            p [:mJSON, mJSON]
 
           rescue
             p "RESCUE CLIENT AND getNowPlayingOrDefaultVideoID COUNT!!"
@@ -125,7 +125,7 @@ module Schleifer
         end
 
         ws.on :message do |event|
-          p [:message, event.data]
+          p [:event_data, event.data]
           shouldPub = false
           # check if the videoid in the message from the client is the same as the one in REDIS
           #TODO: use a standard enum of tagz for event data keyz... 
