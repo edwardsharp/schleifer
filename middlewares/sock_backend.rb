@@ -24,11 +24,9 @@ module Schleifer
         redis_sub = Redis.new(host: uri.host, port: uri.port, password: uri.password)
         redis_sub.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
-            puts "on.message msg: #{msg}"
-
+            #puts "on.message msg: #{msg}"
             @clients.each {|ws| ws.send(msg) }
-
-            p "done sending to all clients msg:#{msg.to_json}"
+            #p "done sending to all clients msg:#{msg.to_json}"
           end
         end
       end
@@ -56,9 +54,17 @@ module Schleifer
         ws.on :message do |event|
           p [:message, event.data]
 
-          if event.data["videoid"]
-            p "GOT VIDEOID: #{event.data["videoid"]}"
+          begin
+            mNowPlaying = JSON.parse(event.data)["videoid"]
+            if mNowPlaying and mNowPlaying != ""
+              @redis.set NOWPLAYINGTAG, mNowPlaying
+              p "GOT (AND @redis.set) VIDEOID: #{mNowPlaying}"
+            end
+          rescue 
+            p "CAUGHT EXCEPTION ws.on :message!! (probably JSON.parse error"
           end
+          
+
           @redis.publish(CHANNEL, event.data)
           p "DONE WITH REDIS PUBLISH IN ws.on :message CB!"
           # begin #LOCALCHANNEL
