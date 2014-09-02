@@ -25,8 +25,15 @@ module Schleifer
       #check that redis has something in it...
 
       if @redis.get(VIDEOLISTTAG).nil?
+        if @redis.get(NOWPLAYINGTAG).nil? or @redis.get(NOWPLAYINGTAG) == ""
+          @redis.set(NOWPLAYINGTAG, LOCALVIDEOLIST[0])
+          @redis.set(VIDEOLISTTAG, [LOCALVIDEOLIST[0]].to_json )
+        else
+          @redis.set(VIDEOLISTTAG, [@redis.get(NOWPLAYINGTAG)].to_json )
+        end
 
       end
+
       Thread.new do
         redis_sub = Redis.new(host: uri.host, port: uri.port, password: uri.password)
         redis_sub.subscribe(CHANNEL) do |on|
@@ -50,7 +57,7 @@ module Schleifer
             mJSON = {}
             mJSON["clients"] = @clients.count.to_s
             mJSON["videoid"] = @redis.get NOWPLAYINGTAG
-            mJSON["playlist"] = @redis.get VIDEOLISTTAG
+            mJSON["playlist"] = JSON.parse(@redis.get(VIDEOLISTTAG))
             @redis.publish(CHANNEL, mJSON.to_json)
             p [:OPENmJSONafterPub, mJSON]
           rescue
