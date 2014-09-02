@@ -36,8 +36,7 @@ module Schleifer
 
       #TODO: multichannel
       Thread.new do
-        redis_sub = Redis.new(host: uri.host, port: uri.port, password: uri.password)
-        redis_sub.subscribe(CHANNEL) do |on|
+        @redis.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
             puts "INIT!!! on.message msg: #{msg}"
             
@@ -57,16 +56,18 @@ module Schleifer
 
     def setNowPlayingOrDefaultVideoID
       mNowPlaying = @redis.get($NOWPLAYINGTAG)
-      if mNowPlaying.nil? or mNowPlaying.empty? or mNowPlaying == ""
+      #accounding for weirdness with sometimes getting the literal string "videoid" set, oh ruby...
+      if mNowPlaying.nil? or mNowPlaying.empty? or mNowPlaying == "" or mNowPlaying = "videoid"
         p "setNowPlayingOrDefaultVideoID SETTING DEFAULT VIDEO ID"
         $nowPlaying = $DEFAULTNOWPLAYING
+        p "### REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $DEFAULTNOWPLAYING:#{$DEFAULTNOWPLAYING}"
         @redis.set $NOWPLAYINGTAG, $DEFAULTNOWPLAYING
       elsif mNowPlaying != $nowPlaying
-        $nowPlaying = mNowPlaying
+        $nowPlaying = mNowPlaying                
+        p "### ELSE REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $nowPlaying:#{$nowPlaying}"
         @redis.set $NOWPLAYINGTAG, $nowPlaying 
       end
       p "setNowPlayingOrDefaultVideoID $nowPlaying: #{$nowPlaying}"
-     
     end
 
     def parseAndSetNowPlaying(data)
