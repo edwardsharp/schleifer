@@ -6,11 +6,14 @@ require 'json'
 module Schleifer
   class SockBackend
     KEEPALIVE_TIME = 15 # in seconds
-    CHANNEL        = "burgers-in-atlanta"
+    CHANNEL        = "chimmy-jimmy"
     LOCALCHANNEL = "lobby0"
-    localvideolist = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
-    nowPlaying = "MwlU824cS4s"
-    currentTime = "0"
+    LOCALVIDEOLIST = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
+    NOWPLAYINGTAG = "nowPlaying"
+    
+    #LOCALVIDEOLISTTAG = "localVideoList" 
+    #CURRENTTIMETAG = "currentTime"
+    #CLIENTCLOUNTTAG = "clientCount"
 
     def initialize(app)
       @app     = app
@@ -22,8 +25,14 @@ module Schleifer
         redis_sub.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
             puts "on.message msg: #{msg}"
-            
-
+            msg["clientCount"] = @clients.count.to_s
+            mNowPlaying = redis_sub.get NOWPLAYINGTAG
+            if mNowPlaying != nil and mNowPlaying != ""
+              msg["videoid"] = mNowPlaying
+            else
+              redis_sub.set NOWPLAYINGTAG, LOCALVIDEOLIST[0]
+              msg["videoid"] = LOCALVIDEOLIST[0]
+            end
 
             @clients.each {|ws| ws.send(msg) }
 
@@ -40,12 +49,13 @@ module Schleifer
           @clients << ws
 
           begin
-            mClients = {}
-            mClients["clients"] = @clients.count.to_s
-            p [:message, mClients]
-            @redis.publish(CHANNEL, mClients.to_json)
+            mJSON = {}
+            mJSON["clients"] = @clients.count.to_s
+            mJSON["videoid"] = @redis.get NOWPLAYINGTAG
+            p [:mJSON, mJSON]
+            @redis.publish(CHANNEL, mJSON.to_json)
           rescue
-            p "RESCUE CLIENT COUNT"
+            p "RESCUE CLIENT COUNT PUBLISH!!"
           end
 
           # begin
@@ -58,7 +68,7 @@ module Schleifer
           # end
           #LOCALCHANNEL
 
-          #nowPlaying & currentTime
+          #NOWPLAYING & CURRENTTIMETAG
 
         end
 
@@ -68,15 +78,15 @@ module Schleifer
 
           # begin #LOCALCHANNEL
           #   if(event.data["videoid"])
-          #     localvideolist.push(event.data.videoid) unless localvideolist.include?(event.data.videoid)
+          #     LOCALVIDEOLIST.push(event.data.videoid) unless LOCALVIDEOLIST.include?(event.data.videoid)
               
-          #     @redis.set LOCALCHANNEL, localvideolist
+          #     @redis.set LOCALCHANNEL, LOCALVIDEOLIST
           #     # mPlaylist = {}
-          #     # mPlaylist[LOCALCHANNEL] = localvideolist
+          #     # mPlaylist[LOCALCHANNEL] = LOCALVIDEOLIST
           #     # @redis.publish(CHANNEL, mPlaylist)
           #   end
           # rescue
-          #   p "RESCUE REDIS SET TO LOCALCHANNEL: #{LOCALCHANNEL} & localvideolist: #{localvideolist} !!!"
+          #   p "RESCUE REDIS SET TO LOCALCHANNEL: #{LOCALCHANNEL} & LOCALVIDEOLIST: #{LOCALVIDEOLIST} !!!"
           # end #LOCALCHANNEL
 
           @redis.publish(CHANNEL, event.data)
@@ -88,10 +98,10 @@ module Schleifer
 
           begin
             if(@clients.count > 0)
-              mClients = {}
-              mClients["clients"] = (@clients.count-1).to_s
-              p [:message, mClients]
-              @redis.publish(CHANNEL, mClients.to_json)
+              mJSON = {}
+              mJSON["clients"] = (@clients.count-1).to_s
+              p [:message, mJSON]
+              @redis.publish(CHANNEL, mJSON.to_json)
             end
           rescue
             p "RESCUE CLIENT CLOSE COUNT"
