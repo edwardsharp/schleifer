@@ -39,10 +39,10 @@ module Schleifer
           on.message do |channel, msg|
             puts "INIT!!! on.message msg: #{msg}"
             
-            p "init about to setNowPlayingOrDefaultVideoID!!!"
-            setNowPlayingOrDefaultVideoID
+            # p "init about to setNowPlayingOrDefaultVideoID!!!"
+            # setNowPlayingOrDefaultVideoID
 
-            parseAndSetNowPlaying(msg)
+            # parseAndSetNowPlaying(msg)
 
             # if msg == "videoid"
             #   msg = $DEFAULTNOWPLAYING
