@@ -46,11 +46,15 @@ ws.onmessage = function(message) {
   //  var iframeshit = "<iframe src='//www.youtube-nocookie.com/embed/v9AKH16--VE?rel=0' frameborder='0' allowfullscreen></iframe>";
   
     //increment the client count UI display (badge)
+
+    logStuff("data.clients, YO:"+data.clients);
+
     if(data.clients && data.clients > 0){
       $("#currActive > .badge").html(data.clients);
       logStuff("data.clients,YO:"+data.clients);
     }
 
+    logStuff("data.videoid, YO:"+data.videoid);
     //check if incoming message has a videoid parameter
     if(data.videoid && data.videoid.length < 25){
       //CHECK IF VIDEO IS ALREADY PLAING!
