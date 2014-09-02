@@ -3,19 +3,19 @@ require 'thread'
 require 'redis'
 require 'json'
 
-# globalz!
-$localvideolist       = []
-$nowPlaying           = ""
-$currentTime          = "0" 
-$currentClientCount   = 0
-$DEFAULTNOWPLAYING    = "SNWVvZi3HX8"
-$LOCALVIDEOLISTTAG    = "localvideolist"
-$NOWPLAYINGTAG        = "nowPlaying"
-$DEFAULTVIDEOLIST     = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
-
 
 module Schleifer
   class SockBackend
+    # globalz!
+    $localvideolist       = []
+    $nowPlaying           = ""
+    $currentTime          = "0" 
+    $currentClientCount   = 0
+    $DEFAULTNOWPLAYING    = "SNWVvZi3HX8"
+    $LOCALVIDEOLISTTAG    = "localvideolist"
+    $NOWPLAYINGTAG        = "nowPlaying"
+    $DEFAULTVIDEOLIST     = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
+
     KEEPALIVE_TIME    = 15 # in seconds
     CHANNEL           = "burgers-in-atlanta"
     LOCALCHANNEL      = "lobby0"
@@ -37,7 +37,7 @@ module Schleifer
       Thread.new do
         @redis.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
-            puts "INIT!!! on.message msg: #{msg}"
+            puts "INIT Thread.new!!! on.message! will send msg: #{msg}"
             
             # p "init about to setNowPlayingOrDefaultVideoID!!!"
             # setNowPlayingOrDefaultVideoID
@@ -51,10 +51,10 @@ module Schleifer
             #hmm, does the default videoid need to be injected here? can be handled on client side easily enough...  
             @clients.each {|ws| ws.send(msg) }
        
-          end
-        end
-      end
-    end
+          end #end on.message
+        end #end redis.sub
+      end #end Thread.new
+    end #end init
 
     def setNowPlayingOrDefaultVideoID
       mNowPlaying = @redis.get($NOWPLAYINGTAG)
@@ -67,9 +67,25 @@ module Schleifer
         $nowPlaying = mNowPlaying                
         p "___ ELSE REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $nowPlaying:#{$nowPlaying}"
         @redis.set $NOWPLAYINGTAG, $nowPlaying 
-      end
+      end #end if
       p "setNowPlayingOrDefaultVideoID $nowPlaying: #{$nowPlaying}"
-    end
+    end #end setNowPlayingOrDefaultVideoID
+
+    def getNowPlayingOrDefaultVideoID
+      mNowPlaying = @redis.get($NOWPLAYINGTAG)
+      #accounding for weirdness with sometimes getting the literal string "videoid" set, oh ruby...
+      if mNowPlaying.nil? or mNowPlaying.empty? or mNowPlaying == "" or mNowPlaying = "videoid"
+        $nowPlaying = $DEFAULTNOWPLAYING
+        p "___ REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $DEFAULTNOWPLAYING:#{$DEFAULTNOWPLAYING}"
+        @redis.set $NOWPLAYINGTAG, $DEFAULTNOWPLAYING
+      elsif mNowPlaying != $nowPlaying
+        $nowPlaying = mNowPlaying                
+        p "___ ELSE REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $nowPlaying:#{$nowPlaying}"
+        @redis.set $NOWPLAYINGTAG, $nowPlaying 
+      end #end if
+      p "setNowPlayingOrDefaultVideoID $nowPlaying: #{$nowPlaying}"
+      return $nowPlaying
+    end #end setNowPlayingOrDefaultVideoID
 
     def parseAndSetNowPlaying(data)
       p "parseAndsetNowPlaying GOT data:#{data}"
@@ -83,39 +99,27 @@ module Schleifer
       # else
       #   p "NOT GONNA SET NOW PLAYING (seems to be the same)"
       # end
-    end
+    end #end parseAndSetNowPlaying
 
     def call(env)
       if Faye::WebSocket.websocket?(env)
         ws = Faye::WebSocket.new(env, nil, {ping: KEEPALIVE_TIME })
         ws.on :open do |event|
           p [:open, ws.object_id]
-          @clients << ws
-
+          
           # begin
             $currentClientCount = @clients.count
             mJSON = {}
             mJSON["clients"] = $currentClientCount.to_s
-            
-            
-            p "about to setNowPlayingOrDefaultVideoID!!"
-            # setNowPlayingOrDefaultVideoID
-
-            #inject the currently set video id. 
-            # setNowPlayingOrDefaultVideoID
-            # mJSON["videoid"] = $nowPlaying
-
-
+            mJSON["videoid"] = getNowPlayingOrDefaultVideoId
             #TODO: inject the list
             @redis.publish(CHANNEL, mJSON.to_json)
-            
             puts "JUST @redis.publish'd!!!!!"
             p [:mJSON, mJSON]
-
           # rescue
           #   p "RESCUE CLIENT AND setNowPlayingOrDefaultVideoID COUNT!!"
           # end
-
+          @clients << ws
           # begin
           #   mPlaylist = {}
           #   #JSON.parse() needed?
@@ -128,31 +132,24 @@ module Schleifer
 
           #nowPlaying & currentTime
 
-        end
+        end #end ws.on
 
         ws.on :message do |event|
           p [:event_data, event.data]
           # shouldPub = false
           # check if the videoid in the message from the client is the same as the one in REDIS
           #TODO: use a standard enum of tagz for event data keyz... 
-          
-          # try{
-
-          #   }catch(){
-
-          #   }
-          # parseAndSetNowPlaying(event.data)
 
 
           # mClientCount = event.data["clients"]
           # if( mClients != $currentClientCount )
           #   #some other client has con/dis-connected, publish the message to all
-          #   @redis.publish(CHANNEL, event.data)
+          #   
           # end
 
-     
+          @redis.publish(CHANNEL, event.data)
 
-        end
+        end #end ws.on :message
 
         ws.on :close do |event|
           p [:close, ws.object_id, event.code, event.reason]
@@ -175,7 +172,7 @@ module Schleifer
 
           @clients.delete(ws)
           ws = nil
-        end
+        end #end ws.on :close
 
         # Return async Rack response
         ws.rack_response
@@ -185,14 +182,14 @@ module Schleifer
         
 
 
-      end
-    end
+      end #end if Faye::WebSocket.websocket?(env) // else
+    end #end call
 
     def nobodySeemshere
       $nowPlaying = ""
       #$localvideolist = []
       $currentClientCount = 0
-    end
+    end #end nobodySeemshere
 
-  end
-end
+  end #end class 
+end #end module
