@@ -68,7 +68,7 @@ ws.onmessage = function(message) {
       //$("#input-channel").val(data.chennel);
       logStuff("data.playlist,YO!:"+data.playlist);
       var vidId;
-      for(vidId in data.playlist){
+      for(vidId in data.playlist.split(",")){
         logStuff("GOT PLAYLIST ID: "+ vidId);
         appendToVideoList(vidId);
       }
