@@ -85,7 +85,7 @@ module Schleifer
             if(@clients.count > 0)
               mJSON = {}
               mJSON["clients"] = (@clients.count-1).to_s
-              @redis.publish(CHANNEL, mJSON.to_json)
+              @redis.publish(CHANNEL, mJSON)
               p [:mJSONafterPub, mJSON]
             end
           rescue
