@@ -70,8 +70,9 @@ module Schleifer
       if vidId == ""
         vidId = $DEFAULTNOWPLAYING
       end
-      @redis.set $NOWPLAYINGTAG, vidId 
       $nowPlaying = vidId
+      @redis.set $NOWPLAYINGTAG, vidId 
+      p "done setNowPlaying $nowPlaying:#{$nowPlaying}"
     end
 
     def call(env)
@@ -124,7 +125,7 @@ module Schleifer
           # try{
 
           #   }catch(){
-              
+
           #   }
           mNowPlaying = JSON.parse(event.data["videoid"])
           p "GOT mNowPlaying:#{mNowPlaying}"
@@ -133,6 +134,9 @@ module Schleifer
             setNowPlaying mNowPlaying
             # event.data["videoid"] = mNowPlaying
             @redis.publish(CHANNEL, mNowPlaying)
+            p "DONE SETTING & PUBLISHING!!"
+          else
+            p "NOT GONNA SET NOW PLAYING (seems to be the same)"
           end
 
 
