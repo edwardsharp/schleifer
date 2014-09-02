@@ -31,7 +31,6 @@ module Schleifer
       #TODO: handle init of localplaylist via redis?
       #@redis.set $LOCALVIDEOLISTTAG, localvideolist
 
-      setNowPlayingOrDefaultVideoID
       
 
       #TODO: multichannel
@@ -40,6 +39,9 @@ module Schleifer
           on.message do |channel, msg|
             puts "INIT!!! on.message msg: #{msg}"
             
+            p "init about to setNowPlayingOrDefaultVideoID!!!"
+            setNowPlayingOrDefaultVideoID
+
             parseAndSetNowPlaying(msg)
 
             # if msg == "videoid"
@@ -58,13 +60,12 @@ module Schleifer
       mNowPlaying = @redis.get($NOWPLAYINGTAG)
       #accounding for weirdness with sometimes getting the literal string "videoid" set, oh ruby...
       if mNowPlaying.nil? or mNowPlaying.empty? or mNowPlaying == "" or mNowPlaying = "videoid"
-        p "setNowPlayingOrDefaultVideoID SETTING DEFAULT VIDEO ID"
         $nowPlaying = $DEFAULTNOWPLAYING
-        p "### REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $DEFAULTNOWPLAYING:#{$DEFAULTNOWPLAYING}"
+        p "___ REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $DEFAULTNOWPLAYING:#{$DEFAULTNOWPLAYING}"
         @redis.set $NOWPLAYINGTAG, $DEFAULTNOWPLAYING
       elsif mNowPlaying != $nowPlaying
         $nowPlaying = mNowPlaying                
-        p "### ELSE REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $nowPlaying:#{$nowPlaying}"
+        p "___ ELSE REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $nowPlaying:#{$nowPlaying}"
         @redis.set $NOWPLAYINGTAG, $nowPlaying 
       end
       p "setNowPlayingOrDefaultVideoID $nowPlaying: #{$nowPlaying}"
@@ -97,6 +98,7 @@ module Schleifer
             mJSON["clients"] = $currentClientCount.to_s
             
             
+            p "about to setNowPlayingOrDefaultVideoID!!"
             setNowPlayingOrDefaultVideoID
 
             #inject the currently set video id. 
