@@ -21,6 +21,12 @@ module Schleifer
       @clients = []
       uri = URI.parse(ENV["REDISTOGO_URL"])
       @redis = Redis.new(host: uri.host, port: uri.port, password: uri.password)
+      
+      #check that redis has something in it...
+
+      if @redis.get(VIDEOLISTTAG).nil?
+
+      end
       Thread.new do
         redis_sub = Redis.new(host: uri.host, port: uri.port, password: uri.password)
         redis_sub.subscribe(CHANNEL) do |on|
@@ -60,9 +66,10 @@ module Schleifer
             mNowPlaying = JSON.parse(event.data)["videoid"]
             if mNowPlaying and mNowPlaying != ""
               @redis.set NOWPLAYINGTAG, mNowPlaying
-              mVideoList = @redis.get VIDEOLISTTAG
+              
+              mVideoList = JSON.parse(@redis.get(VIDEOLISTTAG))
               mVideoList << mNowPlaying
-              @redis.set VIDEOLISTTAG, mVideoList
+              @redis.set VIDEOLISTTAG, mVideoList.to_json
              
               p "GOT (AND @redis.set) VIDEOID: #{mNowPlaying}"
             end
