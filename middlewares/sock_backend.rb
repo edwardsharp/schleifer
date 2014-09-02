@@ -26,7 +26,7 @@ module Schleifer
           on.message do |channel, msg|
             puts "on.message msg: #{msg}"
 
-            @clients.each {|ws| ws.send(msg) }
+            @clients.each {|ws| ws.send(msg.to_json) }
 
             p "done sending to all clients msg:#{msg.to_json}"
           end
