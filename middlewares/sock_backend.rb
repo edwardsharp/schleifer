@@ -25,7 +25,8 @@ module Schleifer
         redis_sub.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
             puts "on.message msg: #{msg}"
-            msg["clientCount"] = @clients.count.to_s
+
+            msg["clients"] = @clients.count.to_s
             mNowPlaying = redis_sub.get NOWPLAYINGTAG
             if mNowPlaying != nil and mNowPlaying != ""
               msg["videoid"] = mNowPlaying
@@ -33,9 +34,9 @@ module Schleifer
               redis_sub.set NOWPLAYINGTAG, LOCALVIDEOLIST[0]
               msg["videoid"] = LOCALVIDEOLIST[0]
             end
-
             @clients.each {|ws| ws.send(msg) }
 
+            p "done sending to all clients msg:#{msg}"
           end
         end
       end
@@ -52,30 +53,19 @@ module Schleifer
             mJSON = {}
             mJSON["clients"] = @clients.count.to_s
             mJSON["videoid"] = @redis.get NOWPLAYINGTAG
-            p [:mJSON, mJSON]
             @redis.publish(CHANNEL, mJSON.to_json)
+            p [:OPENmJSONafterPub, mJSON]
           rescue
             p "RESCUE CLIENT COUNT PUBLISH!!"
           end
-
-          # begin
-          #   mPlaylist = {}
-          #   #JSON.parse() needed?
-          #   mPlaylist[LOCALCHANNEL] = @redis.get LOCALCHANNEL
-          #   @redis.publish CHANNEL, mPlaylist.to_json
-          # rescue
-          #   p "RESCUE REDIS GET WITH: #{LOCALCHANNEL} !"
-          # end
-          #LOCALCHANNEL
-
-          #NOWPLAYING & CURRENTTIMETAG
 
         end
 
         ws.on :message do |event|
           p [:message, event.data]
 
-
+          @redis.publish(CHANNEL, event.data)
+          p "DONE WITH REDIS PUBLISH IN ws.on :message CB!"
           # begin #LOCALCHANNEL
           #   if(event.data["videoid"])
           #     LOCALVIDEOLIST.push(event.data.videoid) unless LOCALVIDEOLIST.include?(event.data.videoid)
@@ -89,7 +79,7 @@ module Schleifer
           #   p "RESCUE REDIS SET TO LOCALCHANNEL: #{LOCALCHANNEL} & LOCALVIDEOLIST: #{LOCALVIDEOLIST} !!!"
           # end #LOCALCHANNEL
 
-          @redis.publish(CHANNEL, event.data)
+          
 
         end
 
@@ -100,8 +90,8 @@ module Schleifer
             if(@clients.count > 0)
               mJSON = {}
               mJSON["clients"] = (@clients.count-1).to_s
-              p [:message, mJSON]
               @redis.publish(CHANNEL, mJSON.to_json)
+              p [:mJSONafterPub, mJSON]
             end
           rescue
             p "RESCUE CLIENT CLOSE COUNT"
