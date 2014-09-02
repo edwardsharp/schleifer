@@ -76,8 +76,13 @@ module Schleifer
             if mNowPlaying and mNowPlaying != ""
               @redis.set NOWPLAYINGTAG, mNowPlaying
               
-              mVideoList = JSON.parse(@redis.get(VIDEOLISTTAG))
-              mVideoList << mNowPlaying
+              if(@redis.get(VIDEOLISTTAG).empty?)
+                mVideoList = [mNowPlaying]
+              else
+                mVideoList = JSON.parse(@redis.get(VIDEOLISTTAG))
+                mVideoList << mNowPlaying
+              end
+    
               @redis.set VIDEOLISTTAG, mVideoList.to_json
              
               p "GOT (AND @redis.set) VIDEOID: #{mNowPlaying}"
