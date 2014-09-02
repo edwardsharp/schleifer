@@ -108,14 +108,14 @@ module Schleifer
           p [:open, ws.object_id]
           
           # begin
-            $currentClientCount = @clients.count
-            mJSON = {}
-            mJSON["clients"] = $currentClientCount.to_s
-            mJSON["videoid"] = getNowPlayingOrDefaultVideoId
-            #TODO: inject the list
-            @redis.publish(CHANNEL, mJSON.to_json)
-            puts "JUST @redis.publish'd!!!!!"
-            p [:mJSON, mJSON]
+          $currentClientCount = @clients.count
+          mJSON = {}
+          mJSON["clients"] = $currentClientCount.to_s
+          mJSON["videoid"] = getNowPlayingOrDefaultVideoId
+          #TODO: inject the list
+          @redis.publish(CHANNEL, mJSON.to_json)
+          puts "JUST @redis.publish'd!!!!!"
+          p [:mJSON, mJSON]
           # rescue
           #   p "RESCUE CLIENT AND setNowPlayingOrDefaultVideoID COUNT!!"
           # end
@@ -131,7 +131,7 @@ module Schleifer
           #LOCALCHANNEL
 
           #nowPlaying & currentTime
-
+          p [:doneOpen, "done with open event!!"]
         end #end ws.on
 
         ws.on :message do |event|
