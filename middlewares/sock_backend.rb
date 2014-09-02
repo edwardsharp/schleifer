@@ -43,9 +43,12 @@ module Schleifer
         redis_sub.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
             puts "INIT!!! on.message msg: #{msg}"
-            if msg == "videoid"
-              msg = $DEFAULTNOWPLAYING
-            end
+            
+            parseAndSetNowPlaying(msg)
+
+            # if msg == "videoid"
+            #   msg = $DEFAULTNOWPLAYING
+            # end
             
             #hmm, does the default videoid need to be injected here? can be handled on client side easily enough...  
             @clients.each {|ws| ws.send(msg) }
@@ -66,13 +69,18 @@ module Schleifer
      
     end
 
-    def setNowPlaying(vidId)
-      if vidId == ""
-        vidId = $DEFAULTNOWPLAYING
+    def parseAndsetNowPlaying(data)
+      p "parseAndsetNowPlaying GOT mNowPlaying:#{mNowPlaying}"
+      if( JSON.parse(data)["videoid"] != $nowPlaying )
+        #if it is not the same set it so it gets passed onto current & future clients
+        $nowPlaying = JSON.parse(data)["videoid"]
+        @redis.set $NOWPLAYINGTAG, $nowPlaying 
+        # @redis.publish(CHANNEL, mNowPlaying)
+        # & PUBLISHING!!
+        p "DONE SETTING!"
+      else
+        p "NOT GONNA SET NOW PLAYING (seems to be the same)"
       end
-      $nowPlaying = vidId
-      @redis.set $NOWPLAYINGTAG, vidId 
-      p "done setNowPlaying $nowPlaying:#{$nowPlaying}"
     end
 
     def call(env)
@@ -127,17 +135,7 @@ module Schleifer
           #   }catch(){
 
           #   }
-          mNowPlaying = JSON.parse(event.data["videoid"])
-          p "GOT mNowPlaying:#{mNowPlaying}"
-          if( mNowPlaying != $nowPlaying )
-            #if it is not the same set it so it gets passed onto current & future clients
-            setNowPlaying mNowPlaying
-            # event.data["videoid"] = mNowPlaying
-            @redis.publish(CHANNEL, mNowPlaying)
-            p "DONE SETTING & PUBLISHING!!"
-          else
-            p "NOT GONNA SET NOW PLAYING (seems to be the same)"
-          end
+          parseAndSetNowPlaying(event.data)
 
 
           # mClientCount = event.data["clients"]
