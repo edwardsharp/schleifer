@@ -95,6 +95,9 @@ module Schleifer
             mJSON = {}
             mJSON["clients"] = $currentClientCount.to_s
             
+            
+            setNowPlayingOrDefaultVideoID
+
             #inject the currently set video id. 
             # setNowPlayingOrDefaultVideoID
             mJSON["videoid"] = $nowPlaying
