@@ -64,6 +64,9 @@ module Schleifer
         ws.on :message do |event|
           p [:message, event.data]
 
+          if event.data["videoid"]
+            p "GOT VIDEOID: #{event.data["videoid"]}"
+          end
           @redis.publish(CHANNEL, event.data)
           p "DONE WITH REDIS PUBLISH IN ws.on :message CB!"
           # begin #LOCALCHANNEL
