@@ -99,11 +99,11 @@ module Schleifer
             
             
             p "about to setNowPlayingOrDefaultVideoID!!"
-            setNowPlayingOrDefaultVideoID
+            # setNowPlayingOrDefaultVideoID
 
             #inject the currently set video id. 
             # setNowPlayingOrDefaultVideoID
-            mJSON["videoid"] = $nowPlaying
+            # mJSON["videoid"] = $nowPlaying
 
 
             #TODO: inject the list
@@ -141,7 +141,7 @@ module Schleifer
           #   }catch(){
 
           #   }
-          parseAndSetNowPlaying(event.data)
+          # parseAndSetNowPlaying(event.data)
 
 
           # mClientCount = event.data["clients"]
