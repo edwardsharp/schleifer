@@ -56,51 +56,6 @@ module Schleifer
       end #end Thread.new
     end #end init
 
-    def setNowPlayingOrDefaultVideoID
-      mNowPlaying = @redis.get($NOWPLAYINGTAG)
-      #accounding for weirdness with sometimes getting the literal string "videoid" set, oh ruby...
-      if mNowPlaying.nil? or mNowPlaying.empty? or mNowPlaying == "" or mNowPlaying = "videoid"
-        $nowPlaying = $DEFAULTNOWPLAYING
-        p "___ REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $DEFAULTNOWPLAYING:#{$DEFAULTNOWPLAYING}"
-        @redis.set $NOWPLAYINGTAG, $DEFAULTNOWPLAYING
-      elsif mNowPlaying != $nowPlaying
-        $nowPlaying = mNowPlaying                
-        p "___ ELSE REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $nowPlaying:#{$nowPlaying}"
-        @redis.set $NOWPLAYINGTAG, $nowPlaying 
-      end #end if
-      p "setNowPlayingOrDefaultVideoID $nowPlaying: #{$nowPlaying}"
-    end #end setNowPlayingOrDefaultVideoID
-
-    def getNowPlayingOrDefaultVideoID
-      mNowPlaying = @redis.get($NOWPLAYINGTAG)
-      #accounding for weirdness with sometimes getting the literal string "videoid" set, oh ruby...
-      if mNowPlaying.nil? or mNowPlaying.empty? or mNowPlaying == "" or mNowPlaying = "videoid"
-        $nowPlaying = $DEFAULTNOWPLAYING
-        p "___ REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $DEFAULTNOWPLAYING:#{$DEFAULTNOWPLAYING}"
-        @redis.set $NOWPLAYINGTAG, $DEFAULTNOWPLAYING
-      elsif mNowPlaying != $nowPlaying
-        $nowPlaying = mNowPlaying                
-        p "___ ELSE REDIS IS GOING TO SET $NOWPLAYINGTAG:#{$NOWPLAYINGTAG} $nowPlaying:#{$nowPlaying}"
-        @redis.set $NOWPLAYINGTAG, $nowPlaying 
-      end #end if
-      p "setNowPlayingOrDefaultVideoID $nowPlaying: #{$nowPlaying}"
-      return $nowPlaying
-    end #end setNowPlayingOrDefaultVideoID
-
-    def parseAndSetNowPlaying(data)
-      p "parseAndsetNowPlaying GOT data:#{data}"
-      # if( JSON.parse(data)["videoid"] != $nowPlaying )
-      #   #if it is not the same set it so it gets passed onto current & future clients
-      #   $nowPlaying = JSON.parse(data)["videoid"]
-      #   @redis.set $NOWPLAYINGTAG, $nowPlaying 
-      #   # @redis.publish(CHANNEL, mNowPlaying)
-      #   # & PUBLISHING!!
-      #   p "DONE SETTING!"
-      # else
-      #   p "NOT GONNA SET NOW PLAYING (seems to be the same)"
-      # end
-    end #end parseAndSetNowPlaying
-
     def call(env)
       if Faye::WebSocket.websocket?(env)
         ws = Faye::WebSocket.new(env, nil, {ping: KEEPALIVE_TIME })
