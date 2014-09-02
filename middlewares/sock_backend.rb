@@ -71,16 +71,16 @@ module Schleifer
 
     def parseAndSetNowPlaying(data)
       p "parseAndsetNowPlaying GOT mNowPlaying:#{mNowPlaying}"
-      if( JSON.parse(data)["videoid"] != $nowPlaying )
-        #if it is not the same set it so it gets passed onto current & future clients
-        $nowPlaying = JSON.parse(data)["videoid"]
-        @redis.set $NOWPLAYINGTAG, $nowPlaying 
-        # @redis.publish(CHANNEL, mNowPlaying)
-        # & PUBLISHING!!
-        p "DONE SETTING!"
-      else
-        p "NOT GONNA SET NOW PLAYING (seems to be the same)"
-      end
+      # if( JSON.parse(data)["videoid"] != $nowPlaying )
+      #   #if it is not the same set it so it gets passed onto current & future clients
+      #   $nowPlaying = JSON.parse(data)["videoid"]
+      #   @redis.set $NOWPLAYINGTAG, $nowPlaying 
+      #   # @redis.publish(CHANNEL, mNowPlaying)
+      #   # & PUBLISHING!!
+      #   p "DONE SETTING!"
+      # else
+      #   p "NOT GONNA SET NOW PLAYING (seems to be the same)"
+      # end
     end
 
     def call(env)
