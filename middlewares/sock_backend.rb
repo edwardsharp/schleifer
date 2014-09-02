@@ -6,6 +6,7 @@ require 'erb'
 
 module Schleifer
   class SockBackend
+<<<<<<< HEAD
     # globalz!
     $localvideolist       = []
     $nowPlaying           = ""
@@ -21,6 +22,17 @@ module Schleifer
     LOCALCHANNEL      = "lobby0"
     
     
+=======
+    KEEPALIVE_TIME = 15 # in seconds
+    CHANNEL        = "chimmy-jimmy"
+    LOCALCHANNEL = "lobby0"
+    LOCALVIDEOLIST = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
+    NOWPLAYINGTAG = "nowPlaying"
+    
+    #LOCALVIDEOLISTTAG = "localVideoList" 
+    #CURRENTTIMETAG = "currentTime"
+    #CLIENTCLOUNTTAG = "clientCount"
+>>>>>>> refs/heads/plop
 
     def initialize(app)
       @app      = app
@@ -33,8 +45,21 @@ module Schleifer
         redis_sub = Redis.new(host: uri.host, port: uri.port, password: uri.password)
         redis_sub.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
+<<<<<<< HEAD
             puts "INIT Thread.new!!! on.message! will send msg: #{msg}"
             #hmm, does the default videoid need to be injected here? can be handled on client side easily enough...  
+=======
+            puts "on.message msg: #{msg}"
+            msg["clientCount"] = @clients.count.to_s
+            mNowPlaying = redis_sub.get NOWPLAYINGTAG
+            if mNowPlaying != nil and mNowPlaying != ""
+              msg["videoid"] = mNowPlaying
+            else
+              redis_sub.set NOWPLAYINGTAG, LOCALVIDEOLIST[0]
+              msg["videoid"] = LOCALVIDEOLIST[0]
+            end
+
+>>>>>>> refs/heads/plop
             @clients.each {|ws| ws.send(msg) }
           end #end on.message
         end #end redis.sub
@@ -60,6 +85,20 @@ module Schleifer
           #   p "RESCUE CLIENT AND setNowPlayingOrDefaultVideoID COUNT!!"
           # end
           @clients << ws
+<<<<<<< HEAD
+=======
+
+          begin
+            mJSON = {}
+            mJSON["clients"] = @clients.count.to_s
+            mJSON["videoid"] = @redis.get NOWPLAYINGTAG
+            p [:mJSON, mJSON]
+            @redis.publish(CHANNEL, mJSON.to_json)
+          rescue
+            p "RESCUE CLIENT COUNT PUBLISH!!"
+          end
+
+>>>>>>> refs/heads/plop
           # begin
           #   mPlaylist = {}
           #   #JSON.parse() needed?
@@ -70,6 +109,7 @@ module Schleifer
           # end
           #LOCALCHANNEL
 
+<<<<<<< HEAD
           #nowPlaying & currentTime
           p [:doneOpen, "done with open event!!"]
         end #end ws.on
@@ -79,6 +119,28 @@ module Schleifer
           # shouldPub = false
           # check if the videoid in the message from the client is the same as the one in REDIS
           #TODO: use a standard enum of tagz for event data keyz... 
+=======
+          #NOWPLAYING & CURRENTTIMETAG
+
+        end
+
+        ws.on :message do |event|
+          p [:message, event.data]
+
+
+          # begin #LOCALCHANNEL
+          #   if(event.data["videoid"])
+          #     LOCALVIDEOLIST.push(event.data.videoid) unless LOCALVIDEOLIST.include?(event.data.videoid)
+              
+          #     @redis.set LOCALCHANNEL, LOCALVIDEOLIST
+          #     # mPlaylist = {}
+          #     # mPlaylist[LOCALCHANNEL] = LOCALVIDEOLIST
+          #     # @redis.publish(CHANNEL, mPlaylist)
+          #   end
+          # rescue
+          #   p "RESCUE REDIS SET TO LOCALCHANNEL: #{LOCALCHANNEL} & LOCALVIDEOLIST: #{LOCALVIDEOLIST} !!!"
+          # end #LOCALCHANNEL
+>>>>>>> refs/heads/plop
 
 
           # mClientCount = event.data["clients"]
@@ -94,6 +156,7 @@ module Schleifer
         ws.on :close do |event|
           p [:close, ws.object_id, event.code, event.reason]
 
+<<<<<<< HEAD
           # begin
           $currentClientCount =  @clients.count
           if($currentClientCount > 0)
@@ -105,6 +168,17 @@ module Schleifer
             @redis.publish(CHANNEL, sanitize(mClients.to_json))
           else 
             nobodySeemsHere
+=======
+          begin
+            if(@clients.count > 0)
+              mJSON = {}
+              mJSON["clients"] = (@clients.count-1).to_s
+              p [:message, mJSON]
+              @redis.publish(CHANNEL, mJSON.to_json)
+            end
+          rescue
+            p "RESCUE CLIENT CLOSE COUNT"
+>>>>>>> refs/heads/plop
           end
           # rescue
           #   p "RESCUE CLIENT CLOSE COUNT"
