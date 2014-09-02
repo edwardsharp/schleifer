@@ -64,14 +64,16 @@ ws.onmessage = function(message) {
       logStuff("data.channel,YO!:"+data.channel);
     }
 
-    if(data.playlist && data.playlist.length > 0 && data.playlist.length < 25){
+    if(data.playlist && data.playlist.length > 0 && data.playlist.length < 55){
       //$("#input-channel").val(data.chennel);
       logStuff("data.playlist,YO!:"+data.playlist);
-      var vidId;
-      for(vidId in data.playlist.split(",")){
-        logStuff("GOT PLAYLIST ID: "+ vidId);
-        appendToVideoList(vidId);
+
+      for (var i=0; i<data.playlist.length; ++i) {
+        logStuff("GOT PLAYLIST ID: "+ data.playlist[i]);
+        appendToVideoList(data.playlist[i]);
+        
       }
+
 
     }
 
