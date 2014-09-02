@@ -2,7 +2,7 @@ require 'faye/websocket'
 require 'thread'
 require 'redis'
 require 'json'
-
+require 'erb'
 
 module Schleifer
   class SockBackend
@@ -27,30 +27,15 @@ module Schleifer
       @clients  = []
       uri       = URI.parse(ENV["REDISTOGO_URL"])
       @redis    = Redis.new(host: uri.host, port: uri.port, password: uri.password)
-      
-      #TODO: handle init of localplaylist via redis?
-      #@redis.set $LOCALVIDEOLISTTAG, localvideolist
-
-      
 
       #TODO: multichannel
       Thread.new do
-        @redis.subscribe(CHANNEL) do |on|
+        redis_sub = Redis.new(host: uri.host, port: uri.port, password: uri.password)
+        redis_sub.subscribe(CHANNEL) do |on|
           on.message do |channel, msg|
             puts "INIT Thread.new!!! on.message! will send msg: #{msg}"
-            
-            # p "init about to setNowPlayingOrDefaultVideoID!!!"
-            # setNowPlayingOrDefaultVideoID
-
-            # parseAndSetNowPlaying(msg)
-
-            # if msg == "videoid"
-            #   msg = $DEFAULTNOWPLAYING
-            # end
-            
             #hmm, does the default videoid need to be injected here? can be handled on client side easily enough...  
             @clients.each {|ws| ws.send(msg) }
-       
           end #end on.message
         end #end redis.sub
       end #end Thread.new
@@ -102,7 +87,7 @@ module Schleifer
           #   
           # end
 
-          @redis.publish(CHANNEL, event.data)
+          @redis.publish(CHANNEL, sanitize(event.data))
 
         end #end ws.on :message
 
@@ -110,17 +95,17 @@ module Schleifer
           p [:close, ws.object_id, event.code, event.reason]
 
           # begin
-            $currentClientCount =  @clients.count
-            if($currentClientCount > 0)
-              mClients = {}
-              mClients["clients"] = ($currentClientCount-1).to_s
-              #TODO: also send out an updated playlist without the users video ids??
+          $currentClientCount =  @clients.count
+          if($currentClientCount > 0)
+            mClients = {}
+            mClients["clients"] = ($currentClientCount-1).to_s
+            #TODO: also send out an updated playlist without the users video ids??
 
-              p [:message, mClients]
-              @redis.publish(CHANNEL, mClients.to_json)
-            else 
-              nobodySeemsHere
-            end
+            p [:close_message, mClients]
+            @redis.publish(CHANNEL, sanitize(mClients.to_json))
+          else 
+            nobodySeemsHere
+          end
           # rescue
           #   p "RESCUE CLIENT CLOSE COUNT"
           # end
@@ -139,6 +124,13 @@ module Schleifer
 
       end #end if Faye::WebSocket.websocket?(env) // else
     end #end call
+
+    private
+    def sanitize(message)
+      json = JSON.parse(message)
+      json.each {|key, value| json[key] = ERB::Util.html_escape(value) }
+      JSON.generate(json)
+    end
 
     def nobodySeemshere
       $nowPlaying = ""
