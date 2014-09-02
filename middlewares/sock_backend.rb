@@ -26,14 +26,6 @@ module Schleifer
           on.message do |channel, msg|
             puts "on.message msg: #{msg}"
 
-            msg["clients"] = @clients.count.to_s
-            mNowPlaying = redis_sub.get NOWPLAYINGTAG
-            if mNowPlaying != nil and mNowPlaying != ""
-              msg["videoid"] = mNowPlaying
-            else
-              redis_sub.set NOWPLAYINGTAG, LOCALVIDEOLIST[0]
-              msg["videoid"] = LOCALVIDEOLIST[0]
-            end
             @clients.each {|ws| ws.send(msg) }
 
             p "done sending to all clients msg:#{msg}"
@@ -53,7 +45,7 @@ module Schleifer
             mJSON = {}
             mJSON["clients"] = @clients.count.to_s
             mJSON["videoid"] = @redis.get NOWPLAYINGTAG
-            @redis.publish(CHANNEL, mJSON.to_json)
+            @redis.publish(CHANNEL, mJSON)
             p [:OPENmJSONafterPub, mJSON]
           rescue
             p "RESCUE CLIENT COUNT PUBLISH!!"
