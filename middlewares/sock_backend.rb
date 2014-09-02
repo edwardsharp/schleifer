@@ -31,10 +31,7 @@ module Schleifer
       #TODO: handle init of localplaylist via redis?
       #@redis.set $LOCALVIDEOLISTTAG, localvideolist
 
-      if @redis.get($NOWPLAYINGTAG).nil?
-        $nowPlaying = $DEFAULTNOWPLAYING
-        @redis.set $NOWPLAYINGTAG, $DEFAULTNOWPLAYING
-      end
+      setNowPlayingOrDefaultVideoID
       
 
       #TODO: multichannel
@@ -58,19 +55,22 @@ module Schleifer
       end
     end
 
-    def getNowPlayingOrDefaultVideoID
-      #@redis.set $LOCALVIDEOLISTTAG, localvideolist
-      mNowPlaying = @redis.get $NOWPLAYINGTAG
-      if mNowPlaying.nil? or mNowPlaying = ""
+    def setNowPlayingOrDefaultVideoID
+      mNowPlaying = @redis.get($NOWPLAYINGTAG)
+      if mNowPlaying.nil? or mNowPlaying.empty? or mNowPlaying == ""
+        p "setNowPlayingOrDefaultVideoID SETTING DEFAULT VIDEO ID"
         $nowPlaying = $DEFAULTNOWPLAYING
         @redis.set $NOWPLAYINGTAG, $DEFAULTNOWPLAYING
+      elsif mNowPlaying != $nowPlaying
+        $nowPlaying = mNowPlaying
+        @redis.set $NOWPLAYINGTAG, $nowPlaying 
       end
-      p "getNowPlayingOrDefaultVideoID $nowPlaying: #{$nowPlaying}"
+      p "setNowPlayingOrDefaultVideoID $nowPlaying: #{$nowPlaying}"
      
     end
 
     def parseAndSetNowPlaying(data)
-      p "parseAndsetNowPlaying GOT mNowPlaying:#{mNowPlaying}"
+      p "parseAndsetNowPlaying GOT data:#{data}"
       # if( JSON.parse(data)["videoid"] != $nowPlaying )
       #   #if it is not the same set it so it gets passed onto current & future clients
       #   $nowPlaying = JSON.parse(data)["videoid"]
@@ -90,13 +90,13 @@ module Schleifer
           p [:open, ws.object_id]
           @clients << ws
 
-          begin
+          # begin
             $currentClientCount = @clients.count
             mJSON = {}
             mJSON["clients"] = $currentClientCount.to_s
             
             #inject the currently set video id. 
-            # getNowPlayingOrDefaultVideoID
+            # setNowPlayingOrDefaultVideoID
             mJSON["videoid"] = $nowPlaying
 
 
@@ -106,9 +106,9 @@ module Schleifer
             puts "JUST @redis.publish'd!!!!!"
             p [:mJSON, mJSON]
 
-          rescue
-            p "RESCUE CLIENT AND getNowPlayingOrDefaultVideoID COUNT!!"
-          end
+          # rescue
+          #   p "RESCUE CLIENT AND setNowPlayingOrDefaultVideoID COUNT!!"
+          # end
 
           # begin
           #   mPlaylist = {}
@@ -126,7 +126,7 @@ module Schleifer
 
         ws.on :message do |event|
           p [:event_data, event.data]
-          shouldPub = false
+          # shouldPub = false
           # check if the videoid in the message from the client is the same as the one in REDIS
           #TODO: use a standard enum of tagz for event data keyz... 
           
@@ -151,7 +151,7 @@ module Schleifer
         ws.on :close do |event|
           p [:close, ws.object_id, event.code, event.reason]
 
-          begin
+          # begin
             $currentClientCount =  @clients.count
             if($currentClientCount > 0)
               mClients = {}
@@ -163,9 +163,9 @@ module Schleifer
             else 
               nobodySeemsHere
             end
-          rescue
-            p "RESCUE CLIENT CLOSE COUNT"
-          end
+          # rescue
+          #   p "RESCUE CLIENT CLOSE COUNT"
+          # end
 
           @clients.delete(ws)
           ws = nil
