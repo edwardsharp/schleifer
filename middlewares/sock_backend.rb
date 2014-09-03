@@ -87,7 +87,9 @@ module Schleifer
                     #keep list from getting too long...
                     mVideoList.delete(mVideoList[0])
                   end
-                  mVideoList << mNowPlaying
+                  unless mVideoList.include? mNowPlaying
+                    mVideoList << mNowPlaying
+                  end 
                 end
       
                 @redis.set VIDEOLISTTAG, mVideoList.to_json
