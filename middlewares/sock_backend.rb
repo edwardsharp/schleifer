@@ -87,7 +87,13 @@ module Schleifer
                     #keep list from getting too long...
                     mVideoList.delete(mVideoList.first[0])
                   end
-                  unless mVideoList.include? mNowPlaying
+
+                  if mVideoList.include? mNowPlaying
+                    #maybe we have the videoId but no title...
+                    if mVideoList[mNowPlaying] != mVideoTitle
+                      mVideoList[mNowPlaying] = mVideoTitle
+                    end
+                  else
                     mVideoList[mNowPlaying] = mVideoTitle
                   end 
                 end
