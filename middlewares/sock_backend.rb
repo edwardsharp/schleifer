@@ -72,12 +72,13 @@ module Schleifer
           p [:message, event.data]
 
           begin
-            mNowPlaying = JSON.parse(event.data)["videoid"]
+            eventData = JSON.parse(event.data)
+            mNowPlaying = eventData["videoid"]
             if mNowPlaying and mNowPlaying != ""
               @redis.set NOWPLAYINGTAG, mNowPlaying
               p "GOT (AND @redis.set) VIDEOID: #{mNowPlaying}"
 
-              if(event.data["action"] == "client_onPlayerStateChange_1")
+              if(eventData["action"] == "client_onPlayerStateChange_1")
                 if(@redis.get(VIDEOLISTTAG).empty?)
                   mVideoList = [mNowPlaying]
                 else
