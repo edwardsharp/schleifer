@@ -270,19 +270,19 @@ function onPlayerStateChange(event) {
     2 (paused)
     3 (buffering)
     5 (video cued). */
-
+  videoTitle = videoContainer.player.getVideoData().title
   if(event.data === 0) {   
     //repeat!         
     event.target.playVideo();
   }
   if(event.data === 1) {  
     logStuff("WOULD PLAY... WS SENDING!!!");        
-    ws.send(JSON.stringify({ channel: channel, videoid: videoid, action: actionEnum[3]}));   
+    ws.send(JSON.stringify({ channel: channel, videoid: videoid, videoTitle: videoTitle, action: actionEnum[3]}));   
     
     $("#input-videoid")[0].value = videoid;
     
     //push onto the playlist stack
-    appendToVideoList(videoid, videoContainer.player.getVideoData().title);
+    appendToVideoList(videoid, videoTitle);
 
     startTimeTimeout();       
   }
