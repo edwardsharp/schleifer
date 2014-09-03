@@ -10,6 +10,7 @@ module Schleifer
     LOCALCHANNEL = "lobby0"
 
     LOCALVIDEOLIST = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
+    LOCALVIDEOLISTTITLE ["Marvin Minsky on Consciousness"]
     NOWPLAYINGTAG = "nowPlaying"
 
     VIDEOLISTTAG = "videoList" 
@@ -27,9 +28,9 @@ module Schleifer
       if @redis.get(VIDEOLISTTAG).nil?
         if @redis.get(NOWPLAYINGTAG).nil? or @redis.get(NOWPLAYINGTAG) == ""
           @redis.set(NOWPLAYINGTAG, LOCALVIDEOLIST[0])
-          @redis.set(VIDEOLISTTAG, [LOCALVIDEOLIST[0]].to_json )
+          @redis.set(VIDEOLISTTAG, { LOCALVIDEOLIST[0] => LOCALVIDEOLISTTITLE[0] }.to_json )
         else
-          @redis.set(VIDEOLISTTAG, [@redis.get(NOWPLAYINGTAG)].to_json )
+          @redis.set(VIDEOLISTTAG, { @redis.get(NOWPLAYINGTAG) => '' }.to_json )
         end
 
       end
@@ -74,21 +75,22 @@ module Schleifer
           begin
             eventData = JSON.parse(event.data)
             mNowPlaying = eventData["videoid"]
+            mVideoTitle = eventData["videoTitle"]
             if mNowPlaying and mNowPlaying != ""
               @redis.set NOWPLAYINGTAG, mNowPlaying
               p "GOT (AND @redis.set) VIDEOID: #{mNowPlaying}"
 
               if(eventData["action"] == "client_onPlayerStateChange_1")
                 if(@redis.get(VIDEOLISTTAG).empty?)
-                  mVideoList = [mNowPlaying]
+                  mVideoList = { mNowPlaying => mVideoTitle }
                 else
                   mVideoList = JSON.parse(@redis.get(VIDEOLISTTAG))
                   if(mVideoList.count > 10)
                     #keep list from getting too long...
-                    mVideoList.delete(mVideoList[0])
+                    mVideoList.delete(mVideoList.first[0])
                   end
                   unless mVideoList.include? mNowPlaying
-                    mVideoList << mNowPlaying
+                    mVideoList[mNowPlaying] = mVideoTitle
                   end 
                 end
       
