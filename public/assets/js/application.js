@@ -17,7 +17,7 @@ var actionEnum =
   ,2: "client_videoListItem_click"
   ,3: "client_onPlayerStateChange_1"
   };
-var loggingEnabled = true;
+var loggingEnabled = false;
 
 // #PRAGMA MARK - WebSocket delegatez 
 ws.onmessage = function(message) {

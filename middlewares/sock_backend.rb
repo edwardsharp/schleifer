@@ -83,7 +83,7 @@ module Schleifer
                   mVideoList = { mNowPlaying => mVideoTitle }
                 else
                   mVideoList = JSON.parse(@redis.get(VIDEOLISTTAG))
-                  if(mVideoList.count > 10)
+                  if(mVideoList.count > 100)
                     #keep list from getting too long...
                     mVideoList.delete(mVideoList.first[0])
                   end
