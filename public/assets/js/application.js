@@ -71,7 +71,7 @@ ws.onmessage = function(message) {
 
       for (var i=0; i<data.playlist.length; ++i) {
         logStuff("GOT PLAYLIST ID: "+ data.playlist[i]);
-        appendToVideoList(data.playlist[i]);
+        appendToVideoList(data.playlist[i], '');
         
       }
 
@@ -161,9 +161,10 @@ function showVideoByID (domElement, videoID) {
 
 }
 
-function appendToVideoList(videoid){
+function appendToVideoList(videoid, vTitle){
 
-  vTitle = videoContainer.player.getVideoData().title;
+  vTitle = typeof vTitle !== 'undefined' ? vTitle : '';
+
   var mElem = $('\
         <div class="videoListItem" id="'+videoid+'" data-value="'+videoid+'"> \
           <div class="videoListThumb"><img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" title="'+vTitle+'"></div> \
@@ -275,7 +276,7 @@ function onPlayerStateChange(event) {
     $("#input-videoid")[0].value = videoid;
     
     //push onto the playlist stack
-    appendToVideoList(videoid);
+    appendToVideoList(videoid, videoContainer.player.getVideoData().title);
 
     startTimeTimeout();       
   }
