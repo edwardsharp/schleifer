@@ -71,10 +71,16 @@ ws.onmessage = function(message) {
 
       for (var i=0; i<data.playlist.length; ++i) {
         logStuff("GOT PLAYLIST ID: "+ data.playlist[i]);
-        appendToVideoList(data.playlist[i], '');
+        
         
       }
 
+      for (var k in data.playlist){
+        if (target.hasOwnProperty(k)) {
+          logStuff("GOT PLAYLIST ID: "+k+" title:"+data.playlist[k]);
+          appendToVideoList(k, data.playlist[k]);
+        }
+      }
 
     }
 
