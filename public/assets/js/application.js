@@ -44,6 +44,25 @@ ws.onmessage = function(message) {
       logStuff("data.clients,YO:"+data.clients);
     }
 
+    if(data.playlist ){
+      //$("#input-channel").val(data.chennel);
+      logStuff("data.playlist,YO!:"+data.playlist);
+
+      // for (var i=0; i<data.playlist.length; ++i) {
+      //   logStuff("GOT PLAYLIST ID: "+ data.playlist[i]);
+        
+        
+      // }
+
+      for (var k in data.playlist){
+        if (data.playlist.hasOwnProperty(k)) {
+          logStuff("GOT PLAYLIST ID: "+k+" title:"+data.playlist[k]);
+          appendToVideoList(k, data.playlist[k]);
+        }
+      }
+
+    }
+
     logStuff("data.videoid, YO:"+data.videoid);
     //check if incoming message has a videoid parameter
     if(data.videoid && data.videoid.length < 25){
@@ -63,25 +82,6 @@ ws.onmessage = function(message) {
     if(data.channel && data.channel.length > 0 && data.channel.length < 25){
       //$("#input-channel").val(data.chennel);
       logStuff("data.channel,YO!:"+data.channel);
-    }
-
-    if(data.playlist && data.playlist.length > 0 ){
-      //$("#input-channel").val(data.chennel);
-      logStuff("data.playlist,YO!:"+data.playlist);
-
-      // for (var i=0; i<data.playlist.length; ++i) {
-      //   logStuff("GOT PLAYLIST ID: "+ data.playlist[i]);
-        
-        
-      // }
-
-      for (var k in data.playlist){
-        if (data.playlist.hasOwnProperty(k)) {
-          logStuff("GOT PLAYLIST ID: "+k+" title:"+data.playlist[k]);
-          appendToVideoList(k, data.playlist[k]);
-        }
-      }
-
     }
 
     if(data.currTime && data.currTime.length){
