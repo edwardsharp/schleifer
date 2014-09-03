@@ -10,7 +10,7 @@ module Schleifer
     LOCALCHANNEL = "lobby0"
 
     LOCALVIDEOLIST = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
-    LOCALVIDEOLISTTITLE ["Marvin Minsky on Consciousness"]
+    LOCALVIDEOLISTTITLE = ["Marvin Minsky on Consciousness"]
     NOWPLAYINGTAG = "nowPlaying"
 
     VIDEOLISTTAG = "videoList" 
