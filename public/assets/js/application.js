@@ -161,9 +161,11 @@ function showVideoByID (domElement, videoID) {
 }
 
 function appendToVideoList(videoid){
+
+  vTitle = videoContainer.player.getVideoData().title;
   var mElem = $('\
         <div class="videoListItem" id="'+videoid+'" data-value="'+videoid+'"> \
-          <div class="videoListThumb"><img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" title="'+videoid+'"></div> \
+          <div class="videoListThumb"><img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" title="'+vTitle+'"></div> \
           <div class="desc">'+videoid+'</div> \
         </div> \
       ');
