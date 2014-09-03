@@ -15,6 +15,7 @@ var actionEnum =
    0: "onSubmit"
   ,1: "client_onPlayerStateChange_0" 
   ,2: "client_videoListItem_click"
+  ,3: "client_onPlayerStateChange_1"
   };
 var loggingEnabled = true;
 
@@ -269,7 +270,7 @@ function onPlayerStateChange(event) {
   }
   if(event.data === 1) {  
     logStuff("WOULD PLAY... WS SENDING!!!");        
-    ws.send(JSON.stringify({ channel: channel, videoid: videoid, action: actionEnum[1]}));   
+    ws.send(JSON.stringify({ channel: channel, videoid: videoid, action: actionEnum[3]}));   
     
     $("#input-videoid")[0].value = videoid;
     

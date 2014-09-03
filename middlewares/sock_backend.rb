@@ -75,17 +75,23 @@ module Schleifer
             mNowPlaying = JSON.parse(event.data)["videoid"]
             if mNowPlaying and mNowPlaying != ""
               @redis.set NOWPLAYINGTAG, mNowPlaying
-              
-              if(@redis.get(VIDEOLISTTAG).empty?)
-                mVideoList = [mNowPlaying]
-              else
-                mVideoList = JSON.parse(@redis.get(VIDEOLISTTAG))
-                mVideoList << mNowPlaying
-              end
-    
-              @redis.set VIDEOLISTTAG, mVideoList.to_json
-             
               p "GOT (AND @redis.set) VIDEOID: #{mNowPlaying}"
+
+              if(event.data["action"] == "client_onPlayerStateChange_1")
+                if(@redis.get(VIDEOLISTTAG).empty?)
+                  mVideoList = [mNowPlaying]
+                else
+                  mVideoList = JSON.parse(@redis.get(VIDEOLISTTAG))
+                  if(mVideoList.count > 10)
+                    #keep list from getting too long...
+                    mVideoList.delete(mVideoList[0])
+                  end
+                  mVideoList << mNowPlaying
+                end
+      
+                @redis.set VIDEOLISTTAG, mVideoList.to_json
+                p "DONE SETTING VIDEOLISTTAG:#{VIDEOLISTTAG} mVideoList.to_json: #{mVideoList.to_json}"
+              end
             end
           rescue 
             p "CAUGHT EXCEPTION ws.on :message!! (probably JSON.parse error"
