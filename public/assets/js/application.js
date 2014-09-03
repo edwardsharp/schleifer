@@ -76,7 +76,7 @@ ws.onmessage = function(message) {
       // }
 
       for (var k in data.playlist){
-        if (target.hasOwnProperty(k)) {
+        if (data.playlist.hasOwnProperty(k)) {
           logStuff("GOT PLAYLIST ID: "+k+" title:"+data.playlist[k]);
           appendToVideoList(k, data.playlist[k]);
         }
