@@ -29,8 +29,6 @@ module Schleifer
         if @redis.get(NOWPLAYINGTAG).nil? or @redis.get(NOWPLAYINGTAG) == ""
           @redis.set(NOWPLAYINGTAG, LOCALVIDEOLIST[0])
           @redis.set(VIDEOLISTTAG, { LOCALVIDEOLIST[0] => LOCALVIDEOLISTTITLE[0] }.to_json )
-        else
-          @redis.set(VIDEOLISTTAG, { @redis.get(NOWPLAYINGTAG) => '' }.to_json )
         end
 
       end
