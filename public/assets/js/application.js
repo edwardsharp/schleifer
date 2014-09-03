@@ -239,9 +239,10 @@ function startTimeTimeout(){
 
 
 $('#vidz').on('click', '.videoListItem', function(event) {
+  logStuff("GOT PLAYLIST CLICK!");
   event.preventDefault();
   videoid = $(this).data('value');
-  logStuff("GOT PLAYLIST CLICK, VIDEOID: "+videoid);
+  logStuff("VIDEOID: "+videoid);
   $("#input-videoid")[0].value = videoid;
   //channel = $("#input-channel")[0].value;
   showVideoByID(videoContainer , videoid);
