@@ -124,10 +124,7 @@ function showVideoByID (domElement, videoID) {
 
     myTimer = setInterval(setTimeTimeout, 1000);
 
-    $("#input-videoid")[0].value = videoid;
-    //push onto the playlist stack
-
-    appendToVideoList(videoid);
+    
     
 
     //push thumb
@@ -237,40 +234,51 @@ function startTimeTimeout(){
 
 
 
-
-// when video ends
-function onPlayerStateChange(event) {        
-    if(event.data === 0) {    
-      logStuff("WOULD PLAY... WS SENDING!!!");        
-      ws.send(JSON.stringify({ channel: channel, videoid: videoid, action: actionEnum[1]}));   
-    }
-    
-}
-
-
 //playlist click handlers 
-$(".videoListItem").click( function(event) {
+//#TODO: fix this up!!
+
+
+$('#vidz').on('click', '.videoListItem', function(event) {
   event.preventDefault();
-  $("#input-videoid")[0].value = $(this).data('value');
+  videoid = $(this).data('value');
+  logStuff("GOT PLAYLIST CLICK, VIDEOID: "+videoid);
+  $("#input-videoid")[0].value = videoid;
   //channel = $("#input-channel")[0].value;
-  ws.send(JSON.stringify({ channel: channel, videoid: $(this).data('value'), action: actionEnum[2] }));
-  //showVideoByID(videoContainer , value);
+  showVideoByID(videoContainer , videoid);
+  //ws.send(JSON.stringify({ channel: channel, videoid: videoid, action: actionEnum[2] }));
 });
 
         
 // when video ends
 function onPlayerStateChange(event) { 
   logStuff("GOT onPlayerStateChange event.data:"+event.data);  
-  //TODO: CANCEL INTERVAL IF VIDEO IS PAUSED!   
-  if(event.data === 0) {            
+  /*
+    -1 (unstarted)
+    0 (ended)
+    1 (playing)
+    2 (paused)
+    3 (buffering)
+    5 (video cued). */
+
+  if(event.data === 0) {   
+    //repeat!         
     event.target.playVideo();
   }
   if(event.data === 1) {  
+    logStuff("WOULD PLAY... WS SENDING!!!");        
+    ws.send(JSON.stringify({ channel: channel, videoid: videoid, action: actionEnum[1]}));   
+    
+    $("#input-videoid")[0].value = videoid;
+    
+    //push onto the playlist stack
+    appendToVideoList(videoid);
+
     startTimeTimeout();       
   }
-  if(event.data === 2) {    
+  if(event.data === 2 || event.data === 3) {    
     stopTimeTimeout();
   }
+
 }
 
 function logStuff(what2log){
