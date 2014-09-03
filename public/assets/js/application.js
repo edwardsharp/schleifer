@@ -65,7 +65,7 @@ ws.onmessage = function(message) {
       logStuff("data.channel,YO!:"+data.channel);
     }
 
-    if(data.playlist && data.playlist.length > 0 && data.playlist.length < 55){
+    if(data.playlist && data.playlist.length > 0 ){
       //$("#input-channel").val(data.chennel);
       logStuff("data.playlist,YO!:"+data.playlist);
 
