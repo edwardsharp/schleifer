@@ -69,11 +69,11 @@ ws.onmessage = function(message) {
       //$("#input-channel").val(data.chennel);
       logStuff("data.playlist,YO!:"+data.playlist);
 
-      for (var i=0; i<data.playlist.length; ++i) {
-        logStuff("GOT PLAYLIST ID: "+ data.playlist[i]);
+      // for (var i=0; i<data.playlist.length; ++i) {
+      //   logStuff("GOT PLAYLIST ID: "+ data.playlist[i]);
         
         
-      }
+      // }
 
       for (var k in data.playlist){
         if (target.hasOwnProperty(k)) {
