@@ -40,7 +40,7 @@ ws.onmessage = function(message) {
     logStuff("data.clients, YO:"+data.clients);
 
     if(data.clients && data.clients > 0){
-      $("#currActive > .badge").html(data.clients);
+      $("#currActive").html(data.clients);
       logStuff("data.clients,YO:"+data.clients);
     }
 

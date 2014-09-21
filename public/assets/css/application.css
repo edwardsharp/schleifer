@@ -59,7 +59,7 @@ img {
 
 .videoListItem {
   display: block;
-
+  min-width: 175px;
 }
 
 .videoListThumb {
