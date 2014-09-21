@@ -172,7 +172,6 @@ function appendToVideoList(videoid, vTitle){
   vTitle = typeof vTitle !== 'undefined' ? vTitle : '';
 
   var mElem = $('\
-        <li class="divider"></li> \
         <li class="videoListItem" id="'+videoid+'" data-value="'+videoid+'"> \
           <span class="videoListThumb"><img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" title="'+vTitle+'"></span> \
           <span class="desc">'+videoid+'</span> \
