@@ -60,6 +60,10 @@ img {
 .videoListItem {
   display: block;
   min-width: 175px;
+  max-width: 275px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .videoListThumb {
@@ -75,10 +79,6 @@ img {
 
 .videoListItem .desc {
   color: #ff6600;
-
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space: nowrap; 
 }
 
 .videoListItem:hover {

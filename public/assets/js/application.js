@@ -174,7 +174,7 @@ function appendToVideoList(videoid, vTitle){
   var mElem = $('\
         <li class="videoListItem" id="'+videoid+'" data-value="'+videoid+'"> \
           <span class="videoListThumb"><img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" title="'+vTitle+'"></span> \
-          <span class="desc">'+videoid+'</span> \
+          <span class="desc">'+vTitle+'</span> \
         </li> \
       ');
 
