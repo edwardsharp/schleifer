@@ -177,7 +177,6 @@ function appendToVideoList(videoid, vTitle){
           <span class="videoListThumb"><img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" title="'+vTitle+'"></span> \
           <span class="desc">'+videoid+'</span> \
         </li> \
-
       ');
 
     var myID = '#' + videoid;
