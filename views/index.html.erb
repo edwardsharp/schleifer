@@ -20,7 +20,7 @@
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
             <span class="sr-only">togg</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -29,17 +29,33 @@
           <a class="navbar-brand" href="#">schleifer</a>
         </div>
 
-        <!-- collect the nav links, forms, and other content for toggling -->
+        <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav nav-pills">
 
-          <ul class="nav nav-pills">
-            <li class="active"><a href="#"><span id="currTime">00:00</span> <span class="badge">0</span></a></li>
+            <li class="active">
+              <a href="#"><span id="currTime">00:00</span> <span class="badge">0</span></a>
+            </li>
+
+   
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">playlist <span class="caret"></span></a>
+              <ul class="dropdown-menu videoListContainer" role="menu">
+                <!-- THE PLAYLIST -->
+                  <div id="vidz" class="videoList">
+
+              
+
+                    <div class="videoListItem" id="edflm7Hh3hs" data-value="edflm7Hh3hs">           <div class="videoListThumb"><img src="http://img.youtube.com/vi/edflm7Hh3hs/0.jpg" title="Worf gets DENIED again and again on Star Trek TNG."></div>           <div class="desc">edflm7Hh3hs</div>         </div><div class="videoListItem" id="iWHrhDK5ARY" data-value="iWHrhDK5ARY">           <div class="videoListThumb"><img src="http://img.youtube.com/vi/iWHrhDK5ARY/0.jpg" title="Robert Ashley - Perfect Lives - Part 1 of part 3: The Bank (Victimless Crime)"></div>           <div class="desc">iWHrhDK5ARY</div>         </div><div class="videoListItem" id="3oqUd8utr14" data-value="3oqUd8utr14">           <div class="videoListThumb"><img src="http://img.youtube.com/vi/3oqUd8utr14/0.jpg" title="Andy Warhol paints Debbie Harry on an Amiga"></div>           <div class="desc">3oqUd8utr14</div>         </div><div class="videoListItem" id="ivlUMWUJ-1w" data-value="ivlUMWUJ-1w">           <div class="videoListThumb"><img src="http://img.youtube.com/vi/ivlUMWUJ-1w/0.jpg" title="Henry Purcell - Dido and Aeneas - Dido's lament"></div>           <div class="desc">ivlUMWUJ-1w</div>         </div><div class="videoListItem" id="Ef1q-vi-z9w" data-value="Ef1q-vi-z9w">           <div class="videoListThumb"><img src="http://img.youtube.com/vi/Ef1q-vi-z9w/0.jpg" title="Unicorn hard-on in Nashville on 4th of july 07"></div>           <div class="desc">Ef1q-vi-z9w</div>         </div><div class="videoListItem" id="RkfzXq0tA3c" data-value="RkfzXq0tA3c">           <div class="videoListThumb"><img src="http://img.youtube.com/vi/RkfzXq0tA3c/0.jpg" title="CABARET VOLTAIRE - SENSORIA"></div>           <div class="desc">RkfzXq0tA3c</div>         </div><div class="videoListItem" id="RUAJ8KLGqis" data-value="RUAJ8KLGqis">           <div class="videoListThumb"><img src="http://img.youtube.com/vi/RUAJ8KLGqis/0.jpg" title="Aphex Twin - minipops 67 [120.2][source field mix]"></div>           <div class="desc">RUAJ8KLGqis</div>         </div><div class="videoListItem" id="Iuf1vYj0AN4" data-value="Iuf1vYj0AN4">           <div class="videoListThumb"><img src="http://img.youtube.com/vi/Iuf1vYj0AN4/0.jpg" title="Fatboy Slim On the floor at The Boutique"></div>           <div class="desc">Iuf1vYj0AN4</div>         </div><div class="videoListItem" id="G8Q2McwqMPc" data-value="G8Q2McwqMPc">           <div class="videoListThumb"><img src="http://img.youtube.com/vi/G8Q2McwqMPc/0.jpg" title="MISS KITTIN - FRANK SINATRA"></div>           <div class="desc">G8Q2McwqMPc</div>         </div><div class="videoListItem" id="VDZK6LCPMGs" data-value="VDZK6LCPMGs">           <div class="videoListThumb"><img src="http://img.youtube.com/vi/VDZK6LCPMGs/0.jpg" title="The Angels - My Boyfriend's Back"></div>           <div class="desc">VDZK6LCPMGs</div>         </div><div class="videoListItem" id="d2fQk2cOnrE" data-value="d2fQk2cOnrE">           <div class="videoListThumb"><img src="http://img.youtube.com/vi/d2fQk2cOnrE/0.jpg" title="Mo B. Dick - Picture U &amp; Me"></div>           <div class="desc">d2fQk2cOnrE</div>         </div><div class="videoListItem" id="F4JGjkpHtHw" data-value="F4JGjkpHtHw">           <div class="videoListThumb"><img src="http://img.youtube.com/vi/F4JGjkpHtHw/0.jpg" title="KMFDM - Naive (Live 1992)"></div>           <div class="desc">F4JGjkpHtHw</div>         </div>
+                  </div>
+
+                <!--li class="divider"></li-->
+                
+              </ul>
+            </li>
           </ul>
           
-
           <form id="input-form" class="navbar-form navbar-left" role="search">
-
-
 
           <!-- <div class="input-append btn-group">
             <input class="span2" id="input-channel" size="16" type="text" placeholder="#lobby0" value="#lobby0" disabled />
@@ -55,12 +71,8 @@
 
           </div> -->
 
-
           
             <div class="form-group">
-
-
-                
                 <div class="input-append btn-group">
                   <input id="input-videoid" type="text" class="form-control" placeholder="MwlU824cS4s" value="MwlU824cS4s" autofocus />
 
@@ -77,42 +89,24 @@
                   <span class="glyphicon glyphicon-plus-sign"></span>
                 </button>
                 </div>
-                
-                
             </div>
-            
           </form>
 
-    
+        </div><!-- /.navbar-collapse -->
+
+
+        <!-- collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
      
-          <!-- THE PLAYLIST -->
-          <div class="input-append btn-group videoListContainer">
-            <div id="vidz" class="videoList">
-
-              
-
-            </div>
-
-          <!-- LEFT AND RIGHT ARROWS -->
-          <div class="VideoListArrows">
-            <div class="VideoListArrowLeft"><i class="fa fa-chevron-left fa-lg"></i></div>
-            <div class="VideoListArrowRight"><i class="fa fa-chevron-right fa-lg"></i></div>
-          </div>
-
-
-
-        </div>
-
-        
-
-
-
-
           
 
-        </div><!-- /.navbar-collapse -->
+
+
       </div><!-- /.container-fluid -->
     </nav>
+
+
 
 
 
