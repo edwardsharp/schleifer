@@ -123,7 +123,6 @@ img {
 .dropdown-menu {
   padding: 0!important;
 }
-/*.form-control, .dropdown-toggle{
-  height: 48px!important;
+.input-group-lg > .form-control, .input-group-lg > .input-group-addon, .input-group-lg > .input-group-btn > .btn {
+    height: 49px;
 }
-*/
