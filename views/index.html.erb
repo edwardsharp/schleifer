@@ -34,22 +34,9 @@
           <ul class="nav navbar-nav nav-pills">
 
             <li>
-              <a href="#"><span id="currTime">00:00</span> <span id="currActive" class="badge">0</span></a>
+              <a href="#"><span id="currActive" class="badge">0</span></a>
             </li>
 
-   
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">archive <span class="caret"></span></a>
-              <ul class="dropdown-menu videoListContainer" role="menu">
-                <!-- THE PLAYLIST -->
-                  <li id="vidz" class="videoList">
-                   
-                  </li>
-
-                <!--li class="divider"></li-->
-                
-              </ul>
-            </li>
           </ul>
           
           <form id="input-form" class="navbar-form navbar-left" role="search">
@@ -68,10 +55,36 @@
 
           </div> -->
 
+
+
+
           
             <div class="form-group">
                 <div class="input-append btn-group">
-                  <input id="input-videoid" type="text" class="form-control" placeholder="MwlU824cS4s" value="MwlU824cS4s" autofocus />
+
+
+                  <div class="input-group">
+
+
+                    <div class="input-group-btn">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">archive <span class="caret"></span></button>
+                      <ul class="dropdown-menu videoListContainer" role="menu">
+                              <!-- THE PLAYLIST -->
+                                <li id="vidz" class="videoList">
+                                 
+                                </li>
+
+                              <!--li class="divider"></li-->
+                              
+                            </ul>
+                    </div><!-- /btn-group -->
+
+
+                    <input id="input-videoid" type="text" class="form-control" placeholder="MwlU824cS4s" value="MwlU824cS4s" autofocus />
+                    <span id="currTime" class="input-group-addon">00:00</span>
+                  </div>
+
+                  
 
                   <!-- <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
                       <span class="caret"></span>
