@@ -116,3 +116,8 @@ img {
 .videoListArrowRight:hover {
   background: #CC181E;
 }
+
+/* override */
+.dropdown-menu {
+  padding: 0!important;
+}
