@@ -62,7 +62,7 @@ img {
 .videoListItem {
   display: block;
   min-width: 175px;
-  max-width: 320px;
+  max-width: 1%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
