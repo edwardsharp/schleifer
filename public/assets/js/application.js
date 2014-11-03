@@ -145,7 +145,7 @@ function showVideoByID (domElement, videoID) {
                     'rel'           : 0,
                     'autoplay'      : 1,
                     'loop'          : 1,
-                    'playlist'      : videoid,
+                    'playlist'      : videoList,
                     'controls'      : 0,
                     'showinfo'      : 0 ,
                     'modestbranding'  : 1,
@@ -186,6 +186,9 @@ function appendToVideoList(videoid, vTitle){
         //these do not get .click .on or whatever handlerz!!! ahh! 
         //TODO FIX!
         mElem.appendTo(".videoList");
+
+        //add it to the videoList
+        videoList.push(videoid);
       }
     }catch(e) {
       logStuff("CAUGHT LENGTH ERROR!!!"); 
@@ -325,6 +328,10 @@ $(function() {
       showVideoByID(videoContainer, videoid);
     }
 
+    
+  });
+
+  $( ".target" ).change(function() {
     
   });
 

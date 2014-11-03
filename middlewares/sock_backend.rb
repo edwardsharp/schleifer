@@ -9,8 +9,11 @@ module Schleifer
     CHANNEL        = "chimmy-jimmy"
     LOCALCHANNEL = "lobby0"
 
-    LOCALVIDEOLIST = ["SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"];
-    LOCALVIDEOLISTTITLE = ["Marvin Minsky on Consciousness"]
+    #"SNWVvZi3HX8", "s4ole_bRTdw", "_EjBtH2JFjw", "6ZG_GYNhgyI", "E5Fk32OwdbM", "KIIpRzUsIrU", "Gw0JKbnXeCM", "81SM6UFEMo4", "MwlU824cS4s"
+    LOCALVIDEOLIST = []
+
+    #"Marvin Minsky on Consciousness"
+    LOCALVIDEOLISTTITLE = []
     NOWPLAYINGTAG = "nowPlaying"
 
     VIDEOLISTTAG = "videoList" 
@@ -27,8 +30,10 @@ module Schleifer
 
       if @redis.get(VIDEOLISTTAG).nil?
         if @redis.get(NOWPLAYINGTAG).nil? or @redis.get(NOWPLAYINGTAG) == ""
-          @redis.set(NOWPLAYINGTAG, LOCALVIDEOLIST[0])
-          @redis.set(VIDEOLISTTAG, { LOCALVIDEOLIST[0] => LOCALVIDEOLISTTITLE[0] }.to_json )
+          #hmm.
+          # LOCALVIDEOLIST[0]
+          @redis.set(NOWPLAYINGTAG, "SNWVvZi3HX8")
+          @redis.set(VIDEOLISTTAG, { "SNWVvZi3HX8" => "Marvin Minsky on Consciousness" }.to_json )
         end
 
       end
