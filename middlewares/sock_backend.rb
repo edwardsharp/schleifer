@@ -60,6 +60,9 @@ module Schleifer
           begin
             mJSON = {}
             mJSON["clients"] = @clients.count.to_s
+            if(@clients.count > 1)
+              mJSON["onOpenNeedInitTime"] = "yes"
+            end
             mJSON["videoid"] = @redis.get NOWPLAYINGTAG
             unless(@redis.get(VIDEOLISTTAG).empty?)
               mJSON["playlist"] = JSON.parse(@redis.get(VIDEOLISTTAG))
@@ -105,6 +108,13 @@ module Schleifer
       
                 @redis.set VIDEOLISTTAG, mVideoList.to_json
                 p "DONE SETTING VIDEOLISTTAG:#{VIDEOLISTTAG} mVideoList.to_json: #{mVideoList.to_json}"
+              elsif(eventData["action"] == "client_needTimeSync")
+
+                p "NEW CLIENT NEEDZ TO SYNC TIME!"
+              end
+              elsif(eventData["action"] == "client_needToSeekToTime")
+
+                p "CLIENT NEEDZ TO SEEK TO TIME!"
               end
             end
           rescue 

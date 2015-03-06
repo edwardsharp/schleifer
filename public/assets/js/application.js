@@ -16,6 +16,8 @@ var actionEnum =
   ,1: "client_onPlayerStateChange_0" 
   ,2: "client_videoListItem_click"
   ,3: "client_onPlayerStateChange_1"
+  ,4: "client_needTimeSync"
+  ,5: "client_needToSeekToTime"
   };
 var loggingEnabled = false;
 
@@ -29,6 +31,17 @@ ws.onmessage = function(message) {
 
     logStuff("data JSON parse'd,YO:"+data);
 
+    if(data.action === "client_needTimeSync"){
+      logStuff("data.action is client_needToSeekToTime, YO:"+data.action);
+      //ws.send(JSON.stringify({ currentPlayerTime: currentPlayerTime}));
+      logStuff("data.connectNeedInitTime would probably need to say (BUT AM I A AGENT?):"+videoContainer.player.getCurrentTime());
+    }
+
+    if(data.action === "client_needToSeekToTime"){
+      logStuff("data.action is client_needToSeekToTime, YO:"+data.action);
+      //ws.send(JSON.stringify({ currentPlayerTime: currentPlayerTime}));
+      logStuff("data.connectNeedInitTime would probably need to say (BUT AM I A AGENT?):"+videoContainer.player.getCurrentTime());
+    }
     
     // logStuff("JSON stringify,YO:"+JSON.stringify(message.data));
 
@@ -136,6 +149,7 @@ function showVideoByID (domElement, videoID) {
 
     //push thumb
     //$("#videoL").append('<img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" class="navbar-image" border="0" />');
+    //hold of on this: 'playlist'      : videoList,
     loadYouTubeAPI(function () {
         if (!domElement.player) {
             domElement.player = new YT.Player(domElement, {
@@ -145,7 +159,7 @@ function showVideoByID (domElement, videoID) {
                     'rel'           : 0,
                     'autoplay'      : 1,
                     'loop'          : 1,
-                    'playlist'      : videoList,
+                    
                     'controls'      : 0,
                     'showinfo'      : 0 ,
                     'modestbranding'  : 1,
