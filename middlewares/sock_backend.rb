@@ -111,7 +111,6 @@ module Schleifer
               elsif(eventData["action"] == "client_needTimeSync")
 
                 p "NEW CLIENT NEEDZ TO SYNC TIME!"
-              end
               elsif(eventData["action"] == "client_needToSeekToTime")
 
                 p "CLIENT NEEDZ TO SEEK TO TIME!"
