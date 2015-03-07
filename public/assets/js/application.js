@@ -290,7 +290,7 @@ function onPlayerStateChange(event) {
 
 
   videoTitle = videoContainer.player.getVideoData().title
-  
+
   if(event.data === 0) {   
     //repeat!         
     // event.target.playVideo();
@@ -302,6 +302,7 @@ function onPlayerStateChange(event) {
       nextVideo = videoList[0];
     }
     logStuff("onPlayerStateChange ENDED GONNA PLAY: "+nextVideo);
+    videoid = nextVideo;
     showVideoByID(videoContainer, nextVideo);
 
   }
