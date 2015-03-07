@@ -19,7 +19,7 @@ var actionEnum =
   ,4: "client_needTimeSync"
   ,5: "client_needToSeekToTime"
   };
-var loggingEnabled = true;
+var loggingEnabled = false;
 
 // #PRAGMA MARK - WebSocket delegatez 
 ws.onmessage = function(message) {
@@ -296,10 +296,10 @@ function onPlayerStateChange(event) {
     // event.target.playVideo();
 
     var index = videoList.indexOf(videoid);
-    if(index >= 0 && index < videoList.length - 2){
-      nextVideo = videoList[index + 2];
+    if(index >= 0 && index < videoList.length - 1){
+      nextVideo = videoList[index - 1];
     }else {
-      nextVideo = videoList[0];
+      nextVideo = videoList[videoList.length - 1];
     }
     logStuff("onPlayerStateChange ENDED GONNA PLAY: "+nextVideo);
     videoid = nextVideo;
