@@ -289,17 +289,19 @@ function onPlayerStateChange(event) {
     5 (video cued). */
 
 
+  videoTitle = videoContainer.player.getVideoData().title
   
   if(event.data === 0) {   
     //repeat!         
     // event.target.playVideo();
 
     var index = videoList.indexOf(videoid);
-    if(index >= 0 && index < videoList.length - 1){
-      nextVideo = videoList[index + 1];
+    if(index >= 0 && index < videoList.length - 2){
+      nextVideo = videoList[index + 2];
     }else {
       nextVideo = videoList[0];
     }
+    logStuff("onPlayerStateChange ENDED GONNA PLAY: "+nextVideo);
     showVideoByID(videoContainer, nextVideo);
 
   }
@@ -310,7 +312,7 @@ function onPlayerStateChange(event) {
     $("#input-videoid")[0].value = videoid;
     
     //push onto the playlist stack
-    videoTitle = videoContainer.player.getVideoData().title
+    
     appendToVideoList(videoid, videoTitle);
 
     startTimeTimeout();       
