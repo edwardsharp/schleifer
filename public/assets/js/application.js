@@ -297,7 +297,7 @@ function onPlayerStateChange(event) {
 
     var index = videoList.indexOf(videoid);
     if(index >= 0 && index < videoList.length - 1){
-      nextVideo = videoList[index - 1];
+      nextVideo = videoList[index - 2];
     }else {
       nextVideo = videoList[videoList.length - 1];
     }
