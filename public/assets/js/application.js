@@ -19,7 +19,7 @@ var actionEnum =
   ,4: "client_needTimeSync"
   ,5: "client_needToSeekToTime"
   };
-var loggingEnabled = false;
+var loggingEnabled = true;
 
 // #PRAGMA MARK - WebSocket delegatez 
 ws.onmessage = function(message) {
@@ -149,7 +149,7 @@ function showVideoByID (domElement, videoID) {
 
     //push thumb
     //$("#videoL").append('<img src="http://img.youtube.com/vi/'+videoid+'/0.jpg" class="navbar-image" border="0" />');
-    //hold of on this: 'playlist'      : videoList,
+    //hold of on this: 'playlist'      : videoList, 'loop'          : 1,
     loadYouTubeAPI(function () {
         if (!domElement.player) {
             domElement.player = new YT.Player(domElement, {
@@ -158,7 +158,7 @@ function showVideoByID (domElement, videoID) {
                 playerVars: {
                     'rel'           : 0,
                     'autoplay'      : 1,
-                    'loop'          : 1,
+                    
                     
                     'controls'      : 0,
                     'showinfo'      : 0 ,
@@ -287,10 +287,21 @@ function onPlayerStateChange(event) {
     2 (paused)
     3 (buffering)
     5 (video cued). */
-  videoTitle = videoContainer.player.getVideoData().title
+
+
+  
   if(event.data === 0) {   
     //repeat!         
-    event.target.playVideo();
+    // event.target.playVideo();
+
+    var index = videoList.indexOf(videoid);
+    if(index >= 0 && index < videoList.length - 1){
+      nextVideo = videoList[index + 1];
+    }else {
+      nextVideo = videoList[0];
+    }
+    showVideoByID(videoContainer, nextVideo);
+
   }
   if(event.data === 1) {  
     logStuff("WOULD PLAY... WS SENDING!!!");        
@@ -299,6 +310,7 @@ function onPlayerStateChange(event) {
     $("#input-videoid")[0].value = videoid;
     
     //push onto the playlist stack
+    videoTitle = videoContainer.player.getVideoData().title
     appendToVideoList(videoid, videoTitle);
 
     startTimeTimeout();       
